@@ -6,10 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "base-64": "^0.1.0",
-    /* nicht (mehr) ganz verständlich, warum BASE-64 benötigt wird. Ist nicht mal im Code eingebunden (--> kann bloß von CryptoJS oder DigestAuthReq. benötigt werden, macht dann aber keinen Sinn irgendwie (haben ja eigene Dependencies)) */
-    "crypto-js": "^3.1.6",
-    "digest-auth-request": "^0.6.2",
+    "digest-auth-request-rn": "file:digest-auth-request-rn-0.6.2.tgz",
     "react": "15.3.1",
     "react-native": "0.33.0"
   }
