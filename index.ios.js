@@ -84,6 +84,7 @@ function digestGet() {
 // digestGet();
 */
 
+/*
 function digestPost() {
   var postData = {
     name: 'Kat. via API (' + currentTime + ')',
@@ -97,7 +98,7 @@ function digestPost() {
   postReq.request(function (data) {
     console.log('digestPost SUCCESS: ', data);
 
-/*
+/!*
     function getCallFromPostAuth() {
       fetch('http://frische-app.de.shopware-hosting.com/api/categories', { method: 'GET', headers: {'Authorization': digestAuthHeader} })
         .then((response) => response.json())
@@ -106,40 +107,33 @@ function digestPost() {
         })
     }
     // getCallFromPostAuth();
-*/
-
-    // trying the subsequent API Call through XHR (instead of Fetch)
-    function xhrGet(url, success, error) {
-      var req = new XMLHttpRequest();
-      req.open('GET', url, true);
-      req.setRequestHeader('Authorization', digestAuthHeader);
-      req.onreadystatechange = function () {
-        var status = null;
-        var data = null;
-        if (req.readyState == 4) {
-          status = req.status;
-          if (status == 200) {
-            data = JSON.parse(req.responseText);
-            success && success(data);
-          } else {
-            error && error(status);
-          }
-        }
-      };
-      req.send();
-    }
-    xhrGet('http://frische-app.de.shopware-hosting.com/api/categories', function (data) {
-      console.debug('XHR SUCCESS: ', data);
-    }, function (status) {
-      console.error('XHR ERROR: ', status);
-    });
-
+*!/
 
   }, function (errorCode) {
     console.error('digestPost ERROR: ', errorCode)
   }, postData);
 }
 digestPost();
+*/
+
+
+function digestPut() {
+  var putData = {
+    name: 'Kat.name geändert (' + currentTime + ')',
+  };
+
+  var putReq = new digestAuthRequestRn('PUT',
+    'http://frische-app.de.shopware-hosting.com/api/categories/56', apiCredentials_dev.apiUser,
+    apiCredentials_dev.apiKey);
+
+  putReq.request(function (data) {
+    console.log('digestPut SUCCESS: ', data);
+  }, function (errorCode) {
+    console.error('digestPut ERROR: ', errorCode)
+  }, putData);
+}
+digestPut();
+
 
 
 // TODO: Erst andere Calls ausführen, wenn authentifiziert! (React Lifecycle Methods?)
