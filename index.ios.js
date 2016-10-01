@@ -27,7 +27,6 @@ const currentMins = new Date().getMinutes();
 const currentTime = currentHrs + ':' + currentMins + ' Uhr';
 console.debug('Time of Response: ' + currentTime);
 
-/*
 function digestGet() {
   var url = apiCredentials_dev.url;
   var apiUser = apiCredentials_dev.apiUser;
@@ -35,56 +34,14 @@ function digestGet() {
   var getRequest = new digestAuthRequestRn('GET', url, apiUser, apiKey);
 
   getRequest.request(function (data) {
-    console.log('Auth Data: ', data);
-
-    function getCall() {
-      fetch(apiCredentials_dev.url, { method: 'GET', headers: {'Authorization': digestAuthHeader} })
-     .then((response) => response.json())
-     .then((responseData) => {
-       console.log('GET Product #3 (name): ', responseData.data[2].name);
-     })
-    }
-    // getCall();
-
-    function putCall() {
-      fetch(apiCredentials_dev.url, {
-        method: 'PUT',
-        headers: {'Authorization': digestAuthHeader, 'Content-type': 'application/json'},
-        body: JSON.stringify({
-          name: 'Carbon D: Api-PUT-Updated!'
-        })
-      })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log('PUT Response: ', responseData);
-      })
-    }
-    // putCall();
-
-    function postCall() {
-      fetch('http://frische-app.de.shopware-hosting.com/api/categories', {
-        method: 'POST',
-        headers: {'Authorization': digestAuthHeader, 'Content-type': 'application/json'},
-        body: JSON.stringify({
-          name: 'Kategorie via API #2',
-          parentId: 5
-        })
-      })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log('POST Response: ', responseData);
-      })
-    }
-    postCall();
-
+    console.log('digestGET SUCCESS: ', data);
   }, function (error) {
     console.error('Error: ', error);
   })
 }
 // digestGet();
-*/
 
-/*
+
 function digestPost() {
   var postData = {
     name: 'Kat. via API (' + currentTime + ')',
@@ -96,25 +53,12 @@ function digestPost() {
     apiCredentials_dev.apiKey);
 
   postReq.request(function (data) {
-    console.log('digestPost SUCCESS: ', data);
-
-/!*
-    function getCallFromPostAuth() {
-      fetch('http://frische-app.de.shopware-hosting.com/api/categories', { method: 'GET', headers: {'Authorization': digestAuthHeader} })
-        .then((response) => response.json())
-        .then((responseData) => {
-          console.log('GET Result: ', responseData);
-        })
-    }
-    // getCallFromPostAuth();
-*!/
-
+    console.log('digestPOST SUCCESS: ', data);
   }, function (errorCode) {
-    console.error('digestPost ERROR: ', errorCode)
+    console.error('digestPOST ERROR: ', errorCode)
   }, postData);
 }
-digestPost();
-*/
+// digestPost();
 
 
 function digestPut() {
@@ -127,17 +71,12 @@ function digestPut() {
     apiCredentials_dev.apiKey);
 
   putReq.request(function (data) {
-    console.log('digestPut SUCCESS: ', data);
+    console.log('digestPUT SUCCESS: ', data);
   }, function (errorCode) {
-    console.error('digestPut ERROR: ', errorCode)
+    console.error('digestPUT ERROR: ', errorCode)
   }, putData);
 }
-digestPut();
-
-
-
-// TODO: Erst andere Calls ausführen, wenn authentifiziert! (React Lifecycle Methods?)
-
+// digestPut();
 
 
 class frischeApp extends Component {
