@@ -2,24 +2,28 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   Text,
-  View
+  View,
+  TouchableHighlight
 } from 'react-native';
 
 // import Node Packages
-import digestAuthRequestRn from 'digest-auth-request-rn';
+import digestCall from 'digest-auth-request-rn';
 import { digestAuthHeader } from 'digest-auth-request-rn';
 
 // import outsourced files
 import appConfig from './app/config';
 import appHelpers from './app/helpers';
 import styles from './app/styles';
+const {url} = appConfig.apiCredentials_dev;
+const {apiUser} = appConfig.apiCredentials_dev;
+const {apiKey} = appConfig.apiCredentials_dev;
 
 
 function digestGet() {
   var url = apiCredentials_dev.url;
   var apiUser = apiCredentials_dev.apiUser;
   var apiKey = apiCredentials_dev.apiKey;
-  var getRequest = new digestAuthRequestRn('GET', url, apiUser, apiKey);
+  var getRequest = new digestCall('GET', url, apiUser, apiKey);
 
   getRequest.request(function (data) {
     console.log('digestGET SUCCESS: ', data);
@@ -36,7 +40,7 @@ function digestPost() {
     parentId: 5
   };
 
-  var postReq = new digestAuthRequestRn('POST',
+  var postReq = new digestCall('POST',
     'http://frische-app.de.shopware-hosting.com/api/categories', appConfig.apiCredentials_dev.apiUser, appConfig.apiCredentials_dev.apiKey);
 
   postReq.request(function (data) {
@@ -53,7 +57,7 @@ function digestPut() {
     name: 'Kat.name geändert (' + currentTime + ')',
   };
 
-  var putReq = new digestAuthRequestRn('PUT',
+  var putReq = new digestCall('PUT',
     'http://frische-app.de.shopware-hosting.com/api/categories/56', appConfig.apiCredentials_dev.apiUser,
     appConfig.apiCredentials_dev.apiKey);
 
@@ -66,15 +70,61 @@ function digestPut() {
 // digestPut();
 
 
+// Root Class, the App starts here
 class frischeApp extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>
-          1234
-        </Text>
+        <Header/>
+        <GetCallTest/>
       </View>
     );
+  }
+}
+
+class TextDefault extends Component {
+  render() {
+    return (
+      <Text style={{fontSize: 20}}>
+        {this.props.children}
+      </Text>
+    )
+  }
+}
+
+class Header extends Component {
+  render() {
+    return (
+      <View style={[styles.headerBlock, styles.center]}>
+        <Text style={styles.logoText}>FRISCHEPOST</Text>
+      </View>
+    )
+  }
+}
+
+class GetCallTest extends Component {
+  // TODO: Constructor?
+
+  componentDidMount() {
+  }
+
+  render() {
+    return (
+      <TouchableHighlight onPress={this.getCall} style={[styles.center, styles.buttonBlock]}>
+        <View style={styles.button}>
+          <TextDefault>Lade GET Data</TextDefault>
+        </View>
+      </TouchableHighlight>
+    )
+  }
+
+  getCall() {
+    let req = new digestCall('GET', url + '/articles', apiUser, apiKey);
+    req.request(function (data) {
+      console.log(data);
+    }, function (error) {
+      console.error(error);
+    })
   }
 }
 
