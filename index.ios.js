@@ -3,6 +3,7 @@ import {
   AppRegistry,
   Text,
   View,
+  ScrollView,
   TouchableHighlight
 } from 'react-native';
 
@@ -14,9 +15,9 @@ import { digestAuthHeader } from 'digest-auth-request-rn';
 import appConfig from './app/config';
 import appHelpers from './app/helpers';
 import styles from './app/styles';
-const {url} = appConfig.apiCredentials_dev;
-const {apiUser} = appConfig.apiCredentials_dev;
-const {apiKey} = appConfig.apiCredentials_dev;
+const {url} = appConfig.apiCredentials_test;
+const {apiUser} = appConfig.apiCredentials_test;
+const {apiKey} = appConfig.apiCredentials_test;
 
 
 function digestGet() {
@@ -70,13 +71,13 @@ function digestPut() {
 // digestPut();
 
 
-// Root Class, the App starts here
+// Root Class, the App starts here ---------------------------------------
 class frischeApp extends Component {
   render() {
     return (
       <View style={styles.container}>
         <Header/>
-        <GetCallTest/>
+        <GetUrl source="/articles" />
       </View>
     );
   }
@@ -102,29 +103,51 @@ class Header extends Component {
   }
 }
 
-class GetCallTest extends Component {
-  // TODO: Constructor?
-
-  componentDidMount() {
+class GetUrl extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      result: ''
+    };
+    this.getCall = this.getCall.bind(this); // important! (No Autobinding in ES6 Classes)
   }
 
   render() {
     return (
-      <TouchableHighlight onPress={this.getCall} style={[styles.center, styles.buttonBlock]}>
-        <View style={styles.button}>
-          <TextDefault>Lade GET Data</TextDefault>
+      <ScrollView style={{flex: 1}}>
+        <View style={[styles.buttonBlock, styles.center]}>
+          <TouchableHighlight onPress={this.getCall} style={styles.button} underlayColor={'cornsilk'}>
+            <View>
+              <TextDefault>Lade Produkte</TextDefault>
+            </View>
+          </TouchableHighlight>
         </View>
-      </TouchableHighlight>
+        <View style={styles.resultsBlock}>
+          <TextDefault style={{marginBottom: 15}}>{this.state.result ? 'Results:' : 'Klicke auf den Button!'}</TextDefault>
+          <Text>{this.state.result}</Text>
+        </View>
+      </ScrollView>
     )
   }
 
   getCall() {
-    let req = new digestCall('GET', url + '/articles', apiUser, apiKey);
-    req.request(function (data) {
-      console.log(data);
-    }, function (error) {
+    const req = new digestCall('GET', url + this.props.source, apiUser, apiKey);
+    req.request((result) => {
+      // converted to ES6-Fat-Arrow-Functions (for preserving this -- no need for binding)
+      console.log(result);
+
+      const objOutput = () => {
+
+      };
+
+      const output = result.data[1].name;
+
+      this.setState({
+        result: output
+      });
+    }, (error) => {
       console.error(error);
-    })
+    });
   }
 }
 
