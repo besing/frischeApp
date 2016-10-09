@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -107,9 +109,10 @@ class GetUrl extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: ''
+      result: null
     };
     this.getCall = this.getCall.bind(this); // important! (No Autobinding in ES6 Classes)
+    this.iterateResults = this.iterateResults.bind(this);
   }
 
   render() {
@@ -123,8 +126,10 @@ class GetUrl extends Component {
           </TouchableHighlight>
         </View>
         <View style={styles.resultsBlock}>
-          <TextDefault style={{marginBottom: 15}}>{this.state.result ? 'Results:' : 'Klicke auf den Button!'}</TextDefault>
-          <Text>{this.state.result}</Text>
+          <View style={{marginBottom: 15}}>
+            <TextDefault>{this.state.result ? 'Results:' : 'Klicke auf den Button!'}</TextDefault>
+          </View>
+          <View>{this.state.result}</View>
         </View>
       </ScrollView>
     )
@@ -132,22 +137,28 @@ class GetUrl extends Component {
 
   getCall() {
     const req = new digestCall('GET', url + this.props.source, apiUser, apiKey);
-    req.request((result) => {
-      // converted to ES6-Fat-Arrow-Functions (for preserving this -- no need for binding)
-      console.log(result);
+    req.request((result) => { // changed to ES6-Fat-Arrow-Functions (for preserving 'this' -> no need for binding)
 
-      const objOutput = () => {
-
-      };
-
-      const output = result.data[1].name;
+      this.output = result.data;
+      // console.log(this.output);
 
       this.setState({
-        result: output
+        result: this.iterateResults()
       });
+
     }, (error) => {
       console.error(error);
     });
+  }
+
+  iterateResults() {
+    return (
+      this.output.map((item) => {
+        return (
+          <Text key={item.id}>Name: {item.name}</Text>
+        )
+     })
+    );
   }
 }
 

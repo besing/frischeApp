@@ -1,3 +1,5 @@
+'use strict';
+
 const appConfig = {
   apiCredentials_dev: { // LATER?: Auth on /api, not on /api/... (e.g. /articles)
     url: 'http://frische-app.de.shopware-hosting.com/api',

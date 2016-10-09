@@ -1,3 +1,5 @@
+'use strict';
+
 const appHelpers = {
   currentHrs: new Date().getHours(),
   currentMins: new Date().getMinutes(),
