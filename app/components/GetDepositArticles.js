@@ -9,13 +9,12 @@ import {
 } from 'react-native';
 
 import digestCall from 'digest-auth-request-rn';
-import { digestAuthHeader } from 'digest-auth-request-rn'; // later: ggf. rausschmeißen falls unbenutzt
+import { digestAuthHeader } from 'digest-auth-request-rn'; // later: maybe throw out if unused
 
 import appConfig from '../config/settings';
 import appHelpers from '../config/helpers';
 import globalStyles from '../config/styles';
 
-import Header from '../components/Header';
 import TextDefault from '../components/TextDefault';
 
 const {url} = appConfig.apiCredentials_test;
@@ -23,29 +22,23 @@ const {apiUser} = appConfig.apiCredentials_test;
 const {apiKey} = appConfig.apiCredentials_test;
 
 
-export default class GetUrl extends Component {
+export default class GetDepositArticles extends Component {
   constructor(props) {
     super(props);
     this.state = {
       result: null
     };
-    this.getCall = this.getCall.bind(this); // important! (No Autobinding in ES6 Classes)
+    this.getAllArticles = this.getAllArticles.bind(this); // important! (No Autobinding in ES6 Classes)
+    this.filterResults = this.filterResults.bind(this);
     this.iterateResults = this.iterateResults.bind(this);
   }
 
   render() {
     return (
       <ScrollView style={{flex: 1}}>
-        <View style={[globalStyles.buttonBlock, globalStyles.center]}>
-          <TouchableHighlight onPress={this.getCall} style={globalStyles.button} underlayColor={'cornsilk'}>
-            <View>
-              <TextDefault>Lade Produkte</TextDefault>
-            </View>
-          </TouchableHighlight>
-        </View>
         <View style={globalStyles.resultsBlock}>
           <View style={{marginBottom: 15}}>
-            <TextDefault>{this.state.result ? 'Results:' : 'Klicke auf den Button!'}</TextDefault>
+            <TextDefault>{this.state.result ? 'Results:' : 'Lädt...'}</TextDefault>
           </View>
           <View>{this.state.result}</View>
         </View>
@@ -53,12 +46,16 @@ export default class GetUrl extends Component {
     )
   }
 
-  getCall() {
-    const req = new digestCall('GET', url + this.props.source, apiUser, apiKey);
-    req.request((result) => { // changed to ES6-Fat-Arrow-Functions (for preserving 'this' -> no need for binding)
+  componentDidMount() {
+    this.getAllArticles(); // if this GET-Call inside render() => Infinite Loop!
+  }
 
-      this.output = result.data;
-      // console.log(this.output);
+  getAllArticles() {
+    const req = new digestCall('GET', url + '/articles', apiUser, apiKey);
+    req.request((result) => {
+      // changed to ES6-Fat-Arrow-Functions (for preserving 'this' -> no need for binding)
+
+      this.output = result.data; // .data = array
 
       this.setState({
         result: this.iterateResults()
@@ -69,11 +66,20 @@ export default class GetUrl extends Component {
     });
   }
 
+  filterResults() {
+    this.filteredArr = this.output.filter((obj) => {
+      let searchVal = obj.name.toLowerCase();
+      return searchVal.includes('pfand');
+    });
+  }
+
   iterateResults() {
+    this.filterResults();
+
     return (
-      this.output.map((item) => {
+      this.filteredArr.map((item) => {
         return (
-          <Text key={item.id}>Name: {item.name}</Text>
+          <Text key={item.id}>{item.name} (id = {item.id})</Text>
         )
       })
     );

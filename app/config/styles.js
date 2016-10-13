@@ -46,4 +46,6 @@ const globalStyles = StyleSheet.create({
   }
 });
 
+// LATER: clean unused Style Objects
+
 export default globalStyles;

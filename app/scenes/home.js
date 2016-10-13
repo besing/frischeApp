@@ -8,7 +8,7 @@ import {
 import globalStyles from '../config/styles';
 
 import Header from '../components/Header';
-import GetUrl from '../components/GetUrl';
+import GetDepositArticles from '../components/GetDepositArticles';
 
 
 export default class frischeApp extends Component {
@@ -16,7 +16,7 @@ export default class frischeApp extends Component {
     return (
       <View style={globalStyles.container}>
         <Header scene="home"/>
-        <GetUrl source="/articles" />
+        <GetDepositArticles />
       </View>
     );
   }
