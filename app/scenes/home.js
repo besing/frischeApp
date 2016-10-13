@@ -15,7 +15,7 @@ export default class frischeApp extends Component {
   render() {
     return (
       <View style={globalStyles.container}>
-        <Header/>
+        <Header scene="home"/>
         <GetUrl source="/articles" />
       </View>
     );
