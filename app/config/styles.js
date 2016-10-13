@@ -2,12 +2,10 @@
 
 import { StyleSheet, Dimensions } from 'react-native';
 
-const {width, height} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window'); // TODO: not exported yet
 const fpMainColor = '#598c8a';
 
-// TODO: Vielleicht doch eher pro Component ein File und darin direkt jew. Styles Obj.?
-
-const styles = StyleSheet.create({
+const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -48,4 +46,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default styles;
+export default globalStyles;
