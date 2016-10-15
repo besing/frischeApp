@@ -6,7 +6,7 @@ import {
   Text
 } from 'react-native';
 
-import globalStyles from '../config/styles';
+import globalStyles from '../config/globalStyles';
 
 
 export default class Header extends Component {

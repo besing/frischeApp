@@ -8,8 +8,8 @@ import {
   Image
 } from 'react-native';
 
-import globalStyles from '../config/styles';
-import {width, height} from '../config/styles';
+import globalStyles from '../config/globalStyles';
+import {width, height} from '../config/globalStyles';
 
 import TextDefault from '../components/TextDefault';
 

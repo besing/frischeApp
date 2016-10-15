@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text,
   ScrollView,
 } from 'react-native';
 
@@ -12,7 +11,7 @@ import { digestAuthHeader } from 'digest-auth-request-rn'; // later: maybe throw
 
 import appConfig from '../config/settings';
 import appHelpers from '../config/helpers';
-import globalStyles from '../config/styles';
+import globalStyles from '../config/globalStyles';
 
 import TextDefault from '../components/TextDefault';
 import ImageBox from './ImageBox';
@@ -37,7 +36,7 @@ export default class GetDepositArticles extends Component {
 
   render() {
     return (
-      <ScrollView style={{flex: 1, paddingTop: 30}}>
+      <ScrollView style={{flex: 1, paddingTop: 10}}>
         {<TwoColumns>{this.state.result}</TwoColumns> || <TextDefault>Lädt!</TextDefault>}
       </ScrollView>
     )

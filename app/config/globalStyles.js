@@ -8,7 +8,7 @@ const fpMainColor = '#598c8a';
 const globalStyles = StyleSheet.create({
   debug: {
     borderColor: 'red',
-    borderWidth: 2
+    borderWidth: 1
   },
   container: {
     flex: 1,

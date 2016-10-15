@@ -5,7 +5,7 @@ import {
   Text,
 } from 'react-native';
 
-import globalStyles from '../config/styles';
+import globalStyles from '../config/globalStyles';
 
 
 export default class TextDefault extends Component {
@@ -19,7 +19,11 @@ export default class TextDefault extends Component {
     fontWeight == 'semibold' ? fontWeightVal = '600' : '300';
 
     return (
-      <Text style={[{fontSize: 17, fontWeight: fontWeightVal}]}>
+      <Text style={[{
+        fontSize: 17,
+        fontWeight: fontWeightVal,
+        color: this.props.color
+      }]}>
         {this.props.children}
       </Text>
     )

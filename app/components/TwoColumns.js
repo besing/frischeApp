@@ -4,12 +4,10 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
-  Image
 } from 'react-native';
 
-import globalStyles from '../config/styles';
-import {width, height} from '../config/styles';
+import globalStyles from '../config/globalStyles';
+import {width, height} from '../config/globalStyles';
 
 export default class TwoColumns extends Component {
   render() {
