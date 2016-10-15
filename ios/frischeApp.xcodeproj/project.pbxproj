@@ -627,6 +627,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.besing.rn.frischeApp;
 				PRODUCT_NAME = frischeApp;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -649,6 +650,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.besing.rn.frischeApp;
 				PRODUCT_NAME = frischeApp;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
