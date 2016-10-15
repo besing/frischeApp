@@ -9,9 +9,17 @@ import globalStyles from '../config/styles';
 
 
 export default class TextDefault extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
+    const {fontWeight} = this.props;
+    let fontWeightVal = null;
+    fontWeight == 'semibold' ? fontWeightVal = '600' : '300';
+
     return (
-      <Text style={{fontSize: 20}}>
+      <Text style={[{fontSize: 17, fontWeight: fontWeightVal}]}>
         {this.props.children}
       </Text>
     )

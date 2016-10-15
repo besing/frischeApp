@@ -5,7 +5,6 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableHighlight
 } from 'react-native';
 
 import digestCall from 'digest-auth-request-rn';
@@ -16,8 +15,11 @@ import appHelpers from '../config/helpers';
 import globalStyles from '../config/styles';
 
 import TextDefault from '../components/TextDefault';
+import ImageBox from './ImageBox';
+import TwoColumns from '../components/TwoColumns';
 
-const {url} = appConfig.apiCredentials_test;
+// const {url} = appConfig.apiCredentials_test; // later: use this on
+const url = appConfig.apiCredentials_mock.url_get;
 const {apiUser} = appConfig.apiCredentials_test;
 const {apiKey} = appConfig.apiCredentials_test;
 
@@ -35,27 +37,24 @@ export default class GetDepositArticles extends Component {
 
   render() {
     return (
-      <ScrollView style={{flex: 1}}>
-        <View style={globalStyles.resultsBlock}>
-          <View style={{marginBottom: 15}}>
-            <TextDefault>{this.state.result ? 'Results:' : 'Lädt...'}</TextDefault>
-          </View>
-          <View>{this.state.result}</View>
-        </View>
+      <ScrollView style={{flex: 1, paddingTop: 30}}>
+        {<TwoColumns>{this.state.result}</TwoColumns> || <TextDefault>Lädt!</TextDefault>}
       </ScrollView>
     )
   }
 
   componentDidMount() {
-    this.getAllArticles(); // if this GET-Call inside render() => Infinite Loop!
+    this.getAllArticles(); // if inside render() => Infinite Loop!
   }
 
   getAllArticles() {
-    const req = new digestCall('GET', url + '/articles', apiUser, apiKey);
+    // const req = new digestCall('GET', url + '/articles', apiUser, apiKey); // later: use this one
+    const req = new digestCall('GET', url + '', apiUser, apiKey);
     req.request((result) => {
       // changed to ES6-Fat-Arrow-Functions (for preserving 'this' -> no need for binding)
 
-      this.output = result.data; // .data = array
+      // this.output = result.data; // .data = array // later: use this one
+      this.output = result; // .data = array
 
       this.setState({
         result: this.iterateResults()
@@ -68,8 +67,7 @@ export default class GetDepositArticles extends Component {
 
   filterResults() {
     this.filteredArr = this.output.filter((obj) => {
-      let searchVal = obj.name.toLowerCase();
-      return searchVal.includes('pfand');
+      return obj.category_id == 117; // later: maybe new API
     });
   }
 
@@ -79,7 +77,15 @@ export default class GetDepositArticles extends Component {
     return (
       this.filteredArr.map((item) => {
         return (
-          <Text key={item.id}>{item.name} (id = {item.id})</Text>
+          <View key={item.id}>
+              <ImageBox
+                source={item.img}
+                title={item.name}
+                size={110}
+                borderRadius={10}
+                blur={5}
+              />
+          </View>
         )
       })
     );

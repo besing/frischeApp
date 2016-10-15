@@ -2,10 +2,14 @@
 
 import { StyleSheet, Dimensions } from 'react-native';
 
-const {width, height} = Dimensions.get('window'); // TODO: not exported yet
+export const {width, height} = Dimensions.get('window');
 const fpMainColor = '#598c8a';
 
 const globalStyles = StyleSheet.create({
+  debug: {
+    borderColor: 'red',
+    borderWidth: 2
+  },
   container: {
     flex: 1,
   },
@@ -39,11 +43,6 @@ const globalStyles = StyleSheet.create({
     padding: 15,
     borderWidth: 1
   },
-  resultsBlock: {
-    flex: 1,
-    padding: 30,
-    backgroundColor: '#eee'
-  }
 });
 
 // LATER: clean unused Style Objects
