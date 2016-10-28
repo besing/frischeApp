@@ -7,7 +7,6 @@ import {
 
 import globalStyles from '../config/globalStyles';
 
-import Header from '../components/Header';
 import FullWidthButton from '../components/FullWidthButton';
 import GetDepositArticles from '../components/GetDepositArticles';
 
@@ -15,8 +14,7 @@ import GetDepositArticles from '../components/GetDepositArticles';
 export default class frischeApp extends Component {
   render() {
     return (
-      <View style={[globalStyles.container, {backgroundColor: '#eee'}]}>
-        <Header scene="home"/>
+      <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 20}]}>
         <FullWidthButton>Kunde auswählen</FullWidthButton>
         <GetDepositArticles />
       </View>

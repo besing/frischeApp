@@ -19,7 +19,7 @@ export default class FullWidthButton extends Component {
       <View style={[globalStyles.center, styles.buttonWrap]}>
         <TouchableHighlight
           onPress={this.onPressButton}
-          underlayColor='blue'
+          underlayColor='#000'
           activeOpacity={5}
           style={styles.button}
         >
@@ -34,7 +34,7 @@ export default class FullWidthButton extends Component {
   }
 
   onPressButton() {
-    console.log('Button pressed.');
+
   }
 }
 
@@ -44,9 +44,11 @@ const styles = StyleSheet.create({
   },
   button: {
     width: width - 40,
-    backgroundColor: '#555',
+    backgroundColor: '#444',
     marginTop: 20,
     marginBottom: 20,
     padding: 8,
+    borderWidth: 1,
+    borderColor: '#000'
   }
 });
