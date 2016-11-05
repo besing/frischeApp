@@ -73,7 +73,7 @@ export default class GetDepositArticles extends Component {
       this.output.map((item, i) => {
         return (
           <View key={i}>
-            <ArticlesListItem title={item.name}/>
+            <ArticlesListItem title={item.name} img={item.img} returnedArticlesNum="" />
           </View>
         )
       })

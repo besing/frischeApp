@@ -3,7 +3,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
 export const {width, height} = Dimensions.get('window');
-const fpMainColor = '#598c8a';
+export const fpMainColor = '#598c8a';
 
 const globalStyles = StyleSheet.create({
   debug: {

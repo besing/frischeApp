@@ -13,6 +13,7 @@ import {width, height} from '../config/globalStyles';
 
 import TextDefault from '../components/TextDefault';
 
+
 export default class FullWidthButton extends Component {
   render() {
     return (
