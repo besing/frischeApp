@@ -15,6 +15,7 @@ export default class TextDefault extends Component {
 
   render() {
     const {fontWeight} = this.props;
+    const {color} = this.props;
     let fontWeightVal = null;
     fontWeight == 'semibold' ? fontWeightVal = '600' : '300';
 
@@ -22,7 +23,7 @@ export default class TextDefault extends Component {
       <Text style={[{
         fontSize: 17,
         fontWeight: fontWeightVal,
-        color: this.props.color
+        color: color
       }]}>
         {this.props.children}
       </Text>

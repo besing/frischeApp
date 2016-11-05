@@ -15,6 +15,7 @@ import appHelpers from '../config/helpers';
 import globalStyles from '../config/globalStyles';
 
 import TextDefault from '../components/TextDefault';
+import ArticlesListItem from '../components/ArticlesListItem';
 
 // const {url} = appConfig.apiCredentials_test; // later: use this on
 const url = appConfig.apiCredentials_test.url;
@@ -26,7 +27,7 @@ export default class GetDepositArticles extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: null
+      result: <TextDefault>Lädt...</TextDefault>
     };
     this.getArticleList = this.getArticleList.bind(this); // important! (No Autobinding in ES6 Classes)
     this.iterateResults = this.iterateResults.bind(this);
@@ -35,7 +36,7 @@ export default class GetDepositArticles extends Component {
   render() {
     return (
       <ScrollView style={{flex: 1, paddingTop: 10}}>
-        {<View>{this.state.result}</View> || <View>Lädt!</View>}
+        <View>{this.state.result}</View>
       </ScrollView>
     )
   }
@@ -69,12 +70,10 @@ export default class GetDepositArticles extends Component {
 
   iterateResults() {
     return (
-      this.output.map((item) => {
+      this.output.map((item, i) => {
         return (
-          <View key={item.id}>
-            <Text>
-              {item.name}
-            </Text>
+          <View key={i}>
+            <ArticlesListItem title={item.name}/>
           </View>
         )
       })

@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('frischeApp', () => frischeApp);
+AppRegistry.registerComponent('FrischeApp', () => frischeApp);
