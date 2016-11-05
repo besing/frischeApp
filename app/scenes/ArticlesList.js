@@ -7,11 +7,10 @@ import {
 
 import globalStyles from '../config/globalStyles';
 
-import FullWidthButton from '../components/FullWidthButton';
 import GetDepositArticles from '../components/GetDepositArticles';
 
 
-export default class CustomerSelect extends Component {
+export default class ArticlesList extends Component {
   render() {
     return (
       <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 20}]}>

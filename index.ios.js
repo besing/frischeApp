@@ -6,6 +6,6 @@ import {
 } from 'react-native';
 
 import FrischeApp from './app/scenes/Home';
-import CustomerSelect from './app/scenes/CustomerSelect';
+import CustomerSelect from './app/scenes/ArticlesList';
 
 AppRegistry.registerComponent('FrischeApp', () => FrischeApp); // TODO
