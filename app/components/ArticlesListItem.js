@@ -27,7 +27,7 @@ export default class ArticlesListItem extends Component {
       style={{width: 50, height: 50}}
       resizeMode='cover'
     />;
-    const img = this.props.img || imgPlaceholderS;
+    const img = this.props.img || imgPlaceholderS; // TODO: Bei Klick Bild in groß anzeigen
     const returnedArticlesNum = this.props.returnedArticlesNum || '0';
 
     return (

@@ -8,4 +8,4 @@ import {
 import FrischeApp from './app/scenes/Home';
 import CustomerSelect from './app/scenes/CustomerSelect';
 
-AppRegistry.registerComponent('frischeApp', () => CustomerSelect); // TODO
+AppRegistry.registerComponent('FrischeApp', () => FrischeApp); // TODO
