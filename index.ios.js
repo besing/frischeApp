@@ -5,7 +5,15 @@ import {
   AppRegistry,
 } from 'react-native';
 
-import FrischeApp from './app/scenes/Home';
-import CustomerSelect from './app/scenes/ArticlesList';
+import NavigatorHome from './app/scenes/Home';
 
-AppRegistry.registerComponent('FrischeApp', () => FrischeApp); // TODO
+
+class FrischeApp extends Component {
+  render() {
+    return (
+      <NavigatorHome/>
+    )
+  }
+}
+
+AppRegistry.registerComponent('FrischeApp', () => FrischeApp);

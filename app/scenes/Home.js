@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import {
   View,
+  NavigatorIOS
 } from 'react-native';
 
 import { Button } from 'react-native-elements';
@@ -10,7 +11,21 @@ import { Button } from 'react-native-elements';
 import globalStyles from '../config/globalStyles';
 
 
-export default class FrischeApp extends Component {
+export default class NavigatorHome extends Component {
+  render() {
+    return (
+      <NavigatorIOS
+        initialRoute={{
+          component: Home,
+          title: 'Frischepost Pfandrückgabe'
+        }}
+        style={{flex: 1}}
+      />
+    );
+  }
+}
+
+export class Home extends Component {
   render() {
     return (
       <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 150}]}>
