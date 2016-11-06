@@ -31,6 +31,7 @@ export class Home extends Component {
     return (
       <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 150}]}>
         <Button
+          small
           title="Kunden auswählen per Scan"
           backgroundColor="green"
           icon={{name: 'camera-alt'}}
@@ -40,8 +41,9 @@ export class Home extends Component {
           buttonStyle={{marginBottom: 20}}
         />
         <Button
+          small
           title="Kunden auswählen per Suche"
-          backgroundColor="brown"
+          backgroundColor="olive"
           icon={{name: 'person'}}
           borderRadius={5}
           underlayColor="#999"
@@ -49,7 +51,8 @@ export class Home extends Component {
           buttonStyle={{marginBottom: 50}}
         />
         <Button
-          title="Aktualisiere Daten"
+          small
+          title="Update: Customers"
           backgroundColor="orange"
           icon={{name: 'cloud-download'}}
           borderRadius={5}
@@ -57,7 +60,18 @@ export class Home extends Component {
           onPress={null}
           buttonStyle={{marginBottom: 10}}
         />
-        <Text style={{textAlign: 'center'}}>letzte Aktualisierung: xx</Text>
+        <Text style={{textAlign: 'center'}}>Letzte Aktualisierung: xx</Text>
+        <Button
+          small
+          title="Update: Orders"
+          backgroundColor="brown"
+          icon={{name: 'cloud-download'}}
+          borderRadius={5}
+          underlayColor="#999"
+          onPress={null}
+          buttonStyle={{marginBottom: 10, marginTop: 20}}
+        />
+        <Text style={{textAlign: 'center'}}>Letzte Aktualisierung: xx</Text>
       </View>
     ); // TODO: Add Logic "letzte Aktualisierung"
   }
