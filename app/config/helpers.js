@@ -3,8 +3,9 @@
 const appHelpers = {
   currentHrs: new Date().getHours(),
   currentMins: new Date().getMinutes(),
+  currentTime: new Date().getHours() + ':' + new Date().getMinutes() // nicht hinbekommen, das einfacher über this.currentHrs / this.currentMins zu lösen (wohl irgendein this/bind Problem)
 };
-console.debug('Time of Response: ' + appHelpers.currentHrs + ':' + appHelpers.currentMins);
+console.debug('Time of Response: ' + appHelpers.currentTime);
 
 
 function digestGet() {

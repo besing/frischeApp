@@ -9,8 +9,21 @@ import {
 
 import { Button } from 'react-native-elements';
 
-import globalStyles from '../config/globalStyles';
+import digestCall from 'digest-auth-request-rn';
 
+import appConfig from '../config/settings';
+import globalStyles from '../config/globalStyles';
+import GetDepositArticles from '../components/GetDepositArticles';
+
+import appHelpers from '../config/helpers';
+
+const url = appConfig.apiCredentials_test.url;
+const {apiUser} = appConfig.apiCredentials_test;
+const {apiKey} = appConfig.apiCredentials_test;
+
+
+let customerData = null;
+let ordersData = null;
 
 export default class NavigatorHome extends Component {
   render() {
@@ -27,6 +40,16 @@ export default class NavigatorHome extends Component {
 }
 
 export class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lastCustomerUpdate: 'Letzte Aktualisierung: n/v',
+      lastOrdersUpdate: 'Letzte Aktualisierung: n/v'
+    };
+    this._getAllCustomers = this._getAllCustomers.bind(this);
+    this._getAllOrders = this._getAllOrders.bind(this);
+  }
+
   render() {
     return (
       <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 150}]}>
@@ -36,7 +59,7 @@ export class Home extends Component {
           backgroundColor="green"
           icon={{name: 'camera-alt'}}
           borderRadius={5}
-          underlayColor="#999"
+          underlayColor="#999" // TODO: Underlay viel größer als Button?? (kein "margin")
           onPress={null}
           buttonStyle={{marginBottom: 20}}
         />
@@ -57,10 +80,12 @@ export class Home extends Component {
           icon={{name: 'cloud-download'}}
           borderRadius={5}
           underlayColor="#999"
-          onPress={null}
+          onPress={this._getAllCustomers}
           buttonStyle={{marginBottom: 10}}
         />
-        <Text style={{textAlign: 'center'}}>Letzte Aktualisierung: xx</Text>
+        <Text style={{textAlign: 'center'}}>
+          {this.state.lastCustomerUpdate}
+        </Text>
         <Button
           small
           title="Update: Orders"
@@ -68,11 +93,45 @@ export class Home extends Component {
           icon={{name: 'cloud-download'}}
           borderRadius={5}
           underlayColor="#999"
-          onPress={null}
+          onPress={this._getAllOrders}
           buttonStyle={{marginBottom: 10, marginTop: 20}}
         />
-        <Text style={{textAlign: 'center'}}>Letzte Aktualisierung: xx</Text>
+        <Text style={{textAlign: 'center'}}>
+          {this.state.lastOrdersUpdate}
+        </Text>
       </View>
     ); // TODO: Add Logic "letzte Aktualisierung"
+  }
+
+  _getAllCustomers() {
+    const req = new digestCall('GET', url + '/customers' + '?limit=40', apiUser, apiKey);
+    this.setState({
+      lastCustomerUpdate: 'lädt...'
+    });
+    req.request((result) => {
+      customerData = result.data;
+
+      this.setState({
+        lastCustomerUpdate: 'Letzte Aktualisierung: ' + appHelpers.currentTime
+      });
+    }, (error) => {
+      console.error(error);
+    });
+  }
+
+  _getAllOrders() {
+    const req = new digestCall('GET', url + '/orders' + '?limit=40', apiUser, apiKey);
+    this.setState({
+      lastOrdersUpdate: 'lädt...'
+    });
+    req.request((result) => {
+      ordersData = result.data;
+
+      this.setState({
+        lastOrdersUpdate: 'Letzte Aktualisierung: ' + appHelpers.currentTime
+      });
+    }, (error) => {
+      console.error(error);
+    });
   }
 }

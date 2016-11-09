@@ -17,7 +17,7 @@ import globalStyles from '../config/globalStyles';
 import TextDefault from '../components/TextDefault';
 import ArticlesListItem from '../components/ArticlesListItem';
 
-// const {url} = appConfig.apiCredentials_test; // later: use this on
+// const {url} = appConfig.apiCredentials_test; // later: use this one
 const url = appConfig.apiCredentials_test.url;
 const {apiUser} = appConfig.apiCredentials_test;
 const {apiKey} = appConfig.apiCredentials_test;
