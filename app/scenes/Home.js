@@ -123,7 +123,11 @@ export class Home extends Component {
   }
 
   _getAllCustomers() {
-    const req = new digestCall('GET', url + '/customers' + '?limit=100', apiUser, apiKey); // TODO: limit
+    const req = new digestCall(
+      'GET',
+      url + '/customers' + '?limit=100' + '&sort[0][property]=id&sort[0][direction]=DESC',
+      apiUser, apiKey
+    ); // TODO: limit/sortOrder
     this.setState({
       lastCustomerUpdate: 'lädt...'
     });

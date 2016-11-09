@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import globalStyles from '../config/globalStyles';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar, List, ListItem } from 'react-native-elements';
 
 import { customersData } from '../scenes/Home';
 import { customersDataNames } from '../scenes/Home';
@@ -19,8 +19,18 @@ export default class CustomerSearch extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(customersDataNames),
+      dataSource: ds.cloneWithRows(customersData),
     };
+  }
+
+  renderRow(rowData, sectionID) {
+    return (
+      <ListItem
+        key={sectionID}
+        title={rowData.lastname + ', ' + rowData.firstname}
+        subtitle={rowData.email}
+      />
+    )
   }
 
   render() {
@@ -32,11 +42,13 @@ export default class CustomerSearch extends Component {
           lightTheme
         />
 
-        <ListView
-          automaticallyAdjustContentInsets={false} // otherwise additional 64px top-space (default)
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => <Text>{rowData}</Text>}
-        />
+        <List containerStyle={{flex: 1}}>
+          <ListView
+            automaticallyAdjustContentInsets={false} // otherwise additional 64px top-space (default)
+            dataSource={this.state.dataSource}
+            renderRow={this.renderRow}
+          />
+        </List>
       </View>
     );
   }
