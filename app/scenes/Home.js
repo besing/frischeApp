@@ -13,7 +13,7 @@ import digestCall from 'digest-auth-request-rn';
 
 import appConfig from '../config/settings';
 import globalStyles from '../config/globalStyles';
-import ArticlesList from '../scenes/ArticlesList';
+import CustomerSearch from '../scenes/CustomerSearch';
 import GetDepositArticles from '../components/GetDepositArticles';
 
 import appHelpers from '../config/helpers';
@@ -23,8 +23,8 @@ const {apiUser} = appConfig.apiCredentials_test;
 const {apiKey} = appConfig.apiCredentials_test;
 
 
-let customerData = null;
-let ordersData = null;
+export let customerData = null;
+export let ordersData = null;
 
 export default class NavigatorHome extends Component {
   render() {
@@ -44,7 +44,8 @@ export class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lastCustomerUpdate: 'Letzte Aktualisierung: n/v',
+      lastCustomerUpdate: '',
+      customersDidUpdate: false,
       lastOrdersUpdate: 'Letzte Aktualisierung: n/v'
     };
     this._getAllCustomers = this._getAllCustomers.bind(this);
@@ -61,9 +62,10 @@ export class Home extends Component {
           backgroundColor="green"
           icon={{name: 'camera-alt'}}
           borderRadius={5}
-          underlayColor="#999" // TODO: Underlay viel größer als Button?? (kein "margin")
+          underlayColor="#999" // TODO: Underlay viel größer als Button??
           onPress={null}
           buttonStyle={{marginBottom: 20}}
+          disabled // TODO
         />
         <Button
           small
@@ -74,6 +76,7 @@ export class Home extends Component {
           underlayColor="#999"
           onPress={this._navPush}
           buttonStyle={{marginBottom: 50}}
+          disabled={!this.state.customersDidUpdate}
         />
         <Button
           small
@@ -105,10 +108,16 @@ export class Home extends Component {
     ); // TODO: Add Logic "letzte Aktualisierung"
   }
 
+  ComponentDidMount() {
+    this.setState({
+      lastCustomersUpdate: 'Letzte Aktualisierung: n/v'
+    })
+  }
+
   _navPush() {
     this.props.navigator.push({
-      title: 'Hier Kunde XY (navigator)',
-      component: ArticlesList
+      title: 'Kunden suchen',
+      component: CustomerSearch
     });
   }
 
@@ -121,7 +130,8 @@ export class Home extends Component {
       customerData = result.data;
 
       this.setState({
-        lastCustomerUpdate: 'Letzte Aktualisierung: ' + appHelpers.currentTime
+        lastCustomerUpdate: 'Letzte Aktualisierung: ' + appHelpers.currentTime,
+        customersDidUpdate: true
       });
     }, (error) => {
       console.error(error);
