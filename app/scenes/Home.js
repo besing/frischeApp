@@ -23,8 +23,9 @@ const {apiUser} = appConfig.apiCredentials_test;
 const {apiKey} = appConfig.apiCredentials_test;
 
 
-export let customerData = null;
+export let customersData = null;
 export let ordersData = null;
+export let customersDataNames = null;
 
 export default class NavigatorHome extends Component {
   render() {
@@ -122,17 +123,24 @@ export class Home extends Component {
   }
 
   _getAllCustomers() {
-    const req = new digestCall('GET', url + '/customers' + '?limit=40', apiUser, apiKey); // TODO: limit
+    const req = new digestCall('GET', url + '/customers' + '?limit=100', apiUser, apiKey); // TODO: limit
     this.setState({
       lastCustomerUpdate: 'lädt...'
     });
     req.request((result) => {
-      customerData = result.data;
+      customersData = result.data;
 
       this.setState({
         lastCustomerUpdate: 'Letzte Aktualisierung: ' + appHelpers.currentTime,
         customersDidUpdate: true
       });
+
+      customersDataNames = customersData.map((item) => {
+        return (
+          item.firstname + ' ' + item.lastname
+        )
+      });
+
     }, (error) => {
       console.error(error);
     });
