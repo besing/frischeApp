@@ -27,7 +27,7 @@ export default class GetDepositArticles extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: <TextDefault>Lädt...</TextDefault>
+      result: <Text>Lädt...</Text>
     };
     this.getArticleList = this.getArticleList.bind(this); // important! (No Autobinding in ES6 Classes)
     this.iterateResults = this.iterateResults.bind(this);
@@ -35,7 +35,7 @@ export default class GetDepositArticles extends Component {
 
   render() {
     return (
-      <ScrollView style={{flex: 1, paddingTop: 10}}>
+      <ScrollView style={{flex: 1}}>
         <View>{this.state.result}</View>
       </ScrollView>
     )

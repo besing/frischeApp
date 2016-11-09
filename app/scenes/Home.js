@@ -13,6 +13,7 @@ import digestCall from 'digest-auth-request-rn';
 
 import appConfig from '../config/settings';
 import globalStyles from '../config/globalStyles';
+import ArticlesList from '../scenes/ArticlesList';
 import GetDepositArticles from '../components/GetDepositArticles';
 
 import appHelpers from '../config/helpers';
@@ -48,6 +49,7 @@ export class Home extends Component {
     };
     this._getAllCustomers = this._getAllCustomers.bind(this);
     this._getAllOrders = this._getAllOrders.bind(this);
+    this._navPush = this._navPush.bind(this);
   }
 
   render() {
@@ -70,7 +72,7 @@ export class Home extends Component {
           icon={{name: 'person'}}
           borderRadius={5}
           underlayColor="#999"
-          onPress={null}
+          onPress={this._navPush}
           buttonStyle={{marginBottom: 50}}
         />
         <Button
@@ -103,8 +105,15 @@ export class Home extends Component {
     ); // TODO: Add Logic "letzte Aktualisierung"
   }
 
+  _navPush() {
+    this.props.navigator.push({
+      title: 'Hier Kunde XY (navigator)',
+      component: ArticlesList
+    });
+  }
+
   _getAllCustomers() {
-    const req = new digestCall('GET', url + '/customers' + '?limit=40', apiUser, apiKey);
+    const req = new digestCall('GET', url + '/customers' + '?limit=40', apiUser, apiKey); // TODO: limit
     this.setState({
       lastCustomerUpdate: 'lädt...'
     });
@@ -120,7 +129,7 @@ export class Home extends Component {
   }
 
   _getAllOrders() {
-    const req = new digestCall('GET', url + '/orders' + '?limit=40', apiUser, apiKey);
+    const req = new digestCall('GET', url + '/orders' + '?limit=40', apiUser, apiKey); // TODO: limit
     this.setState({
       lastOrdersUpdate: 'lädt...'
     });

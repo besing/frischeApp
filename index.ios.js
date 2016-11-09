@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 
 import NavigatorHome from './app/scenes/Home';
+import ArticlesList from './app/scenes/ArticlesList';
 
 
 class FrischeApp extends Component {

@@ -17,34 +17,12 @@ const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  bottomHalf: {
-    flex: 1,
-    backgroundColor: '#ddd'
-  },
-  contentBlock: {
-    // width: width,
-  },
-  headerBlock: {
-    padding: 40,
-    backgroundColor: fpMainColor
-  },
-  logoText: {
-    color: '#fff',
-    fontSize: 25,
-    fontWeight: 'bold',
-    letterSpacing: 5
-  },
-  buttonBlock: {
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: 'beige'
-  },
   button: {
     padding: 15,
     borderWidth: 1
   },
 });
 
-// LATER: clean unused Style Objects
+// TODO: clean unused Style Objects
 
 export default globalStyles;
