@@ -7,7 +7,7 @@ import {
   NavigatorIOS
 } from 'react-native';
 
-import { Button } from 'react-native-elements';
+import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
 import digestCall from 'digest-auth-request-rn';
 
@@ -17,6 +17,7 @@ import CustomerSearch from '../scenes/CustomerSearch';
 import GetDepositArticles from '../components/GetDepositArticles';
 
 import appHelpers from '../config/helpers';
+import {width, height} from '../config/globalStyles';
 
 const url = appConfig.apiCredentials_test.url;
 const {apiUser} = appConfig.apiCredentials_test;
@@ -45,9 +46,10 @@ export class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lastCustomerUpdate: '',
+      lastCustomersUpdate: '',
       customersDidUpdate: false,
-      lastOrdersUpdate: 'Letzte Aktualisierung: n/v'
+      lastOrdersUpdate: '',
+      ordersDidUpdate: false,
     };
     this._getAllCustomers = this._getAllCustomers.bind(this);
     this._getAllOrders = this._getAllOrders.bind(this);
@@ -56,52 +58,36 @@ export class Home extends Component {
 
   render() {
     return (
-      <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 150}]}>
-        <Button
-          small
-          title="Kunden auswählen per Scan"
-          backgroundColor="green"
-          icon={{name: 'camera-alt'}}
-          borderRadius={5}
-          underlayColor="#999" // TODO: Underlay viel größer als Button??
-          onPress={null}
-          buttonStyle={{marginBottom: 20}}
-          disabled // TODO
-        />
-        <Button
-          small
-          title="Kunden auswählen per Suche"
-          backgroundColor="olive"
-          icon={{name: 'person'}}
-          borderRadius={5}
-          underlayColor="#999"
-          onPress={this._navPush}
-          buttonStyle={{marginBottom: 50}}
-          disabled={!this.state.customersDidUpdate}
-        />
-        <Button
-          small
-          title="Update: Customers"
-          backgroundColor="orange"
-          icon={{name: 'cloud-download'}}
-          borderRadius={5}
-          underlayColor="#999"
-          onPress={this._getAllCustomers}
-          buttonStyle={{marginBottom: 10}}
-        />
-        <Text style={{textAlign: 'center'}}>
-          {this.state.lastCustomerUpdate}
+      <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 150, paddingLeft: width*0.05, paddingRight: width*0.05}]}>
+
+        <View style={{marginBottom: 20}}>
+          <IconMaterial.Button name="camera-alt" backgroundColor="#aaa" onPress={null} underlayColor="#999" borderRadius={0} disabled>
+            Kunden auswählen per Scan
+          </IconMaterial.Button>
+        </View>
+
+        <View style={{marginBottom: 50}}>
+          <IconMaterial.Button name="person" backgroundColor={this.state.customersDidUpdate ? 'olive' : '#aaa'} onPress={this._navPush} underlayColor="#999" borderRadius={0} disabled={!this.state.customersDidUpdate}>
+            Kunden auswählen per Suche
+          </IconMaterial.Button>
+        </View>
+
+        <View style={{marginBottom: 10}}>
+          <IconMaterial.Button name="cloud-download" backgroundColor="orange" onPress={this._getAllCustomers} underlayColor="#999" borderRadius={0}>
+            Update: Customers
+          </IconMaterial.Button>
+        </View>
+
+        <Text style={{textAlign: 'center', marginBottom: 20}}>
+          {this.state.lastCustomersUpdate}
         </Text>
-        <Button
-          small
-          title="Update: Orders"
-          backgroundColor="brown"
-          icon={{name: 'cloud-download'}}
-          borderRadius={5}
-          underlayColor="#999"
-          onPress={this._getAllOrders}
-          buttonStyle={{marginBottom: 10, marginTop: 20}}
-        />
+
+        <View style={{marginBottom: 10}}>
+          <IconMaterial.Button name="cloud-download" backgroundColor="brown" onPress={this._getAllOrders} underlayColor="#999" borderRadius={0}>
+            Update: Orders
+          </IconMaterial.Button>
+        </View>
+
         <Text style={{textAlign: 'center'}}>
           {this.state.lastOrdersUpdate}
         </Text>
@@ -109,9 +95,10 @@ export class Home extends Component {
     ); // TODO: Add Logic "letzte Aktualisierung"
   }
 
-  ComponentDidMount() {
+  componentDidMount() {
     this.setState({
-      lastCustomersUpdate: 'Letzte Aktualisierung: n/v'
+      lastCustomersUpdate: 'Letzte Aktualisierung: n/v',
+      lastOrdersUpdate: 'Letzte Aktualisierung: n/v'
     })
   }
 
@@ -129,13 +116,13 @@ export class Home extends Component {
       apiUser, apiKey
     ); // TODO: limit/sortOrder
     this.setState({
-      lastCustomerUpdate: 'lädt...'
+      lastCustomersUpdate: 'lädt...'
     });
     req.request((result) => {
       customersData = result.data;
 
       this.setState({
-        lastCustomerUpdate: 'Letzte Aktualisierung: ' + appHelpers.currentTime,
+        lastCustomersUpdate: 'Letzte Aktualisierung: ' + appHelpers.currentTime,
         customersDidUpdate: true
       });
 
@@ -166,3 +153,7 @@ export class Home extends Component {
     });
   }
 }
+
+const styles = {
+
+};
