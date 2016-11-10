@@ -42,13 +42,11 @@ export default class CustomerSearch extends Component {
           lightTheme
         />
 
-        <List containerStyle={{flex: 1}}>
-          <ListView
-            automaticallyAdjustContentInsets={false} // otherwise additional 64px top-space (default)
-            dataSource={this.state.dataSource}
-            renderRow={this.renderRow}
-          />
-        </List>
+        <ListView
+          automaticallyAdjustContentInsets={false} // otherwise additional 64px top-space (default)
+          dataSource={this.state.dataSource}
+          renderRow={this.renderRow}
+        />
       </View>
     );
   }
