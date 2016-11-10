@@ -101,7 +101,7 @@ export class Home extends Component {
       lastOrdersUpdate: 'Letzte Aktualisierung: n/v'
     });
 
-    this._getAllCustomers(); // TODO --- bloß für einfachere Dev hier drin
+    // this._getAllCustomers(); // TODO --- bloß für einfachere Dev hier drin
   }
 
   _navPush() {
@@ -134,7 +134,7 @@ export class Home extends Component {
         )
       });
 
-      this._navPush(); // TODO --- bloß für einfachere Dev hier drin
+      // this._navPush(); // TODO --- bloß für einfachere Dev hier drin
     }, (error) => {
       console.error(error);
     });
@@ -156,7 +156,3 @@ export class Home extends Component {
     });
   }
 }
-
-const styles = {
-
-};

@@ -25,10 +25,13 @@ export default class CustomerSearch extends Component {
 
     this.state = {
       dataSource: this.ds.cloneWithRows(customersData),
-      searchText: ''
+      searchTextFirstName: '',
+      searchTextLastName: ''
     };
 
-    this.setSearchText = this.setSearchText.bind(this);
+    this._setSearchTextFirstName = this._setSearchTextFirstName.bind(this);
+    this._setSearchTextLastName = this._setSearchTextLastName.bind(this);
+    this._filterList = this._filterList.bind(this);
   }
 
   renderRow(rowData, sectionID) {
@@ -44,29 +47,17 @@ export default class CustomerSearch extends Component {
   render() {
     return (
       <View style={{paddingTop: 64, flex: 1}}>
-
-        <TextInput
-          style={styles.searchBar}
-          value={this.state.searchText}
-          onChange={this.setSearchText}
-          placeholder="Search here"
-        />
-
-{/*
-/!*
         <SearchBar
-          onChangeText={null}
-          placeholder="Nachname"
-          autoFocus={true}
-          lightTheme
-        />
-        <SearchBar
-          onChangeText={null}
+          onChange={this._setSearchTextFirstName}
           placeholder="Vorname"
           lightTheme
+          autoFocus={true}
         />
-*!/
-*/}
+        <SearchBar
+          onChange={this._setSearchTextLastName}
+          placeholder="Nachname"
+          lightTheme
+        />
 
         <ListView
           automaticallyAdjustContentInsets={false} // otherwise additional 64px top-space (default)
@@ -78,49 +69,30 @@ export default class CustomerSearch extends Component {
     );
   }
 
-  setSearchText(event) {
+  _setSearchTextFirstName(event) {
     let searchText = event.nativeEvent.text;
-    this.setState({searchText: searchText});
+    let searchTextLowercase = searchText.toLowerCase();
+    this.setState({searchTextFirstName: searchText});
+    this._filterList(customersData, 'firstname', searchText, searchTextLowercase)
+  }
+  // the two very similar methods could/should be merged into one (functional) --> but didn't manage to source out the event Callback into arguments..
 
-    let filtered = customersData.filter((f) => {
-      return f.firstname == searchText
+  _setSearchTextLastName(event) {
+    let searchText = event.nativeEvent.text;
+    let searchTextLowercase = searchText.toLowerCase();
+    this.setState({searchTextLastName: searchText});
+    this._filterList(customersData, 'lastname', searchText, searchTextLowercase)
+  }
+
+  _filterList(data, property, valueNormal, valueLowercase) {
+    let filteredData = data.filter((obj) => {
+      return obj[property].includes(valueNormal) || obj[property].includes(valueLowercase)
     });
-    // console.log(filtered);
 
     this.setState({
-      dataSource: this.ds.cloneWithRows(filtered)
+      dataSource: this.ds.cloneWithRows(filteredData)
     });
-
-    // let filteredData = this._filterMe(searchText, customersData);
-    // this.setState({
-    //   dataSource: this.ds.cloneWithRows
-    // });
-
-    // console.log(this._searchFirstName(customersData, searchVal));
   }
-
-/*
-  _filterMe(searchText, notes) {
-    let searchVal = searchText.toLowerCase();
-
-  }
-
-  _searchFirstName(data, keyword) {
-
-    return data.filter((f) => {
-      return f.firstname.find(keyword) !== -1;
-    });
-
-    // return searchVal.filter((f) => {
-    //   console.log(f.firstname.find(input) !== -1);
-    // });
-
-    // this.filteredResults.filter((f) => {
-    //   console.log(f.firstname.find(input) !== -1);
-    //   // this.cloneRows(filtered);
-    // });
-  }
-*/
 }
 
 const styles = {
