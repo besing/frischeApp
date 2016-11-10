@@ -38,7 +38,12 @@ export default class CustomerSearch extends Component {
       <View style={{paddingTop: 64, flex: 1}}>
         <SearchBar
           onChangeText={null}
-          placeholder="Placeholder 1"
+          placeholder="Nachname"
+          lightTheme
+        />
+        <SearchBar
+          onChangeText={null}
+          placeholder="Vorname"
           lightTheme
         />
 
