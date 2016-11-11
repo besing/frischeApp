@@ -35,7 +35,7 @@ export default class GetDepositArticles extends Component {
 
   render() {
     return (
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={{flex: 1}} automaticallyAdjustContentInsets={false}>
         <View>{this.state.result}</View>
       </ScrollView>
     )

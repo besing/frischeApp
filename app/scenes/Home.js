@@ -19,6 +19,7 @@ import GetDepositArticles from '../components/GetDepositArticles';
 
 import appHelpers from '../config/helpers';
 import {width, height} from '../config/globalStyles';
+import {fpMainColor} from '../config/globalStyles';
 
 const url = appConfig.apiCredentials_test.url;
 const {apiUser} = appConfig.apiCredentials_test;
@@ -38,6 +39,10 @@ export default class NavigatorHome extends Component {
           title: 'Frischepost Pfandrückgabe'
         }}
         style={{flex: 1}}
+        barTintColor={fpMainColor}
+        titleTextColor="#fff"
+        tintColor="rgba(255,255,255,0.8)"
+        shadowHidden={true}
       />
     );
   }
@@ -94,7 +99,7 @@ export class Home extends Component {
           <IconMaterial.Button
             name="cloud-download"
             backgroundColor="orange"
-            onPress={() => {this._getAllCustomers(null, 'lastname', 'ASC')}}
+            onPress={() => this._getAllCustomers(null, 'lastname', 'ASC')}
             // passing Arguments in onPress: http://bit.ly/2fHoAln
             underlayColor="#000"
             size={25}
@@ -141,7 +146,7 @@ export class Home extends Component {
       lastOrdersUpdate: 'Letzte Aktualisierung:'
     });
 
-    // this._getAllCustomers(); // TODO --- bloß für einfachere Dev hier drin
+    // this._getAllCustomers(null, 'lastname', 'ASC'); // TODO --- bloß für einfachere Dev hier drin
   }
 
   _navPush() {

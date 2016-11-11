@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import globalStyles from '../config/globalStyles';
+import ArticlesList from '../scenes/ArticlesList';
 import { SearchBar, List, ListItem } from 'react-native-elements';
 
 import { customersData } from '../scenes/Home';
@@ -28,9 +29,11 @@ export default class CustomerSearch extends Component {
       searchTextLastName: ''
     };
 
+    this.renderRow = this.renderRow.bind(this);
     this._setSearchTextFirstName = this._setSearchTextFirstName.bind(this);
     this._setSearchTextLastName = this._setSearchTextLastName.bind(this);
     this._filterList = this._filterList.bind(this);
+    this._selectCustomer = this._selectCustomer.bind(this)
   }
 
   renderRow(rowData, sectionID) {
@@ -39,7 +42,9 @@ export default class CustomerSearch extends Component {
         key={sectionID}
         title={rowData.lastname + ', ' + rowData.firstname}
         subtitle={rowData.email}
-      /> // later: maybe replace by native Component (instead of RN Elements ListItem)?
+        onPress={() => this._selectCustomer(rowData)}
+        underlayColor="#eee"
+      />
     )
   }
 
@@ -58,9 +63,9 @@ export default class CustomerSearch extends Component {
         />
 
         <ListView
-          automaticallyAdjustContentInsets={false} // otherwise additional 64px top-space (default)
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
+          automaticallyAdjustContentInsets={false} // otherwise additional 64px top-space (default)
           enableEmptySections={true}
         />
       </View>
@@ -89,6 +94,20 @@ export default class CustomerSearch extends Component {
 
     this.setState({
       dataSource: this.ds.cloneWithRows(filteredData)
+    });
+  }
+
+  _selectCustomer(selCustomer) {
+    this.props.navigator.push({
+      title: selCustomer.firstname + ' ' + selCustomer.lastname,
+      component: ArticlesList,
+      passProps: {
+        customerId: selCustomer.id,
+        firstname: selCustomer.firstname,
+        lastname: selCustomer.lastname,
+        email: selCustomer.email
+      },
+      backButtonTitle: 'Custom Back', // probably buggy atm: http://bit.ly/2fHWruN
     });
   }
 }
