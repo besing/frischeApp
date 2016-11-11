@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  NavigatorIOS
+  NavigatorIOS,
+  ActivityIndicator
 } from 'react-native';
 
 import IconMaterial from 'react-native-vector-icons/MaterialIcons';
@@ -24,9 +25,9 @@ const {apiUser} = appConfig.apiCredentials_test;
 const {apiKey} = appConfig.apiCredentials_test;
 
 
+export let customersDataAll = null;
 export let customersData = null;
 export let ordersData = null;
-export let customersDataNames = null;
 
 export default class NavigatorHome extends Component {
   render() {
@@ -47,8 +48,11 @@ export class Home extends Component {
     super(props);
     this.state = {
       lastCustomersUpdate: '',
+      currentlyLoading: false,
+      fetchedCustomersCount: 0,
       customersDidUpdate: false,
       lastOrdersUpdate: '',
+      fetchedOrdersCount: null,
       ordersDidUpdate: false,
     };
     this._getAllCustomers = this._getAllCustomers.bind(this);
@@ -61,29 +65,65 @@ export class Home extends Component {
       <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 150, paddingLeft: width*0.05, paddingRight: width*0.05}]}>
 
         <View style={{marginBottom: 20}}>
-          <IconMaterial.Button name="camera-alt" backgroundColor="#aaa" onPress={null} underlayColor="#999" borderRadius={0} disabled>
+          <IconMaterial.Button
+            name="camera-alt"
+            backgroundColor="#aaa"
+            onPress={null}
+            underlayColor="#000"
+            size={30}
+            disabled
+          >
             Kunden auswählen per Scan
           </IconMaterial.Button>
         </View>
 
         <View style={{marginBottom: 50}}>
-          <IconMaterial.Button name="person" backgroundColor={this.state.customersDidUpdate ? 'olive' : '#aaa'} onPress={this._navPush} underlayColor="#999" borderRadius={0} disabled={!this.state.customersDidUpdate}>
+          <IconMaterial.Button
+            name="person"
+            backgroundColor={this.state.customersDidUpdate ? 'olive' : '#aaa'}
+            onPress={this._navPush}
+            underlayColor="#000"
+            size={30}
+            disabled={!this.state.customersDidUpdate}
+          >
             Kunden auswählen per Suche
           </IconMaterial.Button>
         </View>
 
         <View style={{marginBottom: 10}}>
-          <IconMaterial.Button name="cloud-download" backgroundColor="orange" onPress={this._getAllCustomers} underlayColor="#999" borderRadius={0}>
+          <IconMaterial.Button
+            name="cloud-download"
+            backgroundColor="orange"
+            onPress={() => {this._getAllCustomers(null, 'lastname', 'ASC')}}
+            // passing Arguments in onPress: http://bit.ly/2fHoAln
+            underlayColor="#000"
+            size={25}
+          >
             Update: Customers
           </IconMaterial.Button>
         </View>
 
+        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 5}}>
+          <Text style={{marginRight: 5}}>
+            {this.state.lastCustomersUpdate}
+          </Text>
+          <ActivityIndicator
+            animating={this.state.currentlyLoading}
+          />
+        </View>
         <Text style={{textAlign: 'center', marginBottom: 20}}>
-          {this.state.lastCustomersUpdate}
+          {this.state.fetchedCustomersCount} Kunden geladen
         </Text>
 
         <View style={{marginBottom: 10}}>
-          <IconMaterial.Button name="cloud-download" backgroundColor="brown" onPress={this._getAllOrders} underlayColor="#999" borderRadius={0}>
+          <IconMaterial.Button
+            name="cloud-download"
+            backgroundColor="#aaa"
+            onPress={this._getAllOrders}
+            underlayColor="#000"
+            size={25}
+            disabled
+          >
             Update: Orders
           </IconMaterial.Button>
         </View>
@@ -97,8 +137,8 @@ export class Home extends Component {
 
   componentDidMount() {
     this.setState({
-      lastCustomersUpdate: 'Letzte Aktualisierung: n/v',
-      lastOrdersUpdate: 'Letzte Aktualisierung: n/v'
+      lastCustomersUpdate: 'Letzte Aktualisierung:',
+      lastOrdersUpdate: 'Letzte Aktualisierung:'
     });
 
     // this._getAllCustomers(); // TODO --- bloß für einfachere Dev hier drin
@@ -111,27 +151,33 @@ export class Home extends Component {
     });
   }
 
-  _getAllCustomers() {
+  _getAllCustomers(limit, sortAttr, order) {
+    let dataLimit;
+    limit !== null ? dataLimit = '&limit=' + limit : ''; // if there is no passed limit param on the req. data
+
     const req = new digestCall(
       'GET',
-      url + '/customers' + '?limit=100' + '&sort[0][property]=id&sort[0][direction]=DESC',
+      url + '/customers' + '?sort[0][property]=' + sortAttr +'&sort[0][direction]=' + order + dataLimit,
       apiUser, apiKey
-    ); // TODO: limit/sortOrder
+    );
     this.setState({
-      lastCustomersUpdate: 'lädt...'
+      currentlyLoading: true,
+      lastCustomersUpdate: 'Letzte Aktualisierung: '
     });
     req.request((result) => {
-      customersData = result.data;
-
-      this.setState({
-        lastCustomersUpdate: 'Letzte Aktualisierung: ' + appHelpers.currentTime,
-        customersDidUpdate: true
+      let customersTotal = result.total;
+      customersDataAll = result.data;
+      customersData = customersDataAll.filter((f) => { // filter out customers without name in BE
+        return f.lastname !== ''
       });
 
-      customersDataNames = customersData.map((item) => {
-        return (
-          item.firstname + ' ' + item.lastname
-        )
+      let customersAmount = customersData.length;
+
+      this.setState({
+        currentlyLoading: false,
+        lastCustomersUpdate: 'Letzte Aktualisierung: ' + appHelpers.currentTime,
+        fetchedCustomersCount: customersAmount + ' (von ' + customersTotal + ')',
+        customersDidUpdate: true
       });
 
       // this._navPush(); // TODO --- bloß für einfachere Dev hier drin

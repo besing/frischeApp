@@ -12,7 +12,6 @@ import globalStyles from '../config/globalStyles';
 import { SearchBar, List, ListItem } from 'react-native-elements';
 
 import { customersData } from '../scenes/Home';
-import { customersDataNames } from '../scenes/Home';
 
 
 export default class CustomerSearch extends Component {
@@ -51,7 +50,6 @@ export default class CustomerSearch extends Component {
           onChange={this._setSearchTextFirstName}
           placeholder="Vorname"
           lightTheme
-          autoFocus={true}
         />
         <SearchBar
           onChange={this._setSearchTextLastName}

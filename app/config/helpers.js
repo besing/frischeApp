@@ -5,7 +5,7 @@ const appHelpers = {
   currentMins: new Date().getMinutes(),
   currentTime: new Date().getHours() + ':' + new Date().getMinutes() // nicht hinbekommen, das einfacher über this.currentHrs / this.currentMins zu lösen (wohl irgendein this/bind Problem)
 };
-console.debug('Time of Response: ' + appHelpers.currentTime);
+console.debug('Time of Response: ' + appHelpers.currentTime); // TODO: einstellige Hrs/Mins: 2 Ziffern!
 
 
 function digestGet() {
