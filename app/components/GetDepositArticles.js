@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import {
   View,
   ScrollView,
-  Text
+  Text,
+  ActivityIndicator
 } from 'react-native';
 
 import digestCall from 'digest-auth-request-rn';
@@ -27,17 +28,30 @@ export default class GetDepositArticles extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: <Text>Lädt...</Text>
+      result: null,
+      currentlyLoading: true
     };
     this.getArticleList = this.getArticleList.bind(this); // important! (No Autobinding in ES6 Classes)
     this.iterateResults = this.iterateResults.bind(this);
   }
 
   render() {
+    let spinner = null;
+    if (this.state.currentlyLoading) {
+      spinner = <ActivityIndicator
+        animating={this.state.currentlyLoading}
+        size="large"
+        style={{justifyContent: 'center', marginTop: 50}}
+      />
+    } else { spinner = <View/> }
+
     return (
-      <ScrollView style={{flex: 1}} automaticallyAdjustContentInsets={false}>
-        <View>{this.state.result}</View>
-      </ScrollView>
+      <View style={{}}>
+        {spinner}
+        <ScrollView style={{}} automaticallyAdjustContentInsets={false}>
+          <View>{this.state.result}</View>
+        </ScrollView>
+      </View>
     )
   }
 
@@ -56,8 +70,9 @@ export default class GetDepositArticles extends Component {
     req.request((result) => {
       // changed to ES6-Fat-Arrow-Functions (for preserving 'this' -> no need for binding)
 
-      this.output = result.data; // .data = array // later: use this one
-      // this.output = result;
+      this.output = result.data; // .data = array
+
+      this.setState({currentlyLoading: false});
 
       this.setState({
         result: this.iterateResults()
