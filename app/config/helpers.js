@@ -1,11 +1,19 @@
 'use strict';
 
-const appHelpers = {
-  currentHrs: new Date().getHours(),
-  currentMins: new Date().getMinutes(),
-  currentTime: new Date().getHours() + ':' + new Date().getMinutes() // nicht hinbekommen, das einfacher über this.currentHrs / this.currentMins zu lösen (wohl irgendein this/bind Problem)
+const appHelpers = { // later: noch gebraucht? (falls nicht imports überall auch raus)
+  // currentHrs: Date(),
+  // currentHrsTwoDig: new currentDate.getHours(),
+  // currentMins: new Date().getMinutes(),
+  // currentMinsTwoDig: (this.currentMins() < 10 ? '0' : '') + this.currentMins(),
+  // currentTime: this.currentHrsTwoDig + ':' + this.currentMinsTwoDig, // nicht hinbekommen, das einfacher über this.currentHrs / this.currentMins zu lösen (wohl irgendein this/bind Problem)
 };
-console.debug('Time of Response: ' + appHelpers.currentTime); // TODO: einstellige Hrs/Mins: 2 Ziffern!
+
+let currentDate = new Date();
+export let currentTime = currentDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) + ' Uhr';
+
+
+// console.log(this.currentHrsTwoDig);
+// console.debug('Time of Response: ' + appHelpers.currentTime); // TODO: einstellige Hrs/Mins: 2 Ziffern!
 
 
 function digestGet() {

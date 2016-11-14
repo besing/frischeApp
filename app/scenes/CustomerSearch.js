@@ -54,11 +54,13 @@ export default class CustomerSearch extends Component {
         <SearchBar
           onChange={this._setSearchTextFirstName}
           placeholder="Vorname"
+          clearButtonMode="always"
           lightTheme
         />
         <SearchBar
           onChange={this._setSearchTextLastName}
           placeholder="Nachname"
+          clearButtonMode="always"
           lightTheme
         />
 
@@ -74,22 +76,25 @@ export default class CustomerSearch extends Component {
 
   _setSearchTextFirstName(event) {
     let searchText = event.nativeEvent.text;
-    let searchTextLowercase = searchText.toLowerCase();
     this.setState({searchTextFirstName: searchText});
-    this._filterList(customersData, 'firstname', searchText, searchTextLowercase)
+    this._filterList(customersData, 'firstname', searchText, 'lastname', this.state.searchTextLastName)
   }
   // the two very similar methods could/should be merged into one (functional) --> but didn't manage to source out the event Callback into arguments..
 
   _setSearchTextLastName(event) {
     let searchText = event.nativeEvent.text;
-    let searchTextLowercase = searchText.toLowerCase();
     this.setState({searchTextLastName: searchText});
-    this._filterList(customersData, 'lastname', searchText, searchTextLowercase)
+    this._filterList(customersData, 'lastname', searchText, 'firstname', this.state.searchTextFirstName);
   }
 
-  _filterList(data, property, valueNormal, valueLowercase) {
+  _filterList(data, property, valueNormal, secondProp, secondVal) {
     let filteredData = data.filter((obj) => {
-      return obj[property].includes(valueNormal) || obj[property].includes(valueLowercase)
+      return (
+        obj[property].includes(valueNormal) && obj[secondProp].includes(secondVal) ||
+        obj[property].includes(valueNormal.toLowerCase()) && obj[secondProp].includes(secondVal) ||
+        obj[property].includes(valueNormal) && obj[secondProp].includes(secondVal.toLowerCase()) ||
+        obj[property].includes(valueNormal.toLowerCase()) && obj[secondProp].includes(secondVal.toLowerCase())
+      ); // later: more elegant?
     });
 
     this.setState({

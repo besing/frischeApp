@@ -37,6 +37,7 @@ export default class GetDepositArticles extends Component {
 
   render() {
     let spinner = null;
+    // needs to be sourced out into conditional in order to hide properly when State=loaded (Spinner should completely get replaced)
     if (this.state.currentlyLoading) {
       spinner = <ActivityIndicator
         animating={this.state.currentlyLoading}

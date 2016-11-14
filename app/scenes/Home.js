@@ -18,6 +18,7 @@ import CustomerSearch from '../scenes/CustomerSearch';
 import GetDepositArticles from '../components/GetDepositArticles';
 
 import appHelpers from '../config/helpers';
+import {currentTime} from '../config/helpers';
 import {width, height} from '../config/globalStyles';
 import {fpMainColor} from '../config/globalStyles';
 
@@ -52,11 +53,11 @@ export class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lastCustomersUpdate: '',
+      lastCustomersUpdate: 'Noch nicht aktualisiert',
       currentlyLoading: false,
       fetchedCustomersCount: 0,
       customersDidUpdate: false,
-      lastOrdersUpdate: '',
+      lastOrdersUpdate: 'Noch nicht aktualisiert',
       fetchedOrdersCount: null,
       ordersDidUpdate: false,
     };
@@ -66,6 +67,13 @@ export class Home extends Component {
   }
 
   render() {
+    let spinner = null;
+    if (this.state.currentlyLoading) {
+      spinner = <ActivityIndicator
+        animating={this.state.currentlyLoading}
+      />
+    } else { spinner = <View/> }
+
     return (
       <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 150, paddingLeft: width*0.05, paddingRight: width*0.05}]}>
 
@@ -112,9 +120,7 @@ export class Home extends Component {
           <Text style={{marginRight: 5}}>
             {this.state.lastCustomersUpdate}
           </Text>
-          <ActivityIndicator
-            animating={this.state.currentlyLoading}
-          />
+          {spinner}
         </View>
         <Text style={{textAlign: 'center', marginBottom: 20}}>
           {this.state.fetchedCustomersCount} Kunden geladen
@@ -141,11 +147,6 @@ export class Home extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      lastCustomersUpdate: 'Letzte Aktualisierung:',
-      lastOrdersUpdate: 'Letzte Aktualisierung:'
-    });
-
     // this._getAllCustomers(null, 'lastname', 'ASC'); // TODO --- bloß für einfachere Dev hier drin
   }
 
@@ -180,7 +181,7 @@ export class Home extends Component {
 
       this.setState({
         currentlyLoading: false,
-        lastCustomersUpdate: 'Letzte Aktualisierung: ' + appHelpers.currentTime,
+        lastCustomersUpdate: 'Letzte Aktualisierung: ' + currentTime,
         fetchedCustomersCount: customersAmount + ' (von ' + customersTotal + ')',
         customersDidUpdate: true
       });
@@ -200,7 +201,7 @@ export class Home extends Component {
       ordersData = result.data;
 
       this.setState({
-        lastOrdersUpdate: 'Letzte Aktualisierung: ' + appHelpers.currentTime
+        lastOrdersUpdate: 'Letzte Aktualisierung: ' + currentTime
       });
     }, (error) => {
       console.error(error);
