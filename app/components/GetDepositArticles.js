@@ -47,7 +47,7 @@ export default class GetDepositArticles extends Component {
     } else { spinner = <View/> }
 
     return (
-      <View style={{}}>
+      <View style={{flex: 1}}>
         {spinner}
         <ScrollView style={{}} automaticallyAdjustContentInsets={false}>
           <View>{this.state.result}</View>
@@ -63,7 +63,7 @@ export default class GetDepositArticles extends Component {
   getArticleList() {
     const req = new digestCall(
       'GET',
-      url + '/articles' + '?filter[0][property]=mode&filter[0][value]=5',
+      url + '/depositArticles',
       apiUser,
       apiKey
     );
@@ -89,7 +89,7 @@ export default class GetDepositArticles extends Component {
       this.output.map((item, i) => {
         return (
           <View key={i}>
-            <ArticlesListItem title={item.name} img={item.img} returnedArticlesNum="" />
+            <ArticlesListItem title={item.name} img={item.image} returnedArticlesNum="" />
           </View>
         )
       })

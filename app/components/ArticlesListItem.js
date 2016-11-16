@@ -22,12 +22,12 @@ export default class ArticlesListItem extends Component {
   render() {
     const {id} = this.props;
     const {title} = this.props;
-    const imgPlaceholderS = <Image
+    const imgPlaceholderSmall = <Image
       source={require('../images/placeholder_50.png')}
       style={{width: 50, height: 50}}
       resizeMode='cover'
     />;
-    const img = this.props.img || imgPlaceholderS; // TODO: Bei Klick Bild in groß anzeigen
+    const img = this.props.img || imgPlaceholderSmall; // TODO: Bei Klick Bild in groß anzeigen
     const returnedArticlesNum = this.props.returnedArticlesNum || '0';
 
     return (
