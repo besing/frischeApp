@@ -129,13 +129,13 @@ export class Home extends Component {
         <View style={{marginBottom: 10}}>
           <IconMaterial.Button
             name="cloud-download"
-            backgroundColor="#aaa"
+            backgroundColor="#aaa" // --> lightslategrey
             onPress={this._getAllOrders}
             underlayColor="#000"
             size={25}
             disabled
           >
-            Update: Orders
+            Update: Orders (Guest-Edgecase)
           </IconMaterial.Button>
         </View>
 
@@ -143,7 +143,7 @@ export class Home extends Component {
           {this.state.lastOrdersUpdate}
         </Text>
       </View>
-    ); // TODO: Add Logic "letzte Aktualisierung"
+    );
   }
 
   componentDidMount() {
@@ -186,7 +186,7 @@ export class Home extends Component {
         customersDidUpdate: true
       });
 
-      // this._navPush(); // TODO --- bloß für einfachere Dev hier drin
+      // this._navPush('Kunden suchen', CustomerSearch); // TODO --- bloß für einfachere Dev hier drin
     }, (error) => {
       console.error(error);
     });

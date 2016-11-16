@@ -5,7 +5,8 @@ import {
   View,
   Text,
   StyleSheet,
-  Image
+  Image,
+  TouchableHighlight
 } from 'react-native';
 
 import GetDepositArticles from '../components/GetDepositArticles';
@@ -17,6 +18,13 @@ import {fpMainColor} from '../config/globalStyles';
 export default class ArticlesListItem extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      articleReturnCount: 0
+    };
+
+    this._increaseReturnCountByOne = this._increaseReturnCountByOne.bind(this);
+    this._decreaseReturnCountByOne = this._decreaseReturnCountByOne.bind(this);
   }
 
   render() {
@@ -28,38 +36,50 @@ export default class ArticlesListItem extends Component {
       resizeMode='cover'
     />;
     const img = this.props.img || imgPlaceholderSmall; // TODO: Bei Klick Bild in groß anzeigen
-    const returnedArticlesNum = this.props.returnedArticlesNum || '0';
+    // const returnedArticlesNum = this.props.returnedArticlesNum || '0'; // TODO: über State statt Props lösen?
 
     return (
 
       // TODO: Title Länge beschränken (oder insg. kürzere Title) --> Sonst Count bei längeren nach rechts/unten gedrückt
 
-      <View style={[styles.container, styles.wrapper]}>
-        {img}
-        <View style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingLeft: 10,
-          paddingRight: 10
-        }}>
-          <View style={{marginRight: 10}}>
-            <Text color="#555">{title}</Text>
-          </View>
+      <TouchableHighlight underlayColor="#000" onPress={this._increaseReturnCountByOne} onLongPress={this._decreaseReturnCountByOne}>
+        <View style={[styles.container, styles.wrapper]}>
+          {img}
           <View style={{
-            backgroundColor: fpMainColor,
-            borderRadius: 30, // later: maybe implement "50%" workaround better (instead just high nr.)
-            width: 30,
-            height: 30,
-            justifyContent: 'center',
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             alignItems: 'center',
+            paddingLeft: 10,
+            paddingRight: 10
           }}>
-            <Text style={{color: '#fff', fontWeight: '600'}}>{returnedArticlesNum}</Text>
+            <View style={{marginRight: 10}}>
+              <Text color="#555">{title}</Text>
+            </View>
+            <View style={{
+              backgroundColor: fpMainColor,
+              borderRadius: 30, // later: maybe implement "50%" workaround better (instead just high nr.)
+              width: 30,
+              height: 30,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <Text style={{color: '#fff', fontWeight: '600'}}>{this.state.articleReturnCount}</Text>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableHighlight>
     )
+  }
+
+  _increaseReturnCountByOne() {
+    this.setState({articleReturnCount: this.state.articleReturnCount + 1})
+  }
+
+  _decreaseReturnCountByOne() {
+    const {articleReturnCount} = this.state;
+
+    this.setState({articleReturnCount: articleReturnCount > 0 ? articleReturnCount - 1 : 0})
   }
 }
 
