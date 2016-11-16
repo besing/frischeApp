@@ -6,7 +6,7 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableHighlight
+  TouchableWithoutFeedback
 } from 'react-native';
 
 import GetDepositArticles from '../components/GetDepositArticles';
@@ -15,16 +15,20 @@ import TextDefault from '../components/TextDefault';
 import {fpMainColor} from '../config/globalStyles';
 
 
+const defaultArticleBgColor = '#fff';
+
 export default class ArticlesListItem extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      articleReturnCount: 0
+      articleReturnCount: 0,
+      articleBackgroundColor: defaultArticleBgColor
     };
 
     this._increaseReturnCountByOne = this._increaseReturnCountByOne.bind(this);
     this._decreaseReturnCountByOne = this._decreaseReturnCountByOne.bind(this);
+    this._resetArticleBgColor = this._resetArticleBgColor.bind(this);
   }
 
   render() {
@@ -42,8 +46,8 @@ export default class ArticlesListItem extends Component {
 
       // TODO: Title Länge beschränken (oder insg. kürzere Title) --> Sonst Count bei längeren nach rechts/unten gedrückt
 
-      <TouchableHighlight underlayColor="#000" onPress={this._increaseReturnCountByOne} onLongPress={this._decreaseReturnCountByOne}>
-        <View style={[styles.container, styles.wrapper]}>
+      <TouchableWithoutFeedback onPress={this._increaseReturnCountByOne} onLongPress={this._decreaseReturnCountByOne}>
+        <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
           {img}
           <View style={{
             flex: 1,
@@ -68,18 +72,30 @@ export default class ArticlesListItem extends Component {
             </View>
           </View>
         </View>
-      </TouchableHighlight>
+      </TouchableWithoutFeedback>
     )
   }
 
+  _resetArticleBgColor() {
+    this.setState({articleBackgroundColor: defaultArticleBgColor})
+  }
+
   _increaseReturnCountByOne() {
-    this.setState({articleReturnCount: this.state.articleReturnCount + 1})
+    this.setState({
+      articleReturnCount: this.state.articleReturnCount + 1,
+      articleBackgroundColor: 'greenyellow'
+    });
+    setTimeout(this._resetArticleBgColor, 500);
   }
 
   _decreaseReturnCountByOne() {
     const {articleReturnCount} = this.state;
 
-    this.setState({articleReturnCount: articleReturnCount > 0 ? articleReturnCount - 1 : 0})
+    this.setState({
+      articleReturnCount: articleReturnCount > 0 ? articleReturnCount - 1 : 0,
+      articleBackgroundColor: 'indianred'
+    });
+    setTimeout(this._resetArticleBgColor, 500);
   }
 }
 
