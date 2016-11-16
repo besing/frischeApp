@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import {
-  Dimensions,
   StyleSheet,
   Text,
   View
@@ -11,9 +10,15 @@ import {
 import Camera from 'react-native-camera';
 
 import globalStyles from '../config/globalStyles';
-
+import {width, height} from '../config/globalStyles';
 
 export default class CustomerScan extends Component {
+  constructor(props) {
+    super(props);
+
+    this._takePicture = this._takePicture.bind(this);
+  }
+
   render() {
     return (
       <View style={globalStyles.container}>
@@ -25,20 +30,26 @@ export default class CustomerScan extends Component {
           aspect={Camera.constants.Aspect.fill}
           captureAudio={false}
         >
-          <Text>Hier Cam</Text>
+          <Text style={styles.capture} onPress={this._takePicture}>[CAPTURE]</Text>
         </Camera>
       </View>
     )
   }
+
+  _takePicture() {
+    this.camera.capture()
+      .then((data) => console.log(data))
+      .catch(err => console.error(err));
+  }
 }
 
-const styles = { // TODO: no Stylesheet.create necessary?
+const styles = StyleSheet.create({ // TODO: no Stylesheet.create necessary?
   preview: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width
+    width: width,
+    height: height,
   },
   capture: {
     flex: 0,
@@ -48,4 +59,4 @@ const styles = { // TODO: no Stylesheet.create necessary?
     padding: 10,
     margin: 40
   }
-};
+});
