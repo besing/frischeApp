@@ -31,8 +31,8 @@
 		8199C6B4BC46435C89D6579B /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82A0967750C7454BBE7C3D27 /* SimpleLineIcons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		87EB941507DD4C6CAED4A3DC /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4949FBCF5054EA98D8929DC /* Zocial.ttf */; };
-		8B07C7791C944E2DB4CBC592 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6EC1AD272CE4C1F9B3032F7 /* libRCTCamera.a */; };
 		9F510FDC9A334C8E9BF83972 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAB33FF6E014716B4DA9B71 /* FontAwesome.ttf */; };
+		B3B4F13D1DDC71E60014CAE2 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B33FA57B1DDC64AD00EA6F08 /* libRCTCamera.a */; };
 		DA85F2B395D34329A779E34D /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6066AC877D274795AD198F0A /* Entypo.ttf */; };
 /* End PBXBuildFile section */
 
@@ -162,7 +162,6 @@
 		A4949FBCF5054EA98D8929DC /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		C31E15CE2CC34943AD351DA7 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 		DA43E40F43E9442F89D60D76 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		E6EC1AD272CE4C1F9B3032F7 /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
 		F1078EFF5B2945ACB2C7F53D /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		F7975897A5204E738A134C1F /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -191,7 +190,7 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				15B360849C4F493FB12ED484 /* libRNVectorIcons.a in Frameworks */,
-				8B07C7791C944E2DB4CBC592 /* libRCTCamera.a in Frameworks */,
+				B3B4F13D1DDC71E60014CAE2 /* libRCTCamera.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
