@@ -15,6 +15,7 @@ import digestCall from 'digest-auth-request-rn';
 import appConfig from '../config/settings';
 import globalStyles from '../config/globalStyles';
 import CustomerSearch from '../scenes/CustomerSearch';
+import CustomerScan from '../scenes/CustomerScan';
 import GetDepositArticles from '../components/GetDepositArticles';
 
 import appHelpers from '../config/helpers';
@@ -80,11 +81,10 @@ export class Home extends Component {
         <View style={{marginBottom: 20}}>
           <IconMaterial.Button
             name="camera-alt"
-            backgroundColor="#aaa"
-            onPress={null}
+            backgroundColor="maroon"
+            onPress={() => {this._navPush('Kunden scannen', CustomerScan)}}
             underlayColor="#000"
             size={30}
-            disabled
           >
             Kunden auswählen per Scan
           </IconMaterial.Button>
@@ -94,7 +94,7 @@ export class Home extends Component {
           <IconMaterial.Button
             name="person"
             backgroundColor={this.state.customersDidUpdate ? 'olive' : '#aaa'}
-            onPress={this._navPush}
+            onPress={() => {this._navPush('Kunden suchen', CustomerSearch)}}
             underlayColor="#000"
             size={30}
             disabled={!this.state.customersDidUpdate}
@@ -150,10 +150,10 @@ export class Home extends Component {
     // this._getAllCustomers(null, 'lastname', 'ASC'); // TODO --- bloß für einfachere Dev hier drin
   }
 
-  _navPush() {
+  _navPush(title, component) {
     this.props.navigator.push({
-      title: 'Kunden suchen',
-      component: CustomerSearch
+      title: title,
+      component: component
     });
   }
 
