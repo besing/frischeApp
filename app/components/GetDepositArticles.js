@@ -22,6 +22,7 @@ import ArticlesListItem from '../components/ArticlesListItem';
 const url = appConfig.apiCredentials_test.url;
 const {apiUser} = appConfig.apiCredentials_test;
 const {apiKey} = appConfig.apiCredentials_test;
+import {width, height} from '../config/globalStyles';
 
 
 export default class GetDepositArticles extends Component {
@@ -49,11 +50,14 @@ export default class GetDepositArticles extends Component {
     return (
       <View style={{flex: 1}}>
         {spinner}
-        <ScrollView style={{}} automaticallyAdjustContentInsets={false}>
+        <ScrollView style={{height: height - 91}} automaticallyAdjustContentInsets={false}>
           <View>{this.state.result}</View>
+          <View style={{height: 41}} />
         </ScrollView>
       </View>
-    )
+    );
+    // height-91px = volle Höhe minus Status-/Nav-/Subtitle-Bar (explizit angegeben, damit Confirm-Button unten überlagert)
+    // height: 41 = Höhe des Confirm-Buttons ("gefaketes" position:sticky)
   }
 
   componentDidMount() {

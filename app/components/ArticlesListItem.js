@@ -85,7 +85,7 @@ export default class ArticlesListItem extends Component {
       articleReturnCount: this.state.articleReturnCount + 1,
       articleBackgroundColor: 'greenyellow'
     });
-    setTimeout(this._resetArticleBgColor, 500);
+    setTimeout(this._resetArticleBgColor, 300);
   }
 
   _decreaseReturnCountByOne() {
@@ -95,7 +95,7 @@ export default class ArticlesListItem extends Component {
       articleReturnCount: articleReturnCount > 0 ? articleReturnCount - 1 : 0,
       articleBackgroundColor: 'indianred'
     });
-    setTimeout(this._resetArticleBgColor, 500);
+    setTimeout(this._resetArticleBgColor, 300);
   }
 }
 
