@@ -15,38 +15,47 @@ import NavbarSubtitle from '../components/NavbarSubtitle';
 
 
 export default class ArticlesList extends Component {
+
   constructor(props) {
     super(props);
 
-    this._showArticlesConfirmationList = this._showArticlesConfirmationList.bind(this);
+    this.state = {
+      confirmButtonClicked: false,
+      articleListFetched: false
+    };
+
+    this._hideConfirmButton = this._hideConfirmButton.bind(this);
   }
 
   render() {
     const {email} = this.props;
+    const {articleListFetched} = this.state;
+
+    const confirmButton = (
+      // render Button-JSX only when articleListFetched (otherwise show empty View)
+      articleListFetched && <IconMaterial.Button
+        name="playlist-add-check"
+        backgroundColor="sandybrown"
+        onPress={() => this.setState({confirmButtonClicked: true})}
+        underlayColor="#000"
+        size={25}
+        borderRadius={0}
+      >
+        Eingabe überprüfen
+      </IconMaterial.Button>
+    ) || <View/>;
 
     return (
       <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 64}]}>
         <NavbarSubtitle>{email}</NavbarSubtitle>
-        <GetDepositArticles />
-          <IconMaterial.Button
-            name="playlist-add-check"
-            backgroundColor="rgba(244,164,96,0.7)" // sandybrown
-            onPress={this._showArticlesConfirmationList}
-            underlayColor="#000"
-            size={25}
-            borderRadius={0}
-          >
-            Eingabe überprüfen
-          </IconMaterial.Button>
+        <GetDepositArticles filterListOnButtonConfirm={this.state.confirmButtonClicked}
+                            hideConfirmButtonWhileLoading={this._hideConfirmButton} />
+        {confirmButton}
       </View>
     );
   }
 
-  _showArticlesConfirmationList() {
-
+  _hideConfirmButton() {
+    this.setState({articleListFetched: true});
   }
 }
-
-const styles = StyleSheet.create({
-
-});
