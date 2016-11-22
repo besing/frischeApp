@@ -5,17 +5,15 @@ import {
   View,
   ScrollView,
   Text,
-  ActivityIndicator
+  ActivityIndicator,
+  ListView
 } from 'react-native';
 
 import digestCall from 'digest-auth-request-rn';
 import { digestAuthHeader } from 'digest-auth-request-rn'; // later: maybe throw out if unused
 
 import appConfig from '../config/settings';
-import appHelpers from '../config/helpers';
-import globalStyles from '../config/globalStyles';
 
-import TextDefault from '../components/TextDefault';
 import ArticlesListItem from '../components/ArticlesListItem';
 
 // const {url} = appConfig.apiCredentials_test; // later: use this one
@@ -26,38 +24,85 @@ import {width, height} from '../config/globalStyles';
 
 
 export default class GetDepositArticles extends Component {
+
   constructor(props) {
     super(props);
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.modifiedResults = [];
+
     this.state = {
-      result: null,
-      currentlyLoading: true
+      currentlyLoading: true,
+      fetchedData: [],
+      dataSource: this.ds.cloneWithRows([]),
+      dataSourceReduced: this.ds.cloneWithRows([]),
     };
+
     this.getArticleList = this.getArticleList.bind(this); // important! (No Autobinding in ES6 Classes)
-    this.iterateResults = this.iterateResults.bind(this);
+    this.callbackArticlesListItemChanged = this.callbackArticlesListItemChanged.bind(this);
+  }
+
+  callbackArticlesListItemChanged(title, id, returnCount) {
+    let findChangedObject = (item) => item.id === id;
+    let obj = this.modifiedResults.find(findChangedObject);
+    obj.articleReturnedCount = returnCount; // add new property for filtering TODO: ggf. noch mal checken
+
+    let filteredResults = this.modifiedResults.filter((item) => item.articleReturnedCount > 0);
+
+    this.setState({
+      dataSourceReduced: this.ds.cloneWithRows(filteredResults)
+    });
   }
 
   render() {
-    let spinner = null;
-    // needs to be sourced out into conditional in order to hide properly when State=loaded (Spinner should completely get replaced)
-    if (this.state.currentlyLoading) {
-      spinner = <ActivityIndicator
+    const spinner = (
+      // needs to be sourced out into conditional in order to hide properly when State=loaded
+      this.state.currentlyLoading && <ActivityIndicator
         animating={this.state.currentlyLoading}
         size="large"
         style={{justifyContent: 'center', marginTop: 50}}
       />
-    } else { spinner = <View/> }
+    ) || <View/>;
+
+    let filterListActive = this.props.filterListOnButtonConfirm;
+    let rowRender = null;
+
+    if (filterListActive) {
+      // should avoid duplicate sections but can't seem to make JSX attributes conditional/vars
+      rowRender =
+        <ListView
+          dataSource={this.state.dataSourceReduced}
+          renderRow={(rowData) =>
+            <ArticlesListItem title={rowData.name} img={rowData.image} id={rowData.id}
+                              listItemCallback={this.callbackArticlesListItemChanged}
+                              articleReturnedAmount={rowData.articleReturnedCount}/>
+          }
+          automaticallyAdjustContentInsets={false}
+          enableEmptySections={true}
+          style={{height: height - 132}}
+          initialListSize={20}
+        />;
+    } else {
+      rowRender =
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={(rowData) =>
+              <ArticlesListItem title={rowData.name} img={rowData.image} id={rowData.id}
+                                listItemCallback={this.callbackArticlesListItemChanged}/>
+          }
+          automaticallyAdjustContentInsets={false}
+          enableEmptySections={true}
+          style={{height: height - 132}}
+          initialListSize={20}
+        />
+    }
+    // height-132px = screen height - Status-/Nav-/Subtitle-Bars - Button (otherwise hidden since 'automaticallyAdj...' above)
 
     return (
       <View style={{flex: 1}}>
         {spinner}
-        <ScrollView style={{height: height - 91}} automaticallyAdjustContentInsets={false}>
-          <View>{this.state.result}</View>
-          <View style={{height: 41}} />
-        </ScrollView>
+        {rowRender}
       </View>
     );
-    // height-91px = volle Höhe minus Status-/Nav-/Subtitle-Bar (explizit angegeben, damit Confirm-Button unten überlagert)
-    // height: 41 = Höhe des Confirm-Buttons ("gefaketes" position:sticky)
   }
 
   componentDidMount() {
@@ -67,36 +112,27 @@ export default class GetDepositArticles extends Component {
   getArticleList() {
     const req = new digestCall(
       'GET',
-      url + '/depositArticles',
+      // url + '/depositArticles', // TODO - switch to this Endpoint again (didn't work temporarily)
+      url + '/articles' + '?filter[0][property]=mode&filter[0][value]=5',
       apiUser,
       apiKey
     );
     // const req = new digestCall('GET', url + '', apiUser, apiKey); // Dev JSON Mock
     req.request((result) => {
-      // changed to ES6-Fat-Arrow-Functions (for preserving 'this' -> no need for binding)
+      // changed to ES6-Arrow-Functions (for preserving 'this' -> no need for binding)
 
-      this.output = result.data; // .data = array
-
-      this.setState({currentlyLoading: false});
+      this.modifiedResults = result.data.slice(); // first just copy array
 
       this.setState({
-        result: this.iterateResults()
+        currentlyLoading: false,
+        fetchedData: result.data,
+        dataSource: this.ds.cloneWithRows(result.data),
       });
+
+      this.props.hideConfirmButtonWhileLoading();
 
     }, (error) => {
       console.error(error);
     });
-  }
-
-  iterateResults() {
-    return (
-      this.output.map((item, i) => {
-        return (
-          <View key={i}>
-            <ArticlesListItem title={item.name} img={item.image} returnedArticlesNum="" />
-          </View>
-        )
-      })
-    );
   }
 }

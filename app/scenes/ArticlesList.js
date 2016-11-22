@@ -28,12 +28,9 @@ export default class ArticlesList extends Component {
   }
 
   render() {
-    const {email} = this.props;
-    const {articleListFetched} = this.state;
-
     const confirmButton = (
       // render Button-JSX only when articleListFetched (otherwise show empty View)
-      articleListFetched && <IconMaterial.Button
+        this.state.articleListFetched && <IconMaterial.Button
         name="playlist-add-check"
         backgroundColor="sandybrown"
         onPress={() => this.setState({confirmButtonClicked: true})}
@@ -47,7 +44,7 @@ export default class ArticlesList extends Component {
 
     return (
       <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 64}]}>
-        <NavbarSubtitle>{email}</NavbarSubtitle>
+        <NavbarSubtitle>{this.props.email}</NavbarSubtitle>
         <GetDepositArticles filterListOnButtonConfirm={this.state.confirmButtonClicked}
                             hideConfirmButtonWhileLoading={this._hideConfirmButton} />
         {confirmButton}

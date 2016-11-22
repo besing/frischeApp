@@ -68,7 +68,7 @@ export class Home extends Component {
   }
 
   render() {
-    let spinner = null;
+    let spinner = null; // TODO: vereinfachen wie bei anderen Spinner-Stellen
     if (this.state.currentlyLoading) {
       spinner = <ActivityIndicator
         animating={this.state.currentlyLoading}
