@@ -83,7 +83,7 @@ export default class ArticlesListItem extends Component {
 
     this.setState({
       articleReturnCount: this.state.articleReturnCount + 1,
-      articleBackgroundColor: 'greenyellow'
+      articleBackgroundColor: 'mediumseagreen'
     }, () => this.props.listItemCallback(this.props.id, this.state.articleReturnCount));
       // "Callback inside Callback" necessary! Otherwise returns before State transition done
   }
@@ -95,7 +95,7 @@ export default class ArticlesListItem extends Component {
 
     this.setState({
       articleReturnCount: articleReturnCount > 0 ? articleReturnCount - 1 : 0,
-      articleBackgroundColor: 'indianred'
+      articleBackgroundColor: 'crimson'
     }, () => this.props.listItemCallback(this.props.id, this.state.articleReturnCount));
   }
 

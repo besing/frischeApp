@@ -55,7 +55,7 @@ export default class ArticlesList extends Component {
     const backToEditButton = (
         this.state.filteredViewActive && <IconMaterial.Button
         name="edit"
-        backgroundColor="red"
+        backgroundColor="crimson"
         onPress={null}
         underlayColor="#000"
         size={25}
@@ -68,7 +68,7 @@ export default class ArticlesList extends Component {
     const submitButton = (
         this.state.filteredViewActive && <IconMaterial.Button
         name="send"
-        backgroundColor="green"
+        backgroundColor="mediumseagreen"
         onPress={null}
         underlayColor="#000"
         size={35}
