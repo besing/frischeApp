@@ -22,19 +22,23 @@ export default class ArticlesList extends Component {
     this.state = {
       confirmButtonClicked: false,
       articleListFetched: false,
+      articlesReturnedCount: 0,
       filteredViewActive: false
     };
 
     this._articlesFetched = this._articlesFetched.bind(this);
     this._hideConfirmButtonOnFilteredView = this._hideConfirmButtonOnFilteredView.bind(this);
+    this._articlesReturned = this._articlesReturned.bind(this);
   }
 
   render() {
+    let articlesGotReturned = (true) ? this.state.articlesReturnedCount > 0 : false;
+
     const confirmButton = (
       // render Button-JSX only when articleListFetched + not yet in filtered View (otherwise empty View)
         this.state.articleListFetched && !this.state.filteredViewActive && <IconMaterial.Button
         name="playlist-add-check"
-        backgroundColor="sandybrown"
+        backgroundColor={articlesGotReturned ? "sandybrown" : '#aaa'}
         onPress={() => {
           this.setState({confirmButtonClicked: true});
           this._hideConfirmButtonOnFilteredView();
@@ -42,7 +46,7 @@ export default class ArticlesList extends Component {
         underlayColor="#000"
         size={25}
         borderRadius={0}
-        disabled={false}
+        disabled={!articlesGotReturned}
       >
         Eingabe überprüfen
       </IconMaterial.Button>
@@ -67,7 +71,7 @@ export default class ArticlesList extends Component {
         backgroundColor="green"
         onPress={null}
         underlayColor="#000"
-        size={25}
+        size={35}
         borderRadius={0}
       >
         Alles ok, Daten hochladen
@@ -78,7 +82,8 @@ export default class ArticlesList extends Component {
       <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 64}]}>
         <NavbarSubtitle>{this.props.email}</NavbarSubtitle>
         <GetDepositArticles filterListOnButtonConfirm={this.state.confirmButtonClicked}
-                            hideConfirmButtonWhileLoading={this._articlesFetched} />
+                            hideConfirmButtonWhileLoading={this._articlesFetched}
+                            articlesReturned={this._articlesReturned}/>
         {confirmButton}
         {backToEditButton}
         {submitButton}
@@ -88,6 +93,10 @@ export default class ArticlesList extends Component {
 
   _articlesFetched() {
     this.setState({articleListFetched: true});
+  }
+
+  _articlesReturned(num) {
+    this.setState({articlesReturnedCount: num});
   }
 
   _hideConfirmButtonOnFilteredView() {

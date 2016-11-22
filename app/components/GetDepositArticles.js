@@ -51,6 +51,8 @@ export default class GetDepositArticles extends Component {
     this.setState({
       dataSourceReduced: this.ds.cloneWithRows(filteredResults)
     });
+
+    this.props.articlesReturned(filteredResults.length);
   }
 
   render() {
@@ -112,8 +114,7 @@ export default class GetDepositArticles extends Component {
   getArticleList() {
     const req = new digestCall(
       'GET',
-      // url + '/depositArticles', // TODO - switch to this Endpoint again (didn't work temporarily)
-      url + '/articles' + '?filter[0][property]=mode&filter[0][value]=5',
+      url + '/depositArticles',
       apiUser,
       apiKey
     );
