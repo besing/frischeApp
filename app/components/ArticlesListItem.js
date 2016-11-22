@@ -9,15 +9,13 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 
-import GetDepositArticles from '../components/GetDepositArticles';
-import TextDefault from '../components/TextDefault';
-
 import {fpMainColor} from '../config/globalStyles';
 
 
 const defaultArticleBgColor = '#fff';
 
 export default class ArticlesListItem extends Component {
+
   constructor(props) {
     super(props);
 
@@ -32,21 +30,18 @@ export default class ArticlesListItem extends Component {
   }
 
   render() {
-    const {id} = this.props;
-    const {title} = this.props;
     const imgPlaceholderSmall = <Image
       source={require('../images/placeholder_50.png')}
       style={{width: 50, height: 50}}
       resizeMode='cover'
     />;
     const img = this.props.img || imgPlaceholderSmall; // TODO: Bei Klick Bild in groß anzeigen
-    // const returnedArticlesNum = this.props.returnedArticlesNum || '0'; // TODO: über State statt Props lösen?
+    const filteredPage = this.props.articleReturnedCountFromObj;
+      // Prop only passed if Count !== 0 --> filteredPage is rendered
 
     return (
-
-      // TODO: Title Länge beschränken (oder insg. kürzere Title) --> Sonst Count bei längeren nach rechts/unten gedrückt
-
-      <TouchableWithoutFeedback onPress={this._increaseReturnCountByOne} onLongPress={this._decreaseReturnCountByOne}>
+      <TouchableWithoutFeedback onPress={this._increaseReturnCountByOne}
+                                onLongPress={this._decreaseReturnCountByOne}>
         <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
           {img}
           <View style={{
@@ -58,9 +53,14 @@ export default class ArticlesListItem extends Component {
             paddingRight: 10
           }}>
             <View style={{marginRight: 10}}>
-              <Text color="#555">{title}</Text>
+              <Text color="#555">{this.props.title}</Text>
             </View>
-            <View style={{
+            <View style={filteredPage ? {
+              width: 30,
+              height: 30,
+              justifyContent: 'center',
+              alignItems: 'center',
+            } : {
               backgroundColor: fpMainColor,
               borderRadius: 30, // later: maybe implement "50%" workaround better (instead just high nr.)
               width: 30,
@@ -68,7 +68,9 @@ export default class ArticlesListItem extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-              <Text style={{color: '#fff', fontWeight: '600'}}>{this.state.articleReturnCount}</Text>
+              <Text style={filteredPage ? {color: '#000', fontWeight: '600'} : {color: '#fff', fontWeight: '600'}}>
+                {filteredPage ? filteredPage + 'x' : this.state.articleReturnCount}
+              </Text>
             </View>
           </View>
         </View>
@@ -76,30 +78,33 @@ export default class ArticlesListItem extends Component {
     )
   }
 
-  _resetArticleBgColor() {
-    this.setState({articleBackgroundColor: defaultArticleBgColor})
-  }
-
   _increaseReturnCountByOne() {
+    setTimeout(this._resetArticleBgColor, 300);
+
     this.setState({
       articleReturnCount: this.state.articleReturnCount + 1,
       articleBackgroundColor: 'greenyellow'
-    });
-    setTimeout(this._resetArticleBgColor, 300);
+    }, () => this.props.listItemCallback(this.props.id, this.state.articleReturnCount));
+      // "Callback inside Callback" necessary! Otherwise returns before State transition done
   }
 
   _decreaseReturnCountByOne() {
+    setTimeout(this._resetArticleBgColor, 300);
+
     const {articleReturnCount} = this.state;
 
     this.setState({
       articleReturnCount: articleReturnCount > 0 ? articleReturnCount - 1 : 0,
       articleBackgroundColor: 'indianred'
-    });
-    setTimeout(this._resetArticleBgColor, 300);
+    }, () => this.props.listItemCallback(this.props.id, this.state.articleReturnCount));
+  }
+
+  _resetArticleBgColor() {
+    this.setState({articleBackgroundColor: defaultArticleBgColor})
   }
 }
 
-const styles = StyleSheet.create({ // copied from RN Elements (ListItem)
+const styles = StyleSheet.create({ // styles adapted from RN Elements ('ListItem')
   container: {
     borderBottomColor: '#ededed',
     borderBottomWidth: 1,

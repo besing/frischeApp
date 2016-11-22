@@ -41,7 +41,7 @@ export default class GetDepositArticles extends Component {
     this.callbackArticlesListItemChanged = this.callbackArticlesListItemChanged.bind(this);
   }
 
-  callbackArticlesListItemChanged(title, id, returnCount) {
+  callbackArticlesListItemChanged(id, returnCount) {
     let findChangedObject = (item) => item.id === id;
     let obj = this.modifiedResults.find(findChangedObject);
     obj.articleReturnedCount = returnCount; // add new property for filtering TODO: ggf. noch mal checken
@@ -74,7 +74,7 @@ export default class GetDepositArticles extends Component {
           renderRow={(rowData) =>
             <ArticlesListItem title={rowData.name} img={rowData.image} id={rowData.id}
                               listItemCallback={this.callbackArticlesListItemChanged}
-                              articleReturnedAmount={rowData.articleReturnedCount}/>
+                              articleReturnedCountFromObj={rowData.articleReturnedCount}/>
           }
           automaticallyAdjustContentInsets={false}
           enableEmptySections={true}
