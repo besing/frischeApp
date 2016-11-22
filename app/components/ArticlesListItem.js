@@ -36,12 +36,13 @@ export default class ArticlesListItem extends Component {
       resizeMode='cover'
     />;
     const img = this.props.img || imgPlaceholderSmall; // TODO: Bei Klick Bild in groß anzeigen
-    const filteredPage = this.props.articleReturnedCountFromObj;
-      // Prop only passed if Count !== 0 --> filteredPage is rendered
+    const filteredPageReturnCount = this.props.articleReturnedCountFromObj;
+      // is undefined if not on Filtered View, otherwise contains no. of returned items
 
     return (
       <TouchableWithoutFeedback onPress={this._increaseReturnCountByOne}
-                                onLongPress={this._decreaseReturnCountByOne}>
+                                onLongPress={this._decreaseReturnCountByOne}
+                                disabled={filteredPageReturnCount > 0}>
         <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
           {img}
           <View style={{
@@ -55,7 +56,7 @@ export default class ArticlesListItem extends Component {
             <View style={{marginRight: 10}}>
               <Text color="#555">{this.props.title}</Text>
             </View>
-            <View style={filteredPage ? {
+            <View style={filteredPageReturnCount ? {
               width: 30,
               height: 30,
               justifyContent: 'center',
@@ -68,8 +69,8 @@ export default class ArticlesListItem extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-              <Text style={filteredPage ? {color: '#000', fontWeight: '600'} : {color: '#fff', fontWeight: '600'}}>
-                {filteredPage ? filteredPage + 'x' : this.state.articleReturnCount}
+              <Text style={filteredPageReturnCount ? {color: '#000', fontWeight: '600'} : {color: '#fff', fontWeight: '600'}}>
+                {filteredPageReturnCount ? filteredPageReturnCount + 'x' : this.state.articleReturnCount}
               </Text>
             </View>
           </View>
