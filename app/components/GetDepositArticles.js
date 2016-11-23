@@ -66,37 +66,32 @@ export default class GetDepositArticles extends Component {
     ) || <View/>;
 
     let filterListActive = this.props.filterListOnButtonConfirm;
-    let rowRender = null;
 
-    if (filterListActive) {
+    let rowRender =
       // should avoid duplicate sections but can't seem to make JSX attributes conditional/vars
-      rowRender =
-        <ListView
-          dataSource={this.state.dataSourceReduced}
-          renderRow={(rowData) =>
+      (filterListActive && <ListView
+        dataSource={this.state.dataSourceReduced}
+        renderRow={(rowData) =>
+          <ArticlesListItem title={rowData.name} img={rowData.image} id={rowData.id}
+                            listItemCallback={this.callbackArticlesListItemChanged}
+                            articleReturnedCountFromObj={rowData.articleReturnedCount}/>
+        }
+        automaticallyAdjustContentInsets={false}
+        enableEmptySections={true}
+        style={{height: height - 132}}
+        initialListSize={20}
+      />) ||
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={(rowData) =>
             <ArticlesListItem title={rowData.name} img={rowData.image} id={rowData.id}
-                              listItemCallback={this.callbackArticlesListItemChanged}
-                              articleReturnedCountFromObj={rowData.articleReturnedCount}/>
-          }
-          automaticallyAdjustContentInsets={false}
-          enableEmptySections={true}
-          style={{height: height - 132}}
-          initialListSize={20}
-        />;
-    } else {
-      rowRender =
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) =>
-              <ArticlesListItem title={rowData.name} img={rowData.image} id={rowData.id}
-                                listItemCallback={this.callbackArticlesListItemChanged}/>
-          }
-          automaticallyAdjustContentInsets={false}
-          enableEmptySections={true}
-          style={{height: height - 132}}
-          initialListSize={20}
-        />
-    }
+                              listItemCallback={this.callbackArticlesListItemChanged}/>
+        }
+        automaticallyAdjustContentInsets={false}
+        enableEmptySections={true}
+        style={{height: height - 132}}
+        initialListSize={20}
+      />;
     // height-132px = screen height - Status-/Nav-/Subtitle-Bars - Button (otherwise hidden since 'automaticallyAdj...' above)
 
     return (
