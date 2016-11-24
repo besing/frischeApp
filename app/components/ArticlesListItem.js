@@ -36,13 +36,10 @@ export default class ArticlesListItem extends Component {
       resizeMode='cover'
     />;
     const img = this.props.img || imgPlaceholderSmall; // TODO: Bei Klick Bild in groß anzeigen
-    const filteredPageReturnCount = this.props.articleReturnedCountFromObj;
-      // is undefined if not on Filtered View, otherwise contains no. of returned items
 
-    return (
+    let returnItemFull =
       <TouchableWithoutFeedback onPress={this._increaseReturnCountByOne}
-                                onLongPress={this._decreaseReturnCountByOne}
-                                disabled={filteredPageReturnCount > 0}>
+                                onLongPress={this._decreaseReturnCountByOne}>
         <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
           {img}
           <View style={{
@@ -56,12 +53,7 @@ export default class ArticlesListItem extends Component {
             <View style={{marginRight: 10}}>
               <Text color="#555">{this.props.title}</Text>
             </View>
-            <View style={filteredPageReturnCount ? {
-              width: 30,
-              height: 30,
-              justifyContent: 'center',
-              alignItems: 'center',
-            } : {
+            <View style={{
               backgroundColor: fpMainColor,
               borderRadius: 30, // later: maybe implement "50%" workaround better (instead just high nr.)
               width: 30,
@@ -69,13 +61,47 @@ export default class ArticlesListItem extends Component {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-              <Text style={filteredPageReturnCount ? {color: '#000', fontWeight: '600'} : {color: '#fff', fontWeight: '600'}}>
-                {filteredPageReturnCount ? filteredPageReturnCount + 'x' : this.state.articleReturnCount}
+              <Text style={{color: '#fff', fontWeight: '600'}}>
+                {this.state.articleReturnCount}
               </Text>
             </View>
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>;
+
+    let returnItemFiltered = (this.state.articleReturnCount > 0 &&
+      <TouchableWithoutFeedback onPress={this._increaseReturnCountByOne}
+                                onLongPress={this._decreaseReturnCountByOne}
+                                disabled>
+        <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
+          {img}
+          <View style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingLeft: 10,
+            paddingRight: 10
+          }}>
+            <View style={{marginRight: 10}}>
+              <Text color="#555">{this.props.title}</Text>
+            </View>
+            <View style={{
+              width: 30,
+              height: 30,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+              <Text style={{color: '#000', fontWeight: '600'}}>
+                {this.state.articleReturnCount}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>);
+
+    return (
+      <View>{this.props.filterOn ? returnItemFiltered : returnItemFull}</View>
     )
   }
 
@@ -85,8 +111,10 @@ export default class ArticlesListItem extends Component {
     this.setState({
       articleReturnCount: this.state.articleReturnCount + 1,
       articleBackgroundColor: 'mediumseagreen'
-    }, () => this.props.listItemCallback(this.props.id, this.state.articleReturnCount));
-      // "Callback inside Callback" necessary! Otherwise returns before State transition done
+    });
+
+    this.props.returnCount(1, 0); // 1st: add, 2nd: remove  (can probably be simplified)
+      // passing returnCount 2 parent-levels up through Props-Connection
   }
 
   _decreaseReturnCountByOne() {
@@ -97,7 +125,9 @@ export default class ArticlesListItem extends Component {
     this.setState({
       articleReturnCount: articleReturnCount > 0 ? articleReturnCount - 1 : 0,
       articleBackgroundColor: 'crimson'
-    }, () => this.props.listItemCallback(this.props.id, this.state.articleReturnCount));
+    });
+
+    this.props.returnCount(0, 1);
   }
 
   _resetArticleBgColor() {

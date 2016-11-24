@@ -28,7 +28,6 @@ export default class GetDepositArticles extends Component {
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.modifiedResults = [];
 
     this.state = {
       currentlyLoading: true,
@@ -38,21 +37,6 @@ export default class GetDepositArticles extends Component {
     };
 
     this.getArticleList = this.getArticleList.bind(this); // important! (No Autobinding in ES6 Classes)
-    this.callbackArticlesListItemChanged = this.callbackArticlesListItemChanged.bind(this);
-  }
-
-  callbackArticlesListItemChanged(id, returnCount) {
-    let findChangedObject = (item) => item.id === id;
-    let obj = this.modifiedResults.find(findChangedObject);
-    obj.articleReturnedCount = returnCount; // add new property for filtering TODO: ggf. noch mal checken
-
-    let filteredResults = this.modifiedResults.filter((item) => item.articleReturnedCount > 0);
-
-    this.setState({
-      dataSourceReduced: this.ds.cloneWithRows(filteredResults)
-    });
-
-    this.props.articlesReturned(filteredResults.length);
   }
 
   render() {
@@ -65,40 +49,23 @@ export default class GetDepositArticles extends Component {
       />
     ) || <View/>;
 
-    let filterListActive = this.props.filterListOnButtonConfirm;
-
-    let rowRender =
-      // should avoid duplicate sections but can't seem to make JSX attributes conditional/vars
-      (filterListActive && <ListView
-        dataSource={this.state.dataSourceReduced}
-        renderRow={(rowData) =>
-          <ArticlesListItem title={rowData.name} img={rowData.image} id={rowData.id}
-                            listItemCallback={this.callbackArticlesListItemChanged}
-                            articleReturnedCountFromObj={rowData.articleReturnedCount}/>
-        }
-        automaticallyAdjustContentInsets={false}
-        enableEmptySections={true}
-        style={{height: height - 132}}
-        initialListSize={20}
-      />) ||
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={(rowData) =>
-            <ArticlesListItem title={rowData.name} img={rowData.image} id={rowData.id}
-                              listItemCallback={this.callbackArticlesListItemChanged}/>
-        }
-        automaticallyAdjustContentInsets={false}
-        enableEmptySections={true}
-        style={{height: height - 132}}
-        initialListSize={20}
-      />;
-    // height-132px = screen height - Status-/Nav-/Subtitle-Bars - Button (otherwise hidden since 'automaticallyAdj...' above)
-
     return (
       <View style={{flex: 1}}>
         {spinner}
-        {rowRender}
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={(rowData) =>
+            <ArticlesListItem title={rowData.name} img={rowData.image} id={rowData.id}
+                              returnCount={this.props.articlesReturned}
+                              filterOn={this.props.filterListOnButtonConfirm}/>
+          }
+          automaticallyAdjustContentInsets={false}
+          enableEmptySections={true}
+          style={{height: height - 132}}
+          initialListSize={20}
+        />
       </View>
+        // height-132px = screen height - Status-/Nav-/Subtitle-Bars - Button (otherwise hidden since 'automaticallyAdj...' above)
     );
   }
 
@@ -113,11 +80,8 @@ export default class GetDepositArticles extends Component {
       apiUser,
       apiKey
     );
-    // const req = new digestCall('GET', url + '', apiUser, apiKey); // Dev JSON Mock
     req.request((result) => {
       // changed to ES6-Arrow-Functions (for preserving 'this' -> no need for binding)
-
-      this.modifiedResults = result.data.slice(); // first just copy array
 
       this.setState({
         currentlyLoading: false,

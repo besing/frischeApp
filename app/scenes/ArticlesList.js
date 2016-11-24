@@ -22,16 +22,15 @@ export default class ArticlesList extends Component {
     this.state = {
       showConfirmScreen: false,
       articleListFetched: false,
-      articlesReturnedCount: 0,
+      allArticlesReturnedSum: 0
     };
 
     this._articlesFetched = this._articlesFetched.bind(this);
     this._articlesReturned = this._articlesReturned.bind(this);
-    this._goBackToEditReturnedArticles = this._goBackToEditReturnedArticles.bind(this);
   }
 
   render() {
-    let articlesGotReturned = (true) ? this.state.articlesReturnedCount > 0 : false;
+    let articlesGotReturned = (true) ? this.state.allArticlesReturnedSum > 0 : false;
 
     const confirmButton = (
         // render Button-JSX only when articleListFetched + not yet in filtered View (otherwise empty View)
@@ -56,7 +55,7 @@ export default class ArticlesList extends Component {
         this.state.showConfirmScreen && <IconMaterial.Button
           name="edit"
           backgroundColor="crimson"
-          onPress={null}
+          onPress={() => this.setState({showConfirmScreen: false})}
           underlayColor="#000"
           size={25}
           borderRadius={0}
@@ -95,15 +94,10 @@ export default class ArticlesList extends Component {
     this.setState({articleListFetched: true});
   }
 
-  _articlesReturned(num) {
-    this.setState({articlesReturnedCount: num});
-  }
-
-  _goBackToEditReturnedArticles() { // TODO: raus?
-    this.setState({
-      showConfirmScreen: false,
-      articlesReturnedCount: 0,
-      // could probably be improved (see two similar States) -- for a quick & easy solution done like that
-    });
+  _articlesReturned(add, remove) {
+    this.setState({allArticlesReturnedSum: this.state.allArticlesReturnedSum + add - remove},
+      () => {if(this.state.allArticlesReturnedSum < 0) this.setState({allArticlesReturnedSum: 0})}
+        // don't go lower than 0 (could probably be improved)
+    );
   }
 }
