@@ -106,7 +106,7 @@ export default class ArticlesListItem extends Component {
   }
 
   _increaseReturnCountByOne() {
-    setTimeout(this._resetArticleBgColor, 300);
+    setTimeout(this._resetArticleBgColor, 700);
 
     this.setState({
       articleReturnCount: this.state.articleReturnCount + 1,
@@ -118,7 +118,7 @@ export default class ArticlesListItem extends Component {
   }
 
   _decreaseReturnCountByOne() {
-    setTimeout(this._resetArticleBgColor, 300);
+    setTimeout(this._resetArticleBgColor, 700);
 
     const {articleReturnCount} = this.state;
 
