@@ -61,11 +61,13 @@ export default class GetDepositArticles extends Component {
           }
           automaticallyAdjustContentInsets={false}
           enableEmptySections={true}
-          style={{height: height - 132}}
+          style={this.props.filterListOnButtonConfirm ? {height: height - 183} : {height: height - 132}}
           initialListSize={20}
         />
       </View>
-        // height-132px = screen height - Status-/Nav-/Subtitle-Bars - Button (otherwise hidden since 'automaticallyAdj...' above)
+        // height-132px = screen height - Status-/Nav-/Subtitle-Bars - Button
+        // (otherwise hidden since 'automaticallyAdj...' above)
+        // even 51px less for Confirm Screen (w/ second button)
     );
   }
 
