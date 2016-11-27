@@ -55,12 +55,11 @@ export default class GetDepositArticles extends Component {
       />
     ) || <View/>;
 
+    if (this.props.submitArticles) { this.mergeReturnedArticlesToObj() }
+
     return (
       <View style={{flex: 1}}>
         {spinner}
-
-        <TouchableHighlight onPress={this.mergeReturnedArticlesToObj}><Text>Merge data</Text></TouchableHighlight>
-
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData) =>
@@ -145,7 +144,6 @@ export default class GetDepositArticles extends Component {
           articleId: prop,
           returnAmount: obj[prop]
         });
-
       }
     }
 
@@ -162,6 +160,10 @@ export default class GetDepositArticles extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(submitObj)
-    });
+    }).then((response) => {
+        if (!response.ok) { console.error(response.statusText) } // Fetch() needs additional error handling
+        return response
+      }).then((response) => console.log('response: ok')) // TODO: UI Feedback
+      .catch((error) => console.error(error))
   }
 }
