@@ -1,0 +1,40 @@
+{
+  "returnedArticles": [
+    {
+      "customerId": 1217,
+      "articles": [
+        {
+          "articleId": "622",
+          "returnAmount": 1
+        },
+        {
+          "articleId": "623",
+          "returnAmount": 1
+        },
+        {
+          "articleId": "624",
+          "returnAmount": 3
+        }
+      ],
+      "id": 1
+    },
+    {
+      "customerId": 363,
+      "articles": [
+        {
+          "articleId": "625",
+          "returnAmount": 1
+        },
+        {
+          "articleId": "626",
+          "returnAmount": 2
+        },
+        {
+          "articleId": "634",
+          "returnAmount": 2
+        }
+      ],
+      "id": 2
+    }
+  ]
+}

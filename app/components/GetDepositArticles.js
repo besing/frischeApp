@@ -42,6 +42,7 @@ export default class GetDepositArticles extends Component {
     this.collectReturnedItems = this.collectReturnedItems.bind(this);
     this.mergeReturnedArticlesToObj = this.mergeReturnedArticlesToObj.bind(this);
     this.createSubmitObject = this.createSubmitObject.bind(this);
+    this.submitArticlesRequest = this.submitArticlesRequest.bind(this);
   }
 
   render() {
@@ -135,12 +136,12 @@ export default class GetDepositArticles extends Component {
   createSubmitObject(obj) {
     let submitObject = {
         customerId: this.props.customerId,
-        returnedArticles: []
+        articles: []
       };
 
     for (let prop in obj) {
       if (obj[prop] > 0 && obj.hasOwnProperty(prop)) { // ignore amount = 0 & check if hasOwnProp
-        submitObject.returnedArticles.push({
+        submitObject.articles.push({
           articleId: prop,
           returnAmount: obj[prop]
         });
@@ -148,6 +149,19 @@ export default class GetDepositArticles extends Component {
       }
     }
 
-    console.log('submitObject', submitObject);
+    this.submitArticlesRequest(submitObject);
+  }
+
+  submitArticlesRequest(submitObj) {
+    // TODO: switch to Digest Auth when API Endpoint ready (for now just on mocked API)
+
+    fetch('http://localhost:3000/returnedArticles', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(submitObj)
+    });
   }
 }
