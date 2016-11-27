@@ -41,6 +41,7 @@ export default class GetDepositArticles extends Component {
     this.getArticleList = this.getArticleList.bind(this); // important! (No Autobinding in ES6 Classes)
     this.collectReturnedItems = this.collectReturnedItems.bind(this);
     this.mergeReturnedArticlesToObj = this.mergeReturnedArticlesToObj.bind(this);
+    this.createSubmitObject = this.createSubmitObject.bind(this);
   }
 
   render() {
@@ -108,13 +109,11 @@ export default class GetDepositArticles extends Component {
 
   collectReturnedItems(articleId, articleName, add, remove) {
     this.customerReturnedArticles.push({
-      // customerId: this.props.customerId,
       id: articleId,
       name: articleName,
       addAmount: add,
       removeAmount: remove
     });
-    console.log('this.customerReturnedArticles', this.customerReturnedArticles);
   }
 
   mergeReturnedArticlesToObj() {
@@ -130,6 +129,25 @@ export default class GetDepositArticles extends Component {
       }
     });
 
-    console.log('merged:', merged);
+    this.createSubmitObject(merged)
+  }
+
+  createSubmitObject(obj) {
+    let submitObject = {
+        customerId: this.props.customerId,
+        returnedArticles: []
+      };
+
+    for (let prop in obj) {
+      if (obj[prop] > 0 && obj.hasOwnProperty(prop)) { // ignore amount = 0 & check if hasOwnProp
+        submitObject.returnedArticles.push({
+          articleId: prop,
+          returnAmount: obj[prop]
+        });
+
+      }
+    }
+
+    console.log('submitObject', submitObject);
   }
 }
