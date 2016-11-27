@@ -87,7 +87,8 @@ export default class ArticlesList extends Component {
                             customerId={this.props.customerId}
                             customerFirstname={this.props.firstname}
                             customerLastname={this.props.lastname}
-                            submitArticles={this.state.submitChoice}/>
+                            submitArticles={this.state.submitChoice}
+                            goBackToHome={() => this.props.navigator.popToTop(0)} />
         {confirmButton}
         {backToEditButton}
         {submitButton}

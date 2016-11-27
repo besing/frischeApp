@@ -10,6 +10,8 @@ import {
   TouchableHighlight
 } from 'react-native';
 
+import DropdownAlert from 'react-native-dropdownalert';
+
 import digestCall from 'digest-auth-request-rn';
 import { digestAuthHeader } from 'digest-auth-request-rn'; // later: maybe throw out if unused
 
@@ -55,11 +57,28 @@ export default class GetDepositArticles extends Component {
       />
     ) || <View/>;
 
+    const dropdownAlertSuccess = (
+      <DropdownAlert
+        ref={(ref) => this.dropdownSuccess = ref}
+        containerStyle={{backgroundColor: 'mediumseagreen', paddingTop: 0, paddingBottom: 20, paddingLeft:  16}}
+        titleStyle={{textAlign: 'center', fontSize: 16, fontWeight: 'bold', color: '#fff'}}
+        closeInterval={1500} />
+    );
+
+    const dropdownAlertError = (
+      <DropdownAlert
+        ref={(ref) => this.dropdownError = ref}
+        containerStyle={{backgroundColor: 'crimson', paddingTop: 0, paddingBottom: 20, paddingLeft:  16}}
+        titleStyle={{textAlign: 'center', fontSize: 16, fontWeight: 'bold', color: '#fff'}}
+        closeInterval={10000} />
+    );
+
     if (this.props.submitArticles) { this.mergeReturnedArticlesToObj() }
 
     return (
       <View style={{flex: 1}}>
         {spinner}
+
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData) =>
@@ -73,6 +92,9 @@ export default class GetDepositArticles extends Component {
           style={this.props.filterListOnButtonConfirm ? {height: height - 183} : {height: height - 132}}
           initialListSize={20}
         />
+
+        {dropdownAlertSuccess}
+        {dropdownAlertError}
       </View>
         /* height-132px = screen height - Status-/Nav-/Subtitle-Bars - Button
          * (otherwise hidden since 'automaticallyAdj...' above)
@@ -159,11 +181,26 @@ export default class GetDepositArticles extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(submitObj)
-    }).then((response) => {
-        if (!response.ok) { console.error(response.statusText) } // Fetch() needs additional error handling
+      body: JSON.stringify(submitObj)})
+
+      .then((response) => { // Fetch() needs additional error handling
+        if (!response.ok) {
+          this.dropdownError.alertWithType('custom', 'Fehler. Bitte noch mal versuchen.');
+          // console.error(response.statusText);
+        }
         return response
-      }).then((response) => console.log('response: ok')) // TODO: UI Feedback
-      .catch((error) => console.error(error))
+      })
+
+      .then((response) => {
+        if (response.ok) {
+          this.dropdownSuccess.alertWithType('custom', 'Pfand erfolgreich zurückgebucht');
+          setTimeout(this.props.goBackToHome, 1000);
+        }
+      })
+
+      .catch((error) => {
+        // console.error(error);
+        this.dropdownError.alertWithType('custom', 'Fehler. Bitte noch mal versuchen.');
+      })
   }
 }

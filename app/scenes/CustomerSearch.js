@@ -110,7 +110,7 @@ export default class CustomerSearch extends Component {
         lastname: selCustomer.lastname,
         email: selCustomer.email
       },
-      backButtonTitle: 'Custom Back', // probably buggy atm: http://bit.ly/2fHWruN
+      // backButtonTitle: 'Custom Back', // probably buggy atm: http://bit.ly/2fHWruN
     });
   }
 }
