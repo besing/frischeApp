@@ -70,9 +70,7 @@ export default class ArticlesListItem extends Component {
       </TouchableWithoutFeedback>;
 
     let returnItemFiltered = (this.state.articleReturnCount > 0 &&
-      <TouchableWithoutFeedback onPress={this._increaseReturnCountByOne}
-                                onLongPress={this._decreaseReturnCountByOne}
-                                disabled>
+      <TouchableWithoutFeedback disabled>
         <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
           {img}
           <View style={{
@@ -113,21 +111,24 @@ export default class ArticlesListItem extends Component {
       articleBackgroundColor: 'mediumseagreen'
     });
 
-    this.props.returnCount(1, 0); // 1st: add, 2nd: remove  (can probably be simplified)
+    this.props.returnCount(1, 0);
       // passing returnCount 2 parent-levels up through Props-Connection
+    this.props.collectItems(this.props.id, this.props.title, 1, 0);
+    // 1st: add, 2nd: remove  (can probably be simplified, same above)
   }
 
   _decreaseReturnCountByOne() {
-    setTimeout(this._resetArticleBgColor, 700);
+    if (this.state.articleReturnCount > 0) {
+      setTimeout(this._resetArticleBgColor, 700);
 
-    const {articleReturnCount} = this.state;
+      this.setState({
+        articleReturnCount: this.state.articleReturnCount - 1,
+        articleBackgroundColor: 'crimson'
+      });
 
-    this.setState({
-      articleReturnCount: articleReturnCount > 0 ? articleReturnCount - 1 : 0,
-      articleBackgroundColor: 'crimson'
-    });
-
-    this.props.returnCount(0, 1);
+      this.props.returnCount(0, 1);
+      this.props.collectItems(this.props.id, this.props.title, 0, 1)
+    }
   }
 
   _resetArticleBgColor() {

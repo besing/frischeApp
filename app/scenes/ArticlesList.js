@@ -22,7 +22,8 @@ export default class ArticlesList extends Component {
     this.state = {
       showConfirmScreen: false,
       articleListFetched: false,
-      allArticlesReturnedSum: 0
+      allArticlesReturnedSum: 0,
+      submitChoice: false
     };
 
     this._articlesFetched = this._articlesFetched.bind(this);
@@ -68,7 +69,7 @@ export default class ArticlesList extends Component {
         this.state.showConfirmScreen && <IconMaterial.Button
           name="send"
           backgroundColor="mediumseagreen"
-          onPress={null}
+          onPress={() => this.setState({submitChoice: true})}
           underlayColor="#000"
           size={35}
           borderRadius={0}
@@ -82,7 +83,11 @@ export default class ArticlesList extends Component {
         <NavbarSubtitle>{this.props.email}</NavbarSubtitle>
         <GetDepositArticles filterListOnButtonConfirm={this.state.showConfirmScreen}
                             hideConfirmButtonWhileLoading={this._articlesFetched}
-                            articlesReturned={this._articlesReturned}/>
+                            articlesReturned={this._articlesReturned}
+                            customerId={this.props.customerId}
+                            customerFirstname={this.props.firstname}
+                            customerLastname={this.props.lastname}
+                            submitArticles={this.state.submitChoice}/>
         {confirmButton}
         {backToEditButton}
         {submitButton}
@@ -95,9 +100,6 @@ export default class ArticlesList extends Component {
   }
 
   _articlesReturned(add, remove) {
-    this.setState({allArticlesReturnedSum: this.state.allArticlesReturnedSum + add - remove},
-      () => {if(this.state.allArticlesReturnedSum < 0) this.setState({allArticlesReturnedSum: 0})}
-        // don't go lower than 0 (could probably be improved)
-    );
+    this.setState({allArticlesReturnedSum: this.state.allArticlesReturnedSum + add - remove});
   }
 }

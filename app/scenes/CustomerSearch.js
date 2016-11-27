@@ -19,8 +19,6 @@ export default class CustomerSearch extends Component {
 
   constructor(props) {
     super(props);
-
-    this.filteredResults = customersData;
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
     this.state = {

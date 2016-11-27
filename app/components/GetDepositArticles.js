@@ -6,7 +6,8 @@ import {
   ScrollView,
   Text,
   ActivityIndicator,
-  ListView
+  ListView,
+  TouchableHighlight
 } from 'react-native';
 
 import digestCall from 'digest-auth-request-rn';
@@ -28,6 +29,7 @@ export default class GetDepositArticles extends Component {
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.customerReturnedArticles = [];
 
     this.state = {
       currentlyLoading: true,
@@ -37,6 +39,8 @@ export default class GetDepositArticles extends Component {
     };
 
     this.getArticleList = this.getArticleList.bind(this); // important! (No Autobinding in ES6 Classes)
+    this.collectReturnedItems = this.collectReturnedItems.bind(this);
+    this.mergeReturnedArticlesToObj = this.mergeReturnedArticlesToObj.bind(this);
   }
 
   render() {
@@ -52,12 +56,16 @@ export default class GetDepositArticles extends Component {
     return (
       <View style={{flex: 1}}>
         {spinner}
+
+        <TouchableHighlight onPress={this.mergeReturnedArticlesToObj}><Text>Merge data</Text></TouchableHighlight>
+
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData) =>
             <ArticlesListItem title={rowData.name} img={rowData.image} id={rowData.id}
                               returnCount={this.props.articlesReturned}
-                              filterOn={this.props.filterListOnButtonConfirm}/>
+                              filterOn={this.props.filterListOnButtonConfirm}
+                              collectItems={this.collectReturnedItems}/>
           }
           automaticallyAdjustContentInsets={false}
           enableEmptySections={true}
@@ -65,9 +73,9 @@ export default class GetDepositArticles extends Component {
           initialListSize={20}
         />
       </View>
-        // height-132px = screen height - Status-/Nav-/Subtitle-Bars - Button
-        // (otherwise hidden since 'automaticallyAdj...' above)
-        // even 51px less for Confirm Screen (w/ second button)
+        /* height-132px = screen height - Status-/Nav-/Subtitle-Bars - Button
+         * (otherwise hidden since 'automaticallyAdj...' above)
+         * even 51px less for Confirm Screen (w/ second button) */
     );
   }
 
@@ -96,5 +104,32 @@ export default class GetDepositArticles extends Component {
     }, (error) => {
       console.error(error);
     });
+  }
+
+  collectReturnedItems(articleId, articleName, add, remove) {
+    this.customerReturnedArticles.push({
+      // customerId: this.props.customerId,
+      id: articleId,
+      name: articleName,
+      addAmount: add,
+      removeAmount: remove
+    });
+    console.log('this.customerReturnedArticles', this.customerReturnedArticles);
+  }
+
+  mergeReturnedArticlesToObj() {
+    let merged = {};
+
+    this.customerReturnedArticles.forEach((arrObj) => {
+
+      if (merged.hasOwnProperty(arrObj.id)) {
+        merged[arrObj.id] += arrObj.addAmount;
+        merged[arrObj.id] -= arrObj.removeAmount;
+      } else {
+        merged[arrObj.id] = arrObj.addAmount;
+      }
+    });
+
+    console.log('merged:', merged);
   }
 }
