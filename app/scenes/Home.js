@@ -56,7 +56,7 @@ export class Home extends Component {
     this.state = {
       lastCustomersUpdate: 'Noch nicht aktualisiert',
       currentlyLoading: false,
-      fetchedCustomersCount: 0,
+      fetchedCustomersCount: 0, // later: can be removed if not shown in UI (also usages on bottom)
       customersDidUpdate: false,
       lastOrdersUpdate: 'Noch nicht aktualisiert',
       fetchedOrdersCount: null,
@@ -107,8 +107,9 @@ export class Home extends Component {
           <IconMaterial.Button
             name="cloud-download"
             backgroundColor="orange"
-            onPress={() => this._getAllCustomers(null, 'lastname', 'ASC')}
+            onPress={() => this._getAllCustomers(10000, 'lastname', 'ASC')}
             // passing Arguments in onPress: http://bit.ly/2fHoAln
+            // limit 10,000 means basically "no limit"
             underlayColor="#000"
             size={25}
           >
@@ -116,17 +117,14 @@ export class Home extends Component {
           </IconMaterial.Button>
         </View>
 
-        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 5}}>
+        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 20}}>
           <Text style={{marginRight: 5}}>
             {this.state.lastCustomersUpdate}
           </Text>
           {spinner}
         </View>
-        <Text style={{textAlign: 'center', marginBottom: 20}}>
-          {this.state.fetchedCustomersCount} Kunden geladen
-        </Text>
 
-        <View style={{marginBottom: 10}}>
+        {/*<View style={{marginBottom: 10}}> // later: whole Button+Txt can probably be removed (+call on bottom)
           <IconMaterial.Button
             name="cloud-download"
             backgroundColor="#aaa" // --> lightslategrey
@@ -141,7 +139,7 @@ export class Home extends Component {
 
         <Text style={{textAlign: 'center'}}>
           {this.state.lastOrdersUpdate}
-        </Text>
+        </Text>*/}
       </View>
     );
   }
@@ -158,12 +156,9 @@ export class Home extends Component {
   }
 
   _getAllCustomers(limit, sortAttr, order) {
-    let dataLimit;
-    limit !== null ? dataLimit = '&limit=' + limit : ''; // if there is no passed limit param on the req. data
-
     const req = new digestCall(
       'GET',
-      url + '/customers' + '?sort[0][property]=' + sortAttr +'&sort[0][direction]=' + order + dataLimit,
+      url + '/customers' + '?sort[0][property]=' + sortAttr +'&sort[0][direction]=' + order + '&limit=' + limit,
       apiUser, apiKey
     );
     this.setState({
@@ -185,6 +180,8 @@ export class Home extends Component {
         fetchedCustomersCount: customersAmount + ' (von ' + customersTotal + ')',
         customersDidUpdate: true
       });
+
+      console.log(this.state.fetchedCustomersCount + 'Customers loaded');
 
       // this._navPush('Kunden suchen', CustomerSearch); // TODO --- bloß für einfachere Dev hier drin
     }, (error) => {

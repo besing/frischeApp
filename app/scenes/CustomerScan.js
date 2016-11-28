@@ -50,7 +50,7 @@ export default class CustomerScan extends Component {
   }
 }
 
-const styles = StyleSheet.create({ // TODO: no Stylesheet.create necessary?
+const styles = StyleSheet.create({
   preview: {
     justifyContent: 'center',
     alignItems: 'center',

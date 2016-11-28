@@ -33,8 +33,14 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Die Kamera wird für den QR-Scanner benötigt</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>"Fotos" wird für den QR-Scanner benötigt</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
