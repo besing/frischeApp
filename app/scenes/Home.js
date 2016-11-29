@@ -82,7 +82,6 @@ export class Home extends Component {
             iconName="camera-alt"
             bgColor="#BF6B66"
             onPress={() => {this._navPush('Kunden scannen', CustomerScan)}}
-            underlayColor="#000"
             iconSize={60}
           >
             QR Code Scanner
@@ -94,7 +93,6 @@ export class Home extends Component {
             iconName="person"
             bgColor={this.state.customersDidUpdate ? '#223F3E' : '#aaa'}
             onPress={() => {this._navPush('Kunden suchen', CustomerSearch)}}
-            underlayColor="#000"
             iconSize={30}
             disabled={!this.state.customersDidUpdate}
           >
@@ -109,7 +107,6 @@ export class Home extends Component {
             onPress={() => this._getAllCustomers(10000, 'lastname', 'ASC')}
               // passing Arguments in onPress: http://bit.ly/2fHoAln
               // limit 10,000 means basically "no limit"
-            underlayColor="#000"
             iconSize={25}
             slim
           >
