@@ -8,8 +8,6 @@ import {
   ActivityIndicator
 } from 'react-native';
 
-import IconMaterial from 'react-native-vector-icons/MaterialIcons';
-
 import digestCall from 'digest-auth-request-rn';
 
 import appConfig from '../config/settings';
@@ -17,6 +15,7 @@ import globalStyles from '../config/globalStyles';
 import CustomerSearch from '../scenes/CustomerSearch';
 import CustomerScan from '../scenes/CustomerScan';
 import GetDepositArticles from '../components/GetDepositArticles';
+import JumboButton from '../components/JumboButton';
 
 import appHelpers from '../config/helpers';
 import {currentTime} from '../config/helpers';
@@ -79,42 +78,43 @@ export class Home extends Component {
       <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 150, paddingLeft: width*0.05, paddingRight: width*0.05}]}>
 
         <View style={{marginBottom: 20}}>
-          <IconMaterial.Button
-            name="camera-alt"
-            backgroundColor="maroon"
+          <JumboButton
+            iconName="camera-alt"
+            bgColor="#BF6B66"
             onPress={() => {this._navPush('Kunden scannen', CustomerScan)}}
             underlayColor="#000"
-            size={30}
+            iconSize={60}
           >
-            Kunden auswählen per Scan
-          </IconMaterial.Button>
+            QR Code Scanner
+          </JumboButton>
         </View>
 
         <View style={{marginBottom: 50}}>
-          <IconMaterial.Button
-            name="person"
-            backgroundColor={this.state.customersDidUpdate ? 'olive' : '#aaa'}
+          <JumboButton
+            iconName="person"
+            bgColor={this.state.customersDidUpdate ? '#223F3E' : '#aaa'}
             onPress={() => {this._navPush('Kunden suchen', CustomerSearch)}}
             underlayColor="#000"
-            size={30}
+            iconSize={30}
             disabled={!this.state.customersDidUpdate}
           >
             Kunden auswählen per Suche
-          </IconMaterial.Button>
+          </JumboButton>
         </View>
 
         <View style={{marginBottom: 10}}>
-          <IconMaterial.Button
-            name="cloud-download"
-            backgroundColor="orange"
+          <JumboButton
+            iconName="cloud-download"
+            bgColor="rgba(34,63,62,0.5)"
             onPress={() => this._getAllCustomers(10000, 'lastname', 'ASC')}
-            // passing Arguments in onPress: http://bit.ly/2fHoAln
-            // limit 10,000 means basically "no limit"
+              // passing Arguments in onPress: http://bit.ly/2fHoAln
+              // limit 10,000 means basically "no limit"
             underlayColor="#000"
-            size={25}
+            iconSize={25}
+            slim
           >
             Update: Customers
-          </IconMaterial.Button>
+          </JumboButton>
         </View>
 
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 20}}>
@@ -181,7 +181,7 @@ export class Home extends Component {
         customersDidUpdate: true
       });
 
-      console.log(this.state.fetchedCustomersCount + 'Customers loaded');
+      // console.log(this.state.fetchedCustomersCount + 'Customers loaded');
 
       // this._navPush('Kunden suchen', CustomerSearch); // TODO --- bloß für einfachere Dev hier drin
     }, (error) => {
