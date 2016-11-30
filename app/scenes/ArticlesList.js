@@ -30,6 +30,10 @@ export default class ArticlesList extends Component {
     this._articlesReturned = this._articlesReturned.bind(this);
   }
 
+  // componentDidMount() {
+  //   this.props.barcodeRead()
+  // }
+
   render() {
     let articlesGotReturned = (true) ? this.state.allArticlesReturnedSum > 0 : false;
 

@@ -9,44 +9,76 @@ import {
 
 import Camera from 'react-native-camera';
 
+import ArticlesList from '../scenes/ArticlesList';
+
 import globalStyles from '../config/globalStyles';
 import {width, height} from '../config/globalStyles';
+
 
 export default class CustomerScan extends Component {
   constructor(props) {
     super(props);
 
-    this._takePicture = this._takePicture.bind(this);
+    this.state = {
+      barcodeDetected: false
+    };
+
     this._processQrCode = this._processQrCode.bind(this);
+    this.resetBarcodeScanner = this.resetBarcodeScanner.bind(this);
   }
 
   render() {
     return (
       <View style={[globalStyles.container, {justifyContent: 'center', alignItems: 'center'}]}>
         <Camera
-          ref={(cam) => {
-            this.camera = cam;
-          }}
+          ref={(cam) => {this.camera = cam;}}
+          onBarCodeRead={!this.state.barcodeDetected ? this._processQrCode : null}
           style={[styles.preview, {borderColor: 'yellow', borderWidth: 1, width: width*0.8, height: width*0.8}]}
-          aspect="fill"
-          captureAudio={false}
-          onBarCodeRead={this._processQrCode}
         >
-          <Text style={styles.capture} onPress={this._takePicture}>[CAPTURE]</Text>
         </Camera>
       </View>
     )
   }
 
-  _takePicture() {
-    this.camera.capture()
-      .then((data) => console.log(data))
-      .catch(err => console.error(err));
+/*
+  componentDidMount() {
+    const returnedJsonData = '{"order":{"id":4363,"customerId":804,"customer":{"firstname":"Julia","lastname":"Aalders","email":"home@aalders.email"},"billing":{"firstName":"Julia","lastName":"Aalders","street":"Treuburger Weg 8\\r","zipCode":"22049","city":"Hamburg"},"shipping":{"firstName":"Julia","lastName":"Aalders","street":"Treuburger Weg 8\\r","zipCode":"22049","city":"Hamburg"}}}';
+
+    let parsedJson = JSON.parse(returnedJsonData);
+
+    console.log('parsedJson.order.customer.email:', parsedJson.order.customer.email)
   }
+*/
+
 
   _processQrCode(event) {
-    console.info('QR Code erkannt.');
-    console.log(event.data);
+    if (this.state.barcodeDetected === false) {
+
+      this.setState({barcodeDetected: true}); // navigator push hier in den Callback (dann bloß 1x gecalled?)
+
+      const parsedData = JSON.parse(event.data);
+      const orderData = parsedData.order;
+
+      console.log(orderData);
+
+      this.props.navigator.push({
+        title: orderData.shipping.firstName + ' ' + orderData.shipping.lastName,
+        component: ArticlesList,
+        passProps: {
+          customerId: orderData.customerId,
+          firstname: orderData.customer.firstname,
+          lastname: orderData.customer.lastname,
+          email: orderData.customer.email,
+          barcodeDetected: this.resetBarcodeScanner
+        },
+      });
+
+    }
+  }
+
+  resetBarcodeScanner() {
+    this.setState({barcodeDetected: false});
+    console.log('barcode reset');
   }
 }
 
