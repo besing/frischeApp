@@ -92,7 +92,7 @@ export default class CustomerSearch extends Component {
         obj[property].includes(valueNormal.toLowerCase()) && obj[secondProp].includes(secondVal) ||
         obj[property].includes(valueNormal) && obj[secondProp].includes(secondVal.toLowerCase()) ||
         obj[property].includes(valueNormal.toLowerCase()) && obj[secondProp].includes(secondVal.toLowerCase())
-      ); // later: more elegant?
+      );
     });
 
     this.setState({
@@ -110,7 +110,6 @@ export default class CustomerSearch extends Component {
         lastname: selCustomer.lastname,
         email: selCustomer.email
       },
-      // backButtonTitle: 'Custom Back', // probably buggy atm: http://bit.ly/2fHWruN
     });
   }
 }

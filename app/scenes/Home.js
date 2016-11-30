@@ -9,13 +9,15 @@ import {
 } from 'react-native';
 
 import digestCall from 'digest-auth-request-rn';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
 import appConfig from '../config/settings';
 import globalStyles from '../config/globalStyles';
 import CustomerSearch from '../scenes/CustomerSearch';
-import CustomerScan from '../scenes/CustomerScan';
 import GetDepositArticles from '../components/GetDepositArticles';
 import JumboButton from '../components/JumboButton';
+import ArticlesList from '../scenes/ArticlesList';
 
 import appHelpers from '../config/helpers';
 import {currentTime} from '../config/helpers';
@@ -60,10 +62,11 @@ export class Home extends Component {
       lastOrdersUpdate: 'Noch nicht aktualisiert',
       fetchedOrdersCount: null,
       ordersDidUpdate: false,
+      goBackIcon: null
     };
     this._getAllCustomers = this._getAllCustomers.bind(this);
-    this._getAllOrders = this._getAllOrders.bind(this);
     this._navPush = this._navPush.bind(this);
+    this._processBarcode = this._processBarcode.bind(this);
   }
 
   render() {
@@ -78,15 +81,22 @@ export class Home extends Component {
 
     return (
       <View style={[globalStyles.container,
-        {backgroundColor: '#eee', paddingTop: 64, paddingLeft: homeMargins, paddingRight: homeMargins}
-        ]}>
+        {backgroundColor: '#eee', paddingTop: 64, paddingLeft: homeMargins, paddingRight: homeMargins}]}>
 
         <View style={{marginTop: homeMargins, marginBottom: homeMargins}}>
           <JumboButton
             iconName="camera-alt"
             bgColor="#BF6B66"
-            onPress={() => {this._navPush('Kunden scannen', CustomerScan)}}
-            iconSize={60}
+            onPress={() => {
+              this.props.navigator.push({
+                component: QRCodeScanner,
+                title: 'QR Code scannen',
+                passProps: {onRead: this._processBarcode}
+              });
+            }}
+
+
+          iconSize={60}
             style={{paddingTop: height * 0.1, paddingBottom: height * 0.1}}
               // dynamic height for nicer layout on different screen sizes
           >
@@ -128,34 +138,51 @@ export class Home extends Component {
           {spinner}
         </View>
 
-        {/*<View style={{marginBottom: 10}}> // later: whole Button+Txt can probably be removed (+call on bottom)
-          <IconMaterial.Button
-            name="cloud-download"
-            backgroundColor="#aaa" // --> lightslategrey
-            onPress={this._getAllOrders}
-            underlayColor="#000"
-            size={25}
-            disabled
-          >
-            Update: Orders (Guest-Edgecase)
-          </IconMaterial.Button>
-        </View>
-
-        <Text style={{textAlign: 'center'}}>
-          {this.state.lastOrdersUpdate}
-        </Text>*/}
       </View>
     );
   }
 
   componentDidMount() {
-    // this._getAllCustomers(null, 'lastname', 'ASC'); // TODO --- bloß für einfachere Dev hier drin
+    // this._getAllCustomers(10000, 'lastname', 'ASC'); // TODO --- bloß für einfachere Dev hier drin
+
+    IconMaterial.getImageSource('chevron-left', 43, 'blue')
+      .then((chevronIconSource) => {this.setState({goBackIcon: chevronIconSource});
+      });
+      // 43px Chevron font size = Apple Default
+      // a bit complicated way because of NavigatorIOS' Nature
+      // but right way: https://github.com/oblador/react-native-vector-icons#usage-with-navigatorios)
   }
 
   _navPush(title, component) {
     this.props.navigator.push({
       title: title,
       component: component
+    });
+  }
+
+  _processBarcode(event) {
+    console.log('event.data:', event.data);
+
+    const parsedData = JSON.parse(event.data);
+    const orderData = parsedData.order;
+
+    this.props.navigator.push({
+      title: orderData.shipping.firstName + ' ' + orderData.shipping.lastName,
+      component: ArticlesList,
+      leftButtonTitle: 'Zurück',
+      onLeftButtonPress: () => this.props.navigator.popToTop(0),
+        // go directly back Home instead of back to Scanner -- workaround for Scanner's Event Handling
+      leftButtonIcon: this.state.goBackIcon,
+        // leftButtonIcon AND leftButtonTitle somehow not possible --> Icon more important
+      passProps: {
+        // passed Props same as from CustomerSearch (except last)
+        customerId: orderData.customerId,
+        firstname: orderData.customer.firstname,
+        lastname: orderData.customer.lastname,
+        email: orderData.customer.email,
+        fetchedFromScan: true
+          // to distinguish between Scan and Search at the results --> alternative Back-Button-Logic
+      },
     });
   }
 
@@ -185,25 +212,9 @@ export class Home extends Component {
         customersDidUpdate: true
       });
 
-      // console.log(this.state.fetchedCustomersCount + 'Customers loaded');
+      // console.debug(this.state.fetchedCustomersCount + 'Customers loaded');
 
       // this._navPush('Kunden suchen', CustomerSearch); // TODO --- bloß für einfachere Dev hier drin
-    }, (error) => {
-      console.error(error);
-    });
-  }
-
-  _getAllOrders() {
-    const req = new digestCall('GET', url + '/orders' + '?limit=40', apiUser, apiKey); // TODO: limit
-    this.setState({
-      lastOrdersUpdate: 'lädt...'
-    });
-    req.request((result) => {
-      ordersData = result.data;
-
-      this.setState({
-        lastOrdersUpdate: 'Letzte Aktualisierung: ' + currentTime
-      });
     }, (error) => {
       console.error(error);
     });
