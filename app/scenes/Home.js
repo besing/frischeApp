@@ -74,47 +74,54 @@ export class Home extends Component {
       />
     } else { spinner = <View/> }
 
-    return (
-      <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 150, paddingLeft: width*0.05, paddingRight: width*0.05}]}>
+    const homeMargins = height * 0.04;
 
-        <View style={{marginBottom: 20}}>
+    return (
+      <View style={[globalStyles.container,
+        {backgroundColor: '#eee', paddingTop: 64, paddingLeft: homeMargins, paddingRight: homeMargins}
+        ]}>
+
+        <View style={{marginTop: homeMargins, marginBottom: homeMargins}}>
           <JumboButton
             iconName="camera-alt"
             bgColor="#BF6B66"
             onPress={() => {this._navPush('Kunden scannen', CustomerScan)}}
             iconSize={60}
+            style={{paddingTop: height * 0.1, paddingBottom: height * 0.1}}
+              // dynamic height for nicer layout on different screen sizes
           >
-            QR Code Scanner
+            QR Code scannen
           </JumboButton>
         </View>
 
-        <View style={{marginBottom: 50}}>
+        <View>
           <JumboButton
             iconName="person"
-            bgColor={this.state.customersDidUpdate ? '#223F3E' : '#aaa'}
+            bgColor={this.state.customersDidUpdate ? '#223f3e' : '#aaa'}
             onPress={() => {this._navPush('Kunden suchen', CustomerSearch)}}
             iconSize={30}
+            style={{paddingTop: homeMargins, paddingBottom: homeMargins}}
             disabled={!this.state.customersDidUpdate}
           >
-            Kunden auswählen per Suche
+            Kunden suchen
           </JumboButton>
         </View>
 
-        <View style={{marginBottom: 10}}>
+        <View style={{marginBottom: homeMargins / 2}}>
           <JumboButton
             iconName="cloud-download"
-            bgColor="rgba(34,63,62,0.5)"
+            bgColor="#4e6564"
             onPress={() => this._getAllCustomers(10000, 'lastname', 'ASC')}
               // passing Arguments in onPress: http://bit.ly/2fHoAln
               // limit 10,000 means basically "no limit"
             iconSize={25}
-            slim
+            style={{paddingTop: homeMargins, paddingBottom: homeMargins}}
           >
-            Update: Customers
+            Kunden updaten
           </JumboButton>
         </View>
 
-        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 20}}>
+        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
           <Text style={{marginRight: 5}}>
             {this.state.lastCustomersUpdate}
           </Text>
