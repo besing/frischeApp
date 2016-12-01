@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import {fpMainColor} from '../config/globalStyles';
+import {width, height} from '../config/globalStyles';
 
 
 const defaultArticleBgColor = '#fff';
@@ -50,8 +51,12 @@ export default class ArticlesListItem extends Component {
             paddingLeft: 10,
             paddingRight: 10
           }}>
-            <View style={{marginRight: 10}}>
-              <Text color="#555">{this.props.title}</Text>
+            <View style={{paddingRight: 10, width: width - 100}}>
+              <Text color="#555"
+                    numberOfLines={1}
+                    ellipsizeMode="middle">
+                {this.props.title}
+              </Text>
             </View>
             <View style={{
               backgroundColor: fpMainColor,
@@ -81,8 +86,12 @@ export default class ArticlesListItem extends Component {
             paddingLeft: 10,
             paddingRight: 10
           }}>
-            <View style={{marginRight: 10}}>
-              <Text color="#555">{this.props.title}</Text>
+            <View style={{paddingRight: 10, width: width - 100}}>
+              <Text color="#555"
+                    numberOfLines={1}
+                    ellipsizeMode="middle">
+                {this.props.title}
+              </Text>
             </View>
             <View style={{
               width: 30,
