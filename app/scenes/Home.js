@@ -198,7 +198,7 @@ export class Home extends Component {
 
       this.setState({
         currentlyLoading: false,
-        lastCustomersUpdate: 'Letzte Aktualisierung: ' + currentTime,
+        lastCustomersUpdate: `Letzte Aktualisierung: ${currentTime} Uhr`,
         customersDidUpdate: true
       });
 

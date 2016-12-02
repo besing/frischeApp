@@ -195,4 +195,23 @@ export default class DepositArticlesApiCalls extends Component {
         this.dropdownError.alertWithType('custom', 'Fehler. Bitte noch mal versuchen.');
       })
   }
+
+  /* TODO: Use this template for POST Call on Final API Endpoint:
+   *
+   function digestPost() {
+   var postData = {
+   name: 'Kat. via API',
+   parentId: 5
+   };
+
+   var postReq = new digestCall('POST',
+   'http://frische-app.de.shopware-hosting.com/api/categories', appConfig.apiCredentials_dev.apiUser, appConfig.apiCredentials_dev.apiKey);
+
+   postReq.request(function (data) {
+   console.log('digestPOST SUCCESS: ', data);
+   }, function (errorCode) {
+   console.error('digestPOST ERROR: ', errorCode)
+   }, postData);
+   }
+   */
 }
