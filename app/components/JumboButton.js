@@ -1,14 +1,14 @@
 'use strict';
 
-import React, { Component } from 'react';
-import {
-  View,
-} from 'react-native';
+import React, {Component} from 'react';
+import {View} from 'react-native';
 
-import IconMaterial from 'react-native-vector-icons/MaterialIcons';
+// Import 3rd Party Node Modules
+  import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
 
 export default class JumboButton extends Component {
+
   constructor(props) {
     super(props);
   }
