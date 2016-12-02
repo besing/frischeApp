@@ -14,14 +14,14 @@ import {
   import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
 // Import Scenes & Components
+  import ArticlesList from '../scenes/ArticlesList';
   import CustomerSearch from '../scenes/CustomerSearch';
   import JumboButton from '../components/JumboButton';
 
 // Import Globals, Configs & Helpers
   import appConfig from '../config/settings';
-  import globalStyles from '../config/globalStyles';
-  import ArticlesList from '../scenes/ArticlesList';
   import {currentTime} from '../config/helpers';
+  import globalStyles from '../config/globalStyles';
   import {width, height} from '../config/globalStyles';
   import {fpMainColor} from '../config/globalStyles';
 
