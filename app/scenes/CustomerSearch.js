@@ -4,15 +4,17 @@ import React, { Component } from 'react';
 import {
   View,
   ListView,
-  Text,
-  TextInput
+  Text
 } from 'react-native';
 
-import globalStyles from '../config/globalStyles';
-import ArticlesList from '../scenes/ArticlesList';
-import { SearchBar, List, ListItem } from 'react-native-elements';
+// Import 3rd Party Node Modules
+  import { SearchBar, List, ListItem } from 'react-native-elements';
 
-import { customersData } from '../scenes/Home';
+// Import Scenes & Components
+  import ArticlesList from '../scenes/ArticlesList';
+
+// Import Locals
+  import {customersData} from '../scenes/Home';
 
 
 export default class CustomerSearch extends Component {
@@ -20,30 +22,16 @@ export default class CustomerSearch extends Component {
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
     this.state = {
       dataSource: this.ds.cloneWithRows(customersData),
       searchTextFirstName: '',
       searchTextLastName: ''
     };
-
     this.renderRow = this.renderRow.bind(this);
     this._setSearchTextFirstName = this._setSearchTextFirstName.bind(this);
     this._setSearchTextLastName = this._setSearchTextLastName.bind(this);
     this._filterList = this._filterList.bind(this);
     this._selectCustomer = this._selectCustomer.bind(this)
-  }
-
-  renderRow(rowData, sectionID) {
-    return (
-      <ListItem
-        key={sectionID}
-        title={rowData.lastname + ', ' + rowData.firstname}
-        subtitle={rowData.email}
-        onPress={() => this._selectCustomer(rowData)}
-        underlayColor="#eee"
-      />
-    )
   }
 
   render() {
@@ -61,37 +49,50 @@ export default class CustomerSearch extends Component {
           clearButtonMode="always"
           lightTheme
         />
-
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
-          automaticallyAdjustContentInsets={false} // otherwise additional 64px top-space (default)
+          automaticallyAdjustContentInsets={false}
           enableEmptySections={true}
         />
       </View>
     );
   }
 
+  renderRow(rowData, sectionID) {
+    return (
+      <ListItem
+        key={sectionID}
+        title={`${rowData.lastname}, ${rowData.firstname}`}
+        subtitle={rowData.email}
+        onPress={() => this._selectCustomer(rowData)}
+        underlayColor={'#eee'}
+      />
+    )
+  }
+
   _setSearchTextFirstName(event) {
-    let searchText = event.nativeEvent.text;
-    this.setState({searchTextFirstName: searchText});
+    const searchText = event.nativeEvent.text;
+    this.setState({
+      searchTextFirstName: searchText
+    });
     this._filterList(customersData, 'firstname', searchText, 'lastname', this.state.searchTextLastName)
   }
-  // the two very similar methods could/should be merged into one (functional) --> but didn't manage to source out the event Callback into arguments..
 
   _setSearchTextLastName(event) {
-    let searchText = event.nativeEvent.text;
+    const searchText = event.nativeEvent.text;
     this.setState({searchTextLastName: searchText});
     this._filterList(customersData, 'lastname', searchText, 'firstname', this.state.searchTextFirstName);
   }
 
-  _filterList(data, property, valueNormal, secondProp, secondVal) {
-    let filteredData = data.filter((obj) => {
+  _filterList(data, firstProp, firstValue, secondProp, secondValue) {
+    const filteredData = data.filter((obj) => {
       return (
-        obj[property].includes(valueNormal) && obj[secondProp].includes(secondVal) ||
-        obj[property].includes(valueNormal.toLowerCase()) && obj[secondProp].includes(secondVal) ||
-        obj[property].includes(valueNormal) && obj[secondProp].includes(secondVal.toLowerCase()) ||
-        obj[property].includes(valueNormal.toLowerCase()) && obj[secondProp].includes(secondVal.toLowerCase())
+        obj[firstProp].includes(firstValue) && obj[secondProp].includes(secondValue) ||
+        obj[firstProp].includes(firstValue.toLowerCase()) && obj[secondProp].includes(secondValue) ||
+        obj[firstProp].includes(firstValue) && obj[secondProp].includes(secondValue.toLowerCase()) ||
+        obj[firstProp].includes(firstValue.toLowerCase()) &&
+        obj[secondProp].includes(secondValue.toLowerCase())
       );
     });
 
@@ -100,27 +101,16 @@ export default class CustomerSearch extends Component {
     });
   }
 
-  _selectCustomer(selCustomer) {
+  _selectCustomer(selectedCustomer) {
     this.props.navigator.push({
-      title: selCustomer.firstname + ' ' + selCustomer.lastname,
+      title: `${selectedCustomer.firstname} ${selectedCustomer.lastname}`,
       component: ArticlesList,
       passProps: {
-        customerId: selCustomer.id,
-        firstname: selCustomer.firstname,
-        lastname: selCustomer.lastname,
-        email: selCustomer.email
-      },
+        customerId: selectedCustomer.id,
+        firstname: selectedCustomer.firstname,
+        lastname: selectedCustomer.lastname,
+        email: selectedCustomer.email
+      }
     });
-  }
-}
-
-const styles = {
-  searchBar: {
-    paddingLeft: 30,
-    fontSize: 22,
-    height: 10,
-    flex: .1,
-    borderWidth: 9,
-    borderColor: '#E4E4E4'
   }
 };

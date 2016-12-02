@@ -25,7 +25,7 @@ import {
   import {width, height} from '../config/globalStyles';
   import {fpMainColor} from '../config/globalStyles';
 
-// Exports
+// Exports Locals
   export let customersData = null;
 
 
@@ -142,7 +142,9 @@ export class Home extends Component {
 
   componentDidMount() {
     IconMaterial.getImageSource('chevron-left', 43, 'blue')
-      .then((chevronIconSource) => {this.setState({goBackIcon: chevronIconSource});
+      .then((chevronIconSource) => {this.setState({
+          goBackIcon: chevronIconSource
+        });
       });
       // 43px Chevron font size = iOS Default
       // a bit complicated way because of NavigatorIOS' Nature
