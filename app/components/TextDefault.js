@@ -1,29 +1,23 @@
 'use strict';
 
-import React, { Component } from 'react';
-import {
-  Text,
-} from 'react-native';
-
-import globalStyles from '../config/globalStyles';
+import React, {Component} from 'react';
+import {Text} from 'react-native';
 
 
 export default class TextDefault extends Component {
+
   constructor(props) {
     super(props);
   }
 
   render() {
-    const {fontWeight} = this.props;
-    const {color} = this.props;
-    let fontWeightVal = null;
-    fontWeight == 'semibold' ? fontWeightVal = '600' : '300';
+    const fontWeightVal = '600' ? this.props.fontWeight == 'semibold' : '300';
 
     return (
       <Text style={[{
         fontSize: 17,
         fontWeight: fontWeightVal,
-        color: color
+        color: this.props.color
       }]}>
         {this.props.children}
       </Text>
