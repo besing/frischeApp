@@ -1,15 +1,14 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   View,
-  Text,
+  Text
 } from 'react-native';
 
+// Import Globals, Configs & Helpers
+  import {fpMainColorLight} from '../config/globalStyles'
 
-import TextDefault from '../components/TextDefault';
-
-import {fpMainColorLight} from '../config/globalStyles'
 
 export default class NavbarSubtitle extends Component {
 
@@ -24,6 +23,6 @@ export default class NavbarSubtitle extends Component {
           {this.props.children}
         </Text>
       </View>
-    ); // TODO: colors only guessed for now
+    );
   }
 }
