@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   View,
   Text,
@@ -19,12 +19,10 @@ export default class ArticlesListItem extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       articleReturnCount: 0,
       articleBackgroundColor: defaultArticleBgColor
     };
-
     this._increaseReturnCountByOne = this._increaseReturnCountByOne.bind(this);
     this._decreaseReturnCountByOne = this._decreaseReturnCountByOne.bind(this);
     this._resetArticleBgColor = this._resetArticleBgColor.bind(this);
@@ -33,16 +31,18 @@ export default class ArticlesListItem extends Component {
   render() {
     const imgPlaceholderSmall = <Image
       source={require('../images/placeholder_50.png')}
-      style={{width: 50, height: 50}}
       resizeMode='cover'
+      style={{width: 50, height: 50}}
     />;
-    const img = this.props.img || imgPlaceholderSmall; // TODO: Bei Klick Bild in groß anzeigen
 
-    let returnItemFull =
+    const img = this.props.img || imgPlaceholderSmall;
+
+    const returnItemFull =
       <TouchableWithoutFeedback onPress={this._increaseReturnCountByOne}
                                 onLongPress={this._decreaseReturnCountByOne}>
         <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
           {img}
+
           <View style={{
             flex: 1,
             flexDirection: 'row',
@@ -60,7 +60,7 @@ export default class ArticlesListItem extends Component {
             </View>
             <View style={{
               backgroundColor: fpMainColor,
-              borderRadius: 30, // later: maybe implement "50%" workaround better (instead just high nr.)
+              borderRadius: 30, // better way to implement "radius 50%" instead of just high number?
               width: 30,
               height: 30,
               justifyContent: 'center',
@@ -74,10 +74,11 @@ export default class ArticlesListItem extends Component {
         </View>
       </TouchableWithoutFeedback>;
 
-    let returnItemFiltered = (this.state.articleReturnCount > 0 &&
+    const returnItemFiltered = (this.state.articleReturnCount > 0 &&
       <TouchableWithoutFeedback disabled>
         <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
           {img}
+
           <View style={{
             flex: 1,
             flexDirection: 'row',
@@ -105,7 +106,8 @@ export default class ArticlesListItem extends Component {
             </View>
           </View>
         </View>
-      </TouchableWithoutFeedback>);
+      </TouchableWithoutFeedback>
+    ); // 2 pretty similar <Touchable...> Elements: not really DRY (mostly style differences)
 
     return (
       <View>{this.props.filterOn ? returnItemFiltered : returnItemFull}</View>
