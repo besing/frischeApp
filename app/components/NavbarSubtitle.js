@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 
 // Import Globals, Configs & Helpers
-  import {fpMainColorLight} from '../config/globalStyles'
+  import {brandMainColorLight} from '../config/globalStyles'
 
 
 export default class NavbarSubtitle extends Component {
@@ -18,7 +18,7 @@ export default class NavbarSubtitle extends Component {
 
   render() {
     return(
-      <View style={{padding: 5, backgroundColor: fpMainColorLight}}>
+      <View style={{padding: 5, backgroundColor: brandMainColorLight}}>
         <Text style={{textAlign: 'center', color: 'rgba(255,255,255,0.8)'}}>
           {this.props.children}
         </Text>

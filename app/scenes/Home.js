@@ -23,7 +23,7 @@ import {
   import {currentTime} from '../config/helpers';
   import globalStyles from '../config/globalStyles';
   import {width, height} from '../config/globalStyles';
-  import {fpMainColor} from '../config/globalStyles';
+  import {brandMainColor} from '../config/globalStyles';
 
 // Exports Locals
   export let customersData = null;
@@ -38,7 +38,7 @@ export default class NavigatorHome extends Component {
           title: 'Frischepost Pfandrückgabe'
         }}
         style={{flex: 1}}
-        barTintColor={fpMainColor}
+        barTintColor={brandMainColor}
         titleTextColor="#fff"
         tintColor="rgba(255,255,255,0.8)"
         shadowHidden={true}

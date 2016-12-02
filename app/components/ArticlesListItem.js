@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 
-import {fpMainColor} from '../config/globalStyles';
+import {brandMainColor} from '../config/globalStyles';
 import {width, height} from '../config/globalStyles';
 
 
@@ -59,7 +59,7 @@ export default class ArticlesListItem extends Component {
               </Text>
             </View>
             <View style={{
-              backgroundColor: fpMainColor,
+              backgroundColor: brandMainColor,
               borderRadius: 30, // better way to implement "radius 50%" instead of just high number?
               width: 30,
               height: 30,
