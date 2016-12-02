@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 // Import 3rd Party Node Modules
-  import { SearchBar, List, ListItem } from 'react-native-elements';
+  import { SearchBar, ListItem } from 'react-native-elements';
 
 // Import Scenes & Components
   import ArticlesList from '../scenes/ArticlesList';
