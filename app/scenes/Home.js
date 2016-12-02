@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   View,
   Text,
@@ -8,30 +8,26 @@ import {
   ActivityIndicator
 } from 'react-native';
 
-import digestCall from 'digest-auth-request-rn';
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import IconMaterial from 'react-native-vector-icons/MaterialIcons';
+// Import 3rd Party Node Modules
+  import digestCall from 'digest-auth-request-rn';
+  import QRCodeScanner from 'react-native-qrcode-scanner';
+  import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
-import appConfig from '../config/settings';
-import globalStyles from '../config/globalStyles';
-import CustomerSearch from '../scenes/CustomerSearch';
-import GetDepositArticles from '../components/GetDepositArticles';
-import JumboButton from '../components/JumboButton';
-import ArticlesList from '../scenes/ArticlesList';
+// Import Scenes & Components
+  import CustomerSearch from '../scenes/CustomerSearch';
+  import JumboButton from '../components/JumboButton';
 
-import appHelpers from '../config/helpers';
-import {currentTime} from '../config/helpers';
-import {width, height} from '../config/globalStyles';
-import {fpMainColor} from '../config/globalStyles';
+// Import Globals, Configs & Helpers
+  import appConfig from '../config/settings';
+  import globalStyles from '../config/globalStyles';
+  import ArticlesList from '../scenes/ArticlesList';
+  import {currentTime} from '../config/helpers';
+  import {width, height} from '../config/globalStyles';
+  import {fpMainColor} from '../config/globalStyles';
 
-const url = appConfig.apiCredentials_test.url;
-const {apiUser} = appConfig.apiCredentials_test;
-const {apiKey} = appConfig.apiCredentials_test;
+// Exports
+  export let customersData = null;
 
-
-export let customersDataAll = null;
-export let customersData = null;
-export let ordersData = null;
 
 export default class NavigatorHome extends Component {
   render() {
@@ -52,32 +48,29 @@ export default class NavigatorHome extends Component {
 }
 
 export class Home extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       lastCustomersUpdate: 'Noch nicht aktualisiert',
       currentlyLoading: false,
-      fetchedCustomersCount: 0, // later: can be removed if not shown in UI (also usages on bottom)
       customersDidUpdate: false,
-      lastOrdersUpdate: 'Noch nicht aktualisiert',
-      fetchedOrdersCount: null,
-      ordersDidUpdate: false,
       goBackIcon: null
     };
     this._getAllCustomers = this._getAllCustomers.bind(this);
-    this._navPush = this._navPush.bind(this);
     this._processBarcode = this._processBarcode.bind(this);
   }
 
   render() {
-    let spinner = null; // TODO: vereinfachen wie bei anderen Spinner-Stellen
-    if (this.state.currentlyLoading) {
-      spinner = <ActivityIndicator
+    const spinner = (
+        // needs to be sourced out into conditional in order to hide properly when State=loaded
+      this.state.currentlyLoading && <ActivityIndicator
         animating={this.state.currentlyLoading}
       />
-    } else { spinner = <View/> }
+    ) || <View/>;
 
     const homeMargins = height * 0.04;
+      // dynamic height for nicer layout on different screen sizes
 
     return (
       <View style={[globalStyles.container,
@@ -86,19 +79,18 @@ export class Home extends Component {
         <View style={{marginTop: homeMargins, marginBottom: homeMargins}}>
           <JumboButton
             iconName="camera-alt"
-            bgColor="#BF6B66"
+            bgColor={'#bf6b66'}
             onPress={() => {
               this.props.navigator.push({
                 component: QRCodeScanner,
                 title: 'QR Code scannen',
-                passProps: {onRead: this._processBarcode}
+                passProps: {
+                  onRead: this._processBarcode
+                }
               });
             }}
-
-
-          iconSize={60}
+            iconSize={60}
             style={{paddingTop: height * 0.1, paddingBottom: height * 0.1}}
-              // dynamic height for nicer layout on different screen sizes
           >
             QR Code scannen
           </JumboButton>
@@ -108,7 +100,12 @@ export class Home extends Component {
           <JumboButton
             iconName="person"
             bgColor={this.state.customersDidUpdate ? '#223f3e' : '#aaa'}
-            onPress={() => {this._navPush('Kunden suchen', CustomerSearch)}}
+            onPress={() => {
+              this.props.navigator.push({
+                title: 'Kunden suchen',
+                component: CustomerSearch
+              });
+            }}
             iconSize={30}
             style={{paddingTop: homeMargins, paddingBottom: homeMargins}}
             disabled={!this.state.customersDidUpdate}
@@ -122,8 +119,8 @@ export class Home extends Component {
             iconName="cloud-download"
             bgColor="#4e6564"
             onPress={() => this._getAllCustomers(10000, 'lastname', 'ASC')}
-              // passing Arguments in onPress: http://bit.ly/2fHoAln
               // limit 10,000 means basically "no limit"
+              // passing Arguments in onPress: http://bit.ly/2fHoAln
             iconSize={25}
             style={{paddingTop: homeMargins, paddingBottom: homeMargins}}
           >
@@ -135,6 +132,7 @@ export class Home extends Component {
           <Text style={{marginRight: 5}}>
             {this.state.lastCustomersUpdate}
           </Text>
+
           {spinner}
         </View>
 
@@ -143,31 +141,20 @@ export class Home extends Component {
   }
 
   componentDidMount() {
-    // this._getAllCustomers(10000, 'lastname', 'ASC'); // TODO --- bloß für einfachere Dev hier drin
-
     IconMaterial.getImageSource('chevron-left', 43, 'blue')
       .then((chevronIconSource) => {this.setState({goBackIcon: chevronIconSource});
       });
-      // 43px Chevron font size = Apple Default
+      // 43px Chevron font size = iOS Default
       // a bit complicated way because of NavigatorIOS' Nature
-      // but right way: https://github.com/oblador/react-native-vector-icons#usage-with-navigatorios)
-  }
-
-  _navPush(title, component) {
-    this.props.navigator.push({
-      title: title,
-      component: component
-    });
+      // but still right: https://github.com/oblador/react-native-vector-icons#usage-with-navigatorios
   }
 
   _processBarcode(event) {
-    console.log('event.data:', event.data);
-
     const parsedData = JSON.parse(event.data);
     const orderData = parsedData.order;
 
     this.props.navigator.push({
-      title: orderData.shipping.firstName + ' ' + orderData.shipping.lastName,
+      title: `${orderData.shipping.firstName} ${orderData.shipping.lastName}`,
       component: ArticlesList,
       leftButtonTitle: 'Zurück',
       onLeftButtonPress: () => this.props.navigator.popToTop(0),
@@ -181,40 +168,38 @@ export class Home extends Component {
         lastname: orderData.customer.lastname,
         email: orderData.customer.email,
         fetchedFromScan: true
-          // to distinguish between Scan and Search at the results --> alternative Back-Button-Logic
+          // to distinguish between Scan and Search results (alternative Back-Button-Logic)
       },
     });
   }
 
   _getAllCustomers(limit, sortAttr, order) {
-    const req = new digestCall(
-      'GET',
-      url + '/customers' + '?sort[0][property]=' + sortAttr +'&sort[0][direction]=' + order + '&limit=' + limit,
-      apiUser, apiKey
-    );
+    const url = appConfig.apiCredentials_test.url;
+    const {apiUser} = appConfig.apiCredentials_test;
+    const {apiKey} = appConfig.apiCredentials_test;
+
     this.setState({
       currentlyLoading: true,
       lastCustomersUpdate: 'Letzte Aktualisierung: '
     });
+
+    const req = new digestCall('GET', `${url}/customers` +
+      `?sort[0][property]=${sortAttr}` + `&sort[0][direction]=${order}` + `&limit=${limit}`,
+      apiUser, apiKey
+    );
+
     req.request((result) => {
-      let customersTotal = result.total;
-      customersDataAll = result.data;
-      customersData = customersDataAll.filter((f) => { // filter out customers without name in BE
+      const customersDataAll = result.data;
+      customersData = customersDataAll.filter((f) => { // filter out customers with empty name
         return f.lastname !== ''
       });
-
-      let customersAmount = customersData.length;
 
       this.setState({
         currentlyLoading: false,
         lastCustomersUpdate: 'Letzte Aktualisierung: ' + currentTime,
-        fetchedCustomersCount: customersAmount + ' (von ' + customersTotal + ')',
         customersDidUpdate: true
       });
 
-      // console.debug(this.state.fetchedCustomersCount + 'Customers loaded');
-
-      // this._navPush('Kunden suchen', CustomerSearch); // TODO --- bloß für einfachere Dev hier drin
     }, (error) => {
       console.error(error);
     });
