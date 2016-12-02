@@ -1,46 +1,37 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   View,
-  ScrollView,
   Text,
   ActivityIndicator,
-  ListView,
-  TouchableHighlight
+  ListView
 } from 'react-native';
 
-import DropdownAlert from 'react-native-dropdownalert';
+// Import 3rd Party Node Modules
+  import digestCall from 'digest-auth-request-rn';
+  import DropdownAlert from 'react-native-dropdownalert';
 
-import digestCall from 'digest-auth-request-rn';
-import { digestAuthHeader } from 'digest-auth-request-rn'; // later: maybe throw out if unused
+// Import Scenes & Components
+  import ArticlesListItem from '../components/ArticlesListItem';
 
-import appConfig from '../config/settings';
-
-import ArticlesListItem from '../components/ArticlesListItem';
-
-// const {url} = appConfig.apiCredentials_test; // later: use this one
-const url = appConfig.apiCredentials_test.url;
-const {apiUser} = appConfig.apiCredentials_test;
-const {apiKey} = appConfig.apiCredentials_test;
-import {width, height} from '../config/globalStyles';
+// Import Globals, Configs & Helpers
+  import appConfig from '../config/settings';
+  import {width, height} from '../config/globalStyles';
 
 
-export default class GetDepositArticles extends Component {
+export default class DepositArticlesApiCalls extends Component {
 
   constructor(props) {
     super(props);
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.customerReturnedArticles = [];
-
     this.state = {
       currentlyLoading: true,
-      fetchedData: [],
       dataSource: this.ds.cloneWithRows([]),
       dataSourceReduced: this.ds.cloneWithRows([]),
     };
-
-    this.getArticleList = this.getArticleList.bind(this); // important! (No Autobinding in ES6 Classes)
+    this.getArticleList = this.getArticleList.bind(this);
     this.collectReturnedItems = this.collectReturnedItems.bind(this);
     this.mergeReturnedArticlesToObj = this.mergeReturnedArticlesToObj.bind(this);
     this.createSubmitObject = this.createSubmitObject.bind(this);
@@ -88,36 +79,39 @@ export default class GetDepositArticles extends Component {
           }
           automaticallyAdjustContentInsets={false}
           enableEmptySections={true}
+          initialListSize={20} // render all Rows at once (20 = more than total)
           style={this.props.filterListOnButtonConfirm ? {height: height - 183} : {height: height - 132}}
-          initialListSize={20}
         />
 
         {dropdownAlertSuccess}
         {dropdownAlertError}
       </View>
-        /* height-132px = screen height - Status-/Nav-/Subtitle-Bars - Button
-         * (otherwise hidden since 'automaticallyAdj...' above)
-         * even 51px less for Confirm Screen (w/ second button) */
+        // height-132px = screen height - Status-/Nav-/Subtitle-Bars - Button
+        //(otherwise hidden since 'automaticallyAdj...' above)
+        // even 51px less for Confirm Screen (w/ second button)
     );
   }
 
   componentDidMount() {
-    this.getArticleList(); // if inside render() => Infinite Loop!
+    this.getArticleList();
   }
 
   getArticleList() {
+    const url = appConfig.apiCredentials_test.url;
+    const {apiUser} = appConfig.apiCredentials_test;
+    const {apiKey} = appConfig.apiCredentials_test;
+
     const req = new digestCall(
       'GET',
       url + '/depositArticles',
       apiUser,
       apiKey
     );
-    req.request((result) => {
-      // changed to ES6-Arrow-Functions (for preserving 'this' -> no need for binding)
 
+    req.request((result) => {
+      // changed to ES6-Arrow-Functions (for preserving 'this' -> no binding necessary)
       this.setState({
         currentlyLoading: false,
-        fetchedData: result.data,
         dataSource: this.ds.cloneWithRows(result.data),
       });
 
@@ -141,7 +135,6 @@ export default class GetDepositArticles extends Component {
     let merged = {};
 
     this.customerReturnedArticles.forEach((arrObj) => {
-
       if (merged.hasOwnProperty(arrObj.id)) {
         merged[arrObj.id] += arrObj.addAmount;
         merged[arrObj.id] -= arrObj.removeAmount;
@@ -155,12 +148,12 @@ export default class GetDepositArticles extends Component {
 
   createSubmitObject(obj) {
     let submitObject = {
-        customerId: this.props.customerId,
-        articles: []
-      };
+      customerId: this.props.customerId,
+      articles: []
+    };
 
     for (let prop in obj) {
-      if (obj[prop] > 0 && obj.hasOwnProperty(prop)) { // ignore amount = 0 & check if hasOwnProp
+      if (obj[prop] > 0 && obj.hasOwnProperty(prop)) { // ignore amount = 0 and check if hasOwnProp
         submitObject.articles.push({
           articleId: prop,
           returnAmount: obj[prop]
@@ -172,7 +165,7 @@ export default class GetDepositArticles extends Component {
   }
 
   submitArticlesRequest(submitObj) {
-    // TODO: switch to Digest Auth when API Endpoint ready (for now just on mocked API)
+    // TODO: switch to Digest Auth when API Endpoint ready
 
     fetch('http://localhost:3000/returnedArticles', {
       method: 'POST',

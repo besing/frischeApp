@@ -10,7 +10,7 @@ import {
   import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 
 // Import Scenes & Components
-  import GetDepositArticles from '../components/GetDepositArticles';
+  import DepositArticlesApiCalls from '../components/DepositArticlesApiCalls';
   import NavbarSubtitle from '../components/NavbarSubtitle';
 
 // Import Globals, Configs & Helpers
@@ -86,16 +86,16 @@ export default class ArticlesList extends Component {
         <NavbarSubtitle>
           {this.props.email}
         </NavbarSubtitle>
-        <GetDepositArticles filterListOnButtonConfirm={this.state.showConfirmScreen}
-                            hideConfirmButtonWhileLoading={() => this.setState({
+        <DepositArticlesApiCalls filterListOnButtonConfirm={this.state.showConfirmScreen}
+                          hideConfirmButtonWhileLoading={() => this.setState({
                               articleListFetched: true
                             })}
-                            articlesReturned={this._articlesReturned}
-                            customerId={this.props.customerId}
-                            customerFirstname={this.props.firstname}
-                            customerLastname={this.props.lastname}
-                            submitArticles={this.state.submitChoice}
-                            goBackToHome={() => this.props.navigator.popToTop(0)} />
+                          articlesReturned={this._articlesReturned}
+                          customerId={this.props.customerId}
+                          customerFirstname={this.props.firstname}
+                          customerLastname={this.props.lastname}
+                          submitArticles={this.state.submitChoice}
+                          goBackToHome={() => this.props.navigator.popToTop(0)} />
         {confirmButton}
         {backToEditButton}
         {submitButton}
