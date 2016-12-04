@@ -17,7 +17,7 @@ import {
 
 // Import Globals, Configs & Helpers
   import appConfig from '../config/settings';
-  import {width, height} from '../config/globalStyles';
+  import globalStyles, {width, height} from '../config/globalStyles';
 
 
 export default class DepositArticlesApiCalls extends Component {
@@ -66,7 +66,7 @@ export default class DepositArticlesApiCalls extends Component {
     if (this.props.submitArticles) { this.mergeReturnedArticlesToObj() }
 
     return (
-      <View style={{flex: 1}}>
+      <View style={globalStyles.container}>
         {spinner}
 
         <ListView

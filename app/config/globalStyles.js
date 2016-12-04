@@ -17,7 +17,7 @@ const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  center: { // not used ?
+  centerXY: {
     justifyContent: 'center',
     alignItems: 'center'
   },

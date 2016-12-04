@@ -9,8 +9,8 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 
-import {brandMainColor} from '../config/globalStyles';
-import {width, height} from '../config/globalStyles';
+// Import Globals, Configs & Helpers
+  import globalStyles, {width, height, brandMainColor} from '../config/globalStyles';
 
 
 const defaultArticleBgColor = '#fff';
@@ -43,14 +43,13 @@ export default class ArticlesListItem extends Component {
         <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
           {img}
 
-          <View style={{
-            flex: 1,
+          <View style={[globalStyles.container, {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingLeft: 10,
             paddingRight: 10
-          }}>
+          }]}>
             <View style={{paddingRight: 10, width: width - 100}}>
               <Text color="#555"
                     numberOfLines={1}
@@ -58,14 +57,12 @@ export default class ArticlesListItem extends Component {
                 {this.props.title}
               </Text>
             </View>
-            <View style={{
+            <View style={[globalStyles.centerXY, {
               backgroundColor: brandMainColor,
               borderRadius: 30, // better way to implement "radius 50%" instead of just high number?
               width: 30,
               height: 30,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+            }]}>
               <Text style={{color: '#fff', fontWeight: '600'}}>
                 {this.state.articleReturnCount}
               </Text>
@@ -79,14 +76,13 @@ export default class ArticlesListItem extends Component {
         <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
           {img}
 
-          <View style={{
-            flex: 1,
+          <View style={[globalStyles.container, {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingLeft: 10,
             paddingRight: 10
-          }}>
+          }]}>
             <View style={{paddingRight: 10, width: width - 100}}>
               <Text color="#555"
                     numberOfLines={1}
@@ -94,12 +90,10 @@ export default class ArticlesListItem extends Component {
                 {this.props.title}
               </Text>
             </View>
-            <View style={{
+            <View style={[globalStyles.centerXY, {
               width: 30,
               height: 30,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+            }]}>
               <Text style={{color: '#000', fontWeight: '600'}}>
                 {this.state.articleReturnCount}
               </Text>

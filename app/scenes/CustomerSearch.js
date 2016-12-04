@@ -13,6 +13,9 @@ import {
 // Import Scenes & Components
   import ArticlesList from '../scenes/ArticlesList';
 
+// Import Globals, Configs & Helpers
+  import globalStyles from '../config/globalStyles'
+
 // Import Locals
   import {customersData} from '../scenes/Home';
 
@@ -36,7 +39,7 @@ export default class CustomerSearch extends Component {
 
   render() {
     return (
-      <View style={{paddingTop: 64, flex: 1}}>
+      <View style={[globalStyles.container, {paddingTop: 64}]}>
         <SearchBar
           onChange={this._setSearchTextFirstName}
           placeholder="Vorname"

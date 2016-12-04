@@ -21,9 +21,7 @@ import {
 // Import Globals, Configs & Helpers
   import appConfig from '../config/settings';
   import {currentTime} from '../config/helpers';
-  import globalStyles from '../config/globalStyles';
-  import {width, height} from '../config/globalStyles';
-  import {brandMainColor} from '../config/globalStyles';
+  import globalStyles, {width, height, brandMainColor} from '../config/globalStyles';
 
 // Exports Locals
   export let customersData = null;
@@ -37,7 +35,7 @@ export default class NavigatorHome extends Component {
           component: Home,
           title: 'Frischepost Pfandrückgabe'
         }}
-        style={{flex: 1}}
+        style={globalStyles.container}
         barTintColor={brandMainColor}
         titleTextColor="#fff"
         tintColor="rgba(255,255,255,0.8)"
@@ -128,7 +126,7 @@ export class Home extends Component {
           </JumboButton>
         </View>
 
-        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+        <View style={globalStyles.centerXY}>
           <Text style={{marginRight: 5}}>
             {this.state.lastCustomersUpdate}
           </Text>
