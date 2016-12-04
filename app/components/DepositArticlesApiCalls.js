@@ -5,7 +5,8 @@ import {
   View,
   Text,
   ActivityIndicator,
-  ListView
+  ListView,
+  StyleSheet
 } from 'react-native';
 
 // Import 3rd Party Node Modules
@@ -53,36 +54,20 @@ export default class DepositArticlesApiCalls extends Component {
     const dropdownAlertSuccess = (
       <DropdownAlert
         ref={(ref) => this.dropdownSuccess = ref}
-        containerStyle={{
+        containerStyle={[styles.dropdownAlert, {
           backgroundColor: 'mediumseagreen',
-          paddingTop: 0,
-          paddingBottom: 20,
-          paddingLeft:  16
-        }}
-        titleStyle={{
-          textAlign: 'center',
-          fontSize: 16,
-          fontWeight: 'bold',
-          color: '#fff'
-        }}
+        }]}
+        titleStyle={styles.dropdownAlertTitle}
         closeInterval={1500} />
     );
 
     const dropdownAlertError = (
       <DropdownAlert
         ref={(ref) => this.dropdownError = ref}
-        containerStyle={{
+        containerStyle={[styles.dropdownAlert, {
           backgroundColor: 'crimson',
-          paddingTop: 0,
-          paddingBottom: 20,
-          paddingLeft:  16
-        }}
-        titleStyle={{
-          textAlign: 'center',
-          fontSize: 16,
-          fontWeight: 'bold',
-          color: '#fff'
-        }}
+        }]}
+        titleStyle={styles.dropdownAlertTitle}
         closeInterval={10000} />
     );
 
@@ -240,3 +225,17 @@ export default class DepositArticlesApiCalls extends Component {
    }
    */
 }
+
+const styles = StyleSheet.create({
+  dropdownAlert: {
+    paddingTop: 0,
+    paddingBottom: 20,
+    paddingLeft:  16
+  },
+  dropdownAlertTitle: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff'
+  }
+});

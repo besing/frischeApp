@@ -74,9 +74,9 @@ export class Home extends Component {
       <View style={[
         globalStyles.container, {
         backgroundColor: '#eee',
-          paddingTop: 64,
-          paddingLeft: homeMargins,
-          paddingRight: homeMargins
+        paddingTop: 64,
+        paddingLeft: homeMargins,
+        paddingRight: homeMargins
       }]}>
 
         <View style={{

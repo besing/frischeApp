@@ -49,18 +49,8 @@ export default class ArticlesListItem extends Component {
         }]}>
           {img}
 
-          <View style={[
-            globalStyles.container, {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingLeft: 10,
-            paddingRight: 10
-          }]}>
-            <View style={{
-              paddingRight: 10,
-              width: width - 100
-            }}>
+          <View style={styles.contentWrapper}>
+            <View style={styles.titleWrapper}>
               <Text color="#555"
                     numberOfLines={1}
                     ellipsizeMode="middle">
@@ -93,18 +83,8 @@ export default class ArticlesListItem extends Component {
         }]}>
           {img}
 
-          <View style={[
-            globalStyles.container, {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingLeft: 10,
-            paddingRight: 10
-          }]}>
-            <View style={{
-              paddingRight: 10,
-              width: width - 100
-            }}>
+          <View style={styles.contentWrapper}>
+            <View style={styles.titleWrapper}>
               <Text color="#555"
                     numberOfLines={1}
                     ellipsizeMode="middle">
@@ -166,27 +146,23 @@ export default class ArticlesListItem extends Component {
   }
 }
 
-const styles = StyleSheet.create({ // styles adapted from RN Elements ('ListItem')
+const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     borderBottomColor: '#ededed',
     borderBottomWidth: 1,
     backgroundColor: 'white'
   },
-  icon: {
-    marginRight: 8
-  },
-  title: {
-    fontSize: 15,
-  },
-  subtitle: {
-    fontSize: 12,
-    marginTop: 1,
-    fontWeight: '600',
-  },
-  chevronContainer: {
+  contentWrapper: {
     flex: 1,
-    alignItems: 'flex-end',
-    justifyContent: 'center'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  titleWrapper: {
+    paddingRight: 10,
+    width: width - 100
   },
 });
