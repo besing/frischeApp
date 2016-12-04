@@ -32,7 +32,10 @@ export default class ArticlesListItem extends Component {
     const imgPlaceholderSmall = <Image
       source={require('../images/placeholder_50.png')}
       resizeMode='cover'
-      style={{width: 50, height: 50}}
+      style={{
+        width: 50,
+        height: 50
+      }}
     />;
 
     const img = this.props.img || imgPlaceholderSmall;
@@ -40,30 +43,41 @@ export default class ArticlesListItem extends Component {
     const returnItemFull =
       <TouchableWithoutFeedback onPress={this._increaseReturnCountByOne}
                                 onLongPress={this._decreaseReturnCountByOne}>
-        <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
+        <View style={[
+          styles.wrapper, {
+          backgroundColor: this.state.articleBackgroundColor
+        }]}>
           {img}
 
-          <View style={[globalStyles.container, {
+          <View style={[
+            globalStyles.container, {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingLeft: 10,
             paddingRight: 10
           }]}>
-            <View style={{paddingRight: 10, width: width - 100}}>
+            <View style={{
+              paddingRight: 10,
+              width: width - 100
+            }}>
               <Text color="#555"
                     numberOfLines={1}
                     ellipsizeMode="middle">
                 {this.props.title}
               </Text>
             </View>
-            <View style={[globalStyles.centerXY, {
+            <View style={[
+              globalStyles.centerXY, {
               backgroundColor: brandMainColor,
               borderRadius: 30, // better way to implement "radius 50%" instead of just high number?
               width: 30,
               height: 30,
             }]}>
-              <Text style={{color: '#fff', fontWeight: '600'}}>
+              <Text style={{
+                color: '#fff',
+                fontWeight: '600'
+              }}>
                 {this.state.articleReturnCount}
               </Text>
             </View>
@@ -73,28 +87,39 @@ export default class ArticlesListItem extends Component {
 
     const returnItemFiltered = (this.state.articleReturnCount > 0 &&
       <TouchableWithoutFeedback disabled>
-        <View style={[styles.container, styles.wrapper, {backgroundColor: this.state.articleBackgroundColor}]}>
+        <View style={[
+          styles.wrapper, {
+          backgroundColor: this.state.articleBackgroundColor
+        }]}>
           {img}
 
-          <View style={[globalStyles.container, {
+          <View style={[
+            globalStyles.container, {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
             paddingLeft: 10,
             paddingRight: 10
           }]}>
-            <View style={{paddingRight: 10, width: width - 100}}>
+            <View style={{
+              paddingRight: 10,
+              width: width - 100
+            }}>
               <Text color="#555"
                     numberOfLines={1}
                     ellipsizeMode="middle">
                 {this.props.title}
               </Text>
             </View>
-            <View style={[globalStyles.centerXY, {
+            <View style={[
+              globalStyles.centerXY, {
               width: 30,
               height: 30,
             }]}>
-              <Text style={{color: '#000', fontWeight: '600'}}>
+              <Text style={{
+                color: '#000',
+                fontWeight: '600'
+              }}>
                 {this.state.articleReturnCount}
               </Text>
             </View>
@@ -142,13 +167,11 @@ export default class ArticlesListItem extends Component {
 }
 
 const styles = StyleSheet.create({ // styles adapted from RN Elements ('ListItem')
-  container: {
+  wrapper: {
+    flexDirection: 'row',
     borderBottomColor: '#ededed',
     borderBottomWidth: 1,
     backgroundColor: 'white'
-  },
-  wrapper: {
-    flexDirection: 'row'
   },
   icon: {
     marginRight: 8

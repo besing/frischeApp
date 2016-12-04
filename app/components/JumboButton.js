@@ -22,8 +22,7 @@ export default class JumboButton extends Component {
         underlayColor={this.props.underlayColor || '#000'}
         size={this.props.iconSize}
         borderRadius={0}
-        style={[
-          {flexDirection: 'column'},
+        style={[{flexDirection: 'column'},
           this.props.slim ? {padding: 10} : {padding: 30},
           this.props.style
         ]}

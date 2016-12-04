@@ -43,23 +43,46 @@ export default class DepositArticlesApiCalls extends Component {
       this.state.currentlyLoading && <ActivityIndicator
         animating={this.state.currentlyLoading}
         size="large"
-        style={{justifyContent: 'center', marginTop: 50}}
+        style={{
+          justifyContent: 'center',
+          marginTop: 50
+        }}
       />
     ) || <View/>;
 
     const dropdownAlertSuccess = (
       <DropdownAlert
         ref={(ref) => this.dropdownSuccess = ref}
-        containerStyle={{backgroundColor: 'mediumseagreen', paddingTop: 0, paddingBottom: 20, paddingLeft:  16}}
-        titleStyle={{textAlign: 'center', fontSize: 16, fontWeight: 'bold', color: '#fff'}}
+        containerStyle={{
+          backgroundColor: 'mediumseagreen',
+          paddingTop: 0,
+          paddingBottom: 20,
+          paddingLeft:  16
+        }}
+        titleStyle={{
+          textAlign: 'center',
+          fontSize: 16,
+          fontWeight: 'bold',
+          color: '#fff'
+        }}
         closeInterval={1500} />
     );
 
     const dropdownAlertError = (
       <DropdownAlert
         ref={(ref) => this.dropdownError = ref}
-        containerStyle={{backgroundColor: 'crimson', paddingTop: 0, paddingBottom: 20, paddingLeft:  16}}
-        titleStyle={{textAlign: 'center', fontSize: 16, fontWeight: 'bold', color: '#fff'}}
+        containerStyle={{
+          backgroundColor: 'crimson',
+          paddingTop: 0,
+          paddingBottom: 20,
+          paddingLeft:  16
+        }}
+        titleStyle={{
+          textAlign: 'center',
+          fontSize: 16,
+          fontWeight: 'bold',
+          color: '#fff'
+        }}
         closeInterval={10000} />
     );
 
@@ -80,7 +103,9 @@ export default class DepositArticlesApiCalls extends Component {
           automaticallyAdjustContentInsets={false}
           enableEmptySections={true}
           initialListSize={20} // render all Rows at once (20 = more than total)
-          style={this.props.filterListOnButtonConfirm ? {height: height - 183} : {height: height - 132}}
+          style={this.props.filterListOnButtonConfirm ?
+            {height: height - 183} :
+            {height: height - 132}}
         />
 
         {dropdownAlertSuccess}

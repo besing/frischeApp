@@ -71,10 +71,18 @@ export class Home extends Component {
       // dynamic height for nicer layout on different screen sizes
 
     return (
-      <View style={[globalStyles.container,
-        {backgroundColor: '#eee', paddingTop: 64, paddingLeft: homeMargins, paddingRight: homeMargins}]}>
+      <View style={[
+        globalStyles.container, {
+        backgroundColor: '#eee',
+          paddingTop: 64,
+          paddingLeft: homeMargins,
+          paddingRight: homeMargins
+      }]}>
 
-        <View style={{marginTop: homeMargins, marginBottom: homeMargins}}>
+        <View style={{
+          marginTop: homeMargins,
+          marginBottom: homeMargins
+        }}>
           <JumboButton
             iconName="camera-alt"
             bgColor={'#bf6b66'}
@@ -88,7 +96,10 @@ export class Home extends Component {
               });
             }}
             iconSize={60}
-            style={{paddingTop: height * 0.1, paddingBottom: height * 0.1}}
+            style={{
+              paddingTop: height * 0.1,
+              paddingBottom: height * 0.1
+            }}
           >
             QR Code scannen
           </JumboButton>
@@ -105,7 +116,10 @@ export class Home extends Component {
               });
             }}
             iconSize={30}
-            style={{paddingTop: homeMargins, paddingBottom: homeMargins}}
+            style={{
+              paddingTop: homeMargins,
+              paddingBottom: homeMargins
+            }}
             disabled={!this.state.customersDidUpdate}
           >
             Kunden suchen
@@ -120,13 +134,19 @@ export class Home extends Component {
               // limit 10,000 means basically "no limit"
               // passing Arguments in onPress: http://bit.ly/2fHoAln
             iconSize={25}
-            style={{paddingTop: homeMargins, paddingBottom: homeMargins}}
+            style={{
+              paddingTop: homeMargins,
+              paddingBottom: homeMargins
+            }}
           >
             Kunden updaten
           </JumboButton>
         </View>
 
-        <View style={globalStyles.centerXY}>
+        <View style={[
+          globalStyles.centerXY, {
+          flexDirection: 'row'
+        }]}>
           <Text style={{marginRight: 5}}>
             {this.state.lastCustomersUpdate}
           </Text>
