@@ -38,7 +38,16 @@ export default class ArticlesListItem extends Component {
       }}
     />;
 
-    const img = this.props.img || imgPlaceholderSmall;
+    const imgFetched = (
+      this.props.img !== '' && <Image
+        source={{uri: this.props.img}}
+        resizeMode='cover'
+        style={{
+          width: 50,
+          height: 50
+        }}
+      />
+    );
 
     const returnItemFull =
       <TouchableWithoutFeedback onPress={this._increaseReturnCountByOne}
@@ -47,7 +56,7 @@ export default class ArticlesListItem extends Component {
           styles.wrapper, {
           backgroundColor: this.state.articleBackgroundColor
         }]}>
-          {img}
+          {imgFetched || imgPlaceholderSmall}
 
           <View style={styles.contentWrapper}>
             <View style={styles.titleWrapper}>
@@ -81,7 +90,7 @@ export default class ArticlesListItem extends Component {
           styles.wrapper, {
           backgroundColor: this.state.articleBackgroundColor
         }]}>
-          {img}
+          {imgFetched || imgPlaceholderSmall}
 
           <View style={styles.contentWrapper}>
             <View style={styles.titleWrapper}>

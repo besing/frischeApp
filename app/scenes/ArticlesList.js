@@ -84,7 +84,7 @@ export default class ArticlesList extends Component {
     return (
       <View style={[globalStyles.container, {backgroundColor: '#eee', paddingTop: 64}]}>
         <NavbarSubtitle>
-          {this.props.email}
+          {this.props.deliveryStreet}
         </NavbarSubtitle>
         <DepositArticlesApiCalls filterListOnButtonConfirm={this.state.showConfirmScreen}
                           hideConfirmButtonWhileLoading={() => this.setState({

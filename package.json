@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "digest-auth-request-rn": "file:digest-auth-request-rn-0.6.2.tgz",
-    "react": "^15.3.1",
+    "react": "~15.3.1",
     "react-native": "^0.35.0",
     "react-native-dropdownalert": "^2.1.0",
     "react-native-elements": "^0.6.4",

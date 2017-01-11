@@ -21,6 +21,10 @@ import {
   import globalStyles, {width, height} from '../config/globalStyles';
 
 
+const url = appConfig.apiCredentials_test.url;
+const {apiUser} = appConfig.apiCredentials_test;
+const {apiKey} = appConfig.apiCredentials_test;
+
 export default class DepositArticlesApiCalls extends Component {
 
   constructor(props) {
@@ -107,10 +111,6 @@ export default class DepositArticlesApiCalls extends Component {
   }
 
   getArticleList() {
-    const url = appConfig.apiCredentials_test.url;
-    const {apiUser} = appConfig.apiCredentials_test;
-    const {apiKey} = appConfig.apiCredentials_test;
-
     const req = new digestCall(
       'GET',
       url + '/depositArticles',
@@ -158,13 +158,15 @@ export default class DepositArticlesApiCalls extends Component {
 
   createSubmitObject(obj) {
     let submitObject = {
-      customerId: this.props.customerId,
-      articles: []
+      returnedArticles: {
+        customerId: this.props.customerId,
+        articles: []
+      }
     };
 
     for (let prop in obj) {
       if (obj[prop] > 0 && obj.hasOwnProperty(prop)) { // ignore amount = 0 and check if hasOwnProp
-        submitObject.articles.push({
+        submitObject.returnedArticles.articles.push({
           articleId: prop,
           returnAmount: obj[prop]
         });
@@ -175,55 +177,30 @@ export default class DepositArticlesApiCalls extends Component {
   }
 
   submitArticlesRequest(submitObj) {
-    // TODO: switch to Digest Auth when API Endpoint ready
+          const postData = submitObj;
 
-    fetch('http://localhost:3000/returnedArticles', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(submitObj)})
+          console.log('postData: ', postData);
 
-      .then((response) => { // Fetch() needs additional error handling
-        if (!response.ok) {
-          this.dropdownError.alertWithType('custom', 'Fehler. Bitte noch mal versuchen.');
-          // console.error(response.statusText);
-        }
-        return response
-      })
+          const postReq = new digestCall(
+            'POST',
+            url + '/deposit',
+            apiUser,
+            apiKey
+          );
 
-      .then((response) => {
-        if (response.ok) {
-          this.dropdownSuccess.alertWithType('custom', 'Pfand erfolgreich zurückgebucht');
-          setTimeout(this.props.goBackToHome, 1000);
-        }
-      })
+          postReq.request((data) => {
+            console.log('success alert: ', data);
+            this.dropdownSuccess.alertWithType('custom', 'Pfand erfolgreich zurückgebucht');
+            setTimeout(this.props.goBackToHome, 1000);
 
-      .catch((error) => {
-        // console.error(error);
-        this.dropdownError.alertWithType('custom', 'Fehler. Bitte noch mal versuchen.');
-      })
+          }, (error) => {
+            console.error(error);
+            this.dropdownError.alertWithType('custom', 'Fehler. Bitte noch mal versuchen.');
+
+          }, postData);
+
+
   }
-
-  /* TODO: Use this template for POST Call on Final API Endpoint:
-   *
-   function digestPost() {
-   var postData = {
-   name: 'Kat. via API',
-   parentId: 5
-   };
-
-   var postReq = new digestCall('POST',
-   'http://frische-app.de.shopware-hosting.com/api/categories', appConfig.apiCredentials_dev.apiUser, appConfig.apiCredentials_dev.apiKey);
-
-   postReq.request(function (data) {
-   console.log('digestPOST SUCCESS: ', data);
-   }, function (errorCode) {
-   console.error('digestPOST ERROR: ', errorCode)
-   }, postData);
-   }
-   */
 }
 
 const styles = StyleSheet.create({

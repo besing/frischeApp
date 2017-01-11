@@ -184,9 +184,9 @@ export class Home extends Component {
       passProps: {
         // passed Props same as from CustomerSearch (except last)
         customerId: orderData.customerId,
-        firstname: orderData.customer.firstname,
-        lastname: orderData.customer.lastname,
-        email: orderData.customer.email,
+        firstname: orderData.shipping.firstName,
+        lastname: orderData.shipping.lastName,
+        deliveryStreet: orderData.shipping.street,
         fetchedFromScan: true
           // to distinguish between Scan and Search results (alternative Back-Button-Logic)
       },
