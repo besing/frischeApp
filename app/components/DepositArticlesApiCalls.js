@@ -177,29 +177,27 @@ export default class DepositArticlesApiCalls extends Component {
   }
 
   submitArticlesRequest(submitObj) {
-          const postData = submitObj;
+    const postData = submitObj;
 
-          console.log('postData: ', postData);
+    console.log('postData: ', postData);
 
-          const postReq = new digestCall(
-            'POST',
-            url + '/deposit',
-            apiUser,
-            apiKey
-          );
+    const postReq = new digestCall(
+      'POST',
+      url + '/deposit',
+      apiUser,
+      apiKey
+    );
 
-          postReq.request((data) => {
-            console.log('success alert: ', data);
-            this.dropdownSuccess.alertWithType('custom', 'Pfand erfolgreich zurückgebucht');
-            setTimeout(this.props.goBackToHome, 1000);
+    postReq.request((data) => {
+      console.log('success alert: ', data);
+      this.dropdownSuccess.alertWithType('custom', 'Pfand erfolgreich zurückgebucht');
+      setTimeout(this.props.goBackToHome, 1000);
 
-          }, (error) => {
-            console.error(error);
-            this.dropdownError.alertWithType('custom', 'Fehler. Bitte noch mal versuchen.');
+    }, (error) => {
+      console.error(error);
+      this.dropdownError.alertWithType('custom', 'Fehler. Bitte noch mal versuchen.');
 
-          }, postData);
-
-
+    }, postData);
   }
 }
 
