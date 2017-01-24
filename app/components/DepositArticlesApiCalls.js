@@ -34,7 +34,6 @@ export default class DepositArticlesApiCalls extends Component {
     this.state = {
       currentlyLoading: true,
       dataSource: this.ds.cloneWithRows([]),
-      dataSourceReduced: this.ds.cloneWithRows([]),
     };
     this.getArticleList = this.getArticleList.bind(this);
     this.collectReturnedItems = this.collectReturnedItems.bind(this);
@@ -91,7 +90,10 @@ export default class DepositArticlesApiCalls extends Component {
           }
           automaticallyAdjustContentInsets={false}
           enableEmptySections={true}
-          initialListSize={20} // render all Rows at once (20 = more than total)
+          initialListSize={50} // render all Rows at once (higher number than total amount)
+            // still somehow weird: (1) initialListSize *must* be there in order for filtering to work
+            // and (2) the number needs to be higher than actual articles(=results) for filtering
+            // maybe misunderstanding with ListView or not the best solution with filter-view-toggling
           style={this.props.filterListOnButtonConfirm ?
             {height: height - 183} :
             {height: height - 132}}
