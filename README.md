@@ -7,4 +7,4 @@
 
 For learning reasons and out of interest in cutting edge technology, the Native App was realized through Facebook's React Native Framework. The project had a tight schedule, the complete coding until the first running MVP-like version took around one month.
 
-The current state of development is heavily considered as Beta.
+The current state of development is highly considered as Beta.
